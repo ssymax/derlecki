@@ -71,12 +71,21 @@ const directionsLink = contactLinks.find((link) => link.href === directionsUrl) 
   background-color: $primary-color;
   color: #fff;
   padding: 4rem 2.4rem 2.4rem;
+
+  @include max-width-lg() {
+    padding: 3.2rem 1.6rem;
+  }
 }
 
 .app-footer__columns {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   gap: 2.4rem;
+
+  @include max-width-lg() {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
 }
 
 .app-footer__brand {
@@ -86,12 +95,23 @@ const directionsLink = contactLinks.find((link) => link.href === directionsUrl) 
 
   p {
     margin: 0;
+    max-width: 26rem;
   }
 
   .app-footer__brand-title {
     font-size: 2rem;
     font-weight: 700;
     line-height: 1.3;
+  }
+
+  @include max-width-lg() {
+    text-align: center;
+    align-items: center;
+    margin: 0 auto;
+
+    p {
+      max-width: none;
+    }
   }
 }
 
@@ -128,6 +148,20 @@ const directionsLink = contactLinks.find((link) => link.href === directionsUrl) 
     flex-direction: column;
     align-items: flex-start;
     gap: 0.2rem;
+
+    @include max-width-lg() {
+      align-items: center;
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  @include max-width-lg() {
+    text-align: center;
+
+    ul {
+      align-items: center;
+    }
   }
 }
 
@@ -136,5 +170,10 @@ const directionsLink = contactLinks.find((link) => link.href === directionsUrl) 
   text-align: center;
   font-size: 1.4rem;
   opacity: 0.9;
+
+  @include max-width-lg() {
+    margin-top: 2.4rem;
+    font-size: 1.3rem;
+  }
 }
 </style>
