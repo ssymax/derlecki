@@ -18,7 +18,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
 import logoUrl from '~/assets/logo.svg';
 
 const isMenuOpen = ref(false);

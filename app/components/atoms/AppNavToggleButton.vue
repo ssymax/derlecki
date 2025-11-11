@@ -15,8 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-
 const props = defineProps<{
   isOpen: boolean;
 }>();
@@ -25,9 +23,7 @@ const emit = defineEmits<{
   (e: 'toggle'): void;
 }>();
 
-const toggleAriaLabel = computed(() =>
-  props.isOpen ? 'Zamknij menu' : 'Otwórz menu',
-);
+const toggleAriaLabel = computed(() => (props.isOpen ? 'Zamknij menu' : 'Otwórz menu'));
 
 const handleToggle = () => {
   emit('toggle');

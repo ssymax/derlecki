@@ -57,8 +57,6 @@
 </template>
 
 <script setup lang="ts">
-import { address, contactLinks, routes, directionsUrl } from '~/utils/constants';
-
 const currentYear = new Date().getFullYear();
 const directionsLink = contactLinks.find((link) => link.href === directionsUrl) || {
   href: directionsUrl,
