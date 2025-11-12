@@ -5,5 +5,12 @@
       <slot />
     </main>
     <OrganismsAppFooter />
+    <AtomsAppScrollToTop />
   </div>
 </template>
+
+<style lang="scss">
+.layout-default__content {
+  @include padding-style;
+}
+</style>

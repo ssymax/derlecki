@@ -2,7 +2,14 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', '@nuxt/icon', '@nuxt/image', '@nuxt/fonts', '@nuxt/content'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/icon',
+    '@nuxt/image',
+    '@nuxt/fonts',
+    '@nuxt/content',
+    '@hypernym/nuxt-gsap',
+  ],
   fonts: {
     families: [
       {
@@ -13,6 +20,13 @@ export default defineNuxtConfig({
     ],
   },
   css: ['normalize.css/normalize.css', '~/assets/scss/global.scss'],
+  gsap: {
+    provide: true,
+    extraPlugins: {
+      scrollTrigger: true,
+      observer: true,
+    },
+  },
   vite: {
     css: {
       preprocessorOptions: {
