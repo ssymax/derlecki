@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/content',
     '@hypernym/nuxt-gsap',
+    'lenis/nuxt',
   ],
   fonts: {
     families: [
