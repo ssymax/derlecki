@@ -12,7 +12,6 @@
 
 <script setup lang="ts">
 import { VueLenis, useLenis } from 'lenis/vue';
-import { watch } from 'vue';
 
 const lenis = useLenis((lenis) => {
   // called every scroll
