@@ -1,7 +1,7 @@
 <template>
   <div class="app-nav__brand-row">
-    <AtomsAppNavLogo :logo-url="logoUrl" />
-    <AtomsAppNavToggleButton
+    <AtomsNavLogo :logo-url="logoUrl" />
+    <AtomsNavToggleButton
       :is-open="isMenuOpen"
       @toggle="handleToggle"
     />

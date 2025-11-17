@@ -1,6 +1,6 @@
 <template>
   <div class="app-nav-actions" aria-label="Kontakt">
-    <AtomsAppNavActionLink
+    <AtomsNavActionLink
       v-for="link in links"
       :key="link.href"
       :link="link"

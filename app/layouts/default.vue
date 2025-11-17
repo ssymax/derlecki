@@ -1,12 +1,12 @@
 <template>
   <div class="layout-default">
     <VueLenis root />
-    <OrganismsAppNavBar />
+    <OrganismsNavBar />
     <main class="layout-default__content">
       <slot />
     </main>
-    <OrganismsAppFooter />
-    <AtomsAppScrollToTop />
+    <OrganismsFooter />
+    <AtomsScrollToTop />
   </div>
 </template>
 

@@ -1,31 +1,17 @@
 <template>
   <section class="services">
-    <div v-if="panelIntro.length" class="services__panel-intro">
-      <p v-for="(paragraph, idx) in panelIntro" :key="`intro-${idx}`">
-        {{ paragraph }}
-      </p>
-    </div>
+    <MoleculesSectionIntroPanel title="W CZYM MOGĘ POMÓC" :intro="panelIntro" />
 
     <div class="services__navigation" role="tablist" aria-label="Obszary pracy">
       <div class="services__nav-grid">
-        <button
+        <MoleculesPanelNavButton
           v-for="(service, index) in services"
           :key="index"
-          type="button"
-          :class="[
-            'services__nav-item',
-            { 'services__nav-item--active': activeIndex === index },
-          ]"
-          :aria-pressed="activeIndex === index"
+          :index-label="formatNavIndex(index)"
+          :title="service.title"
+          :is-active="activeIndex === index"
           @click="changeService(index)"
-        >
-          <span class="services__nav-index">{{ formatNavIndex(index) }}</span>
-          <span class="services__nav-divider" aria-hidden="true" />
-          <span class="services__nav-text">
-            <span class="services__nav-title">{{ service.title }}</span>
-          </span>
-          <span class="services__nav-arrow" aria-hidden="true">↓</span>
-        </button>
+        />
       </div>
     </div>
 
@@ -33,9 +19,9 @@
       <div class="services__text">
         <div class="services__clip">
           <div ref="heading" class="services__heading">
-            <AtomsAppDecoratedHeading align="left">
+            <AtomsDecoratedHeading align="left">
               {{ currentService.title }}
-            </AtomsAppDecoratedHeading>
+            </AtomsDecoratedHeading>
           </div>
         </div>
         <div :key="activeIndex" class="services__description">
@@ -302,21 +288,19 @@ onBeforeUnmount(() => {
     splitInstance.revert();
   }
 });
-
 </script>
 
 <style scoped lang="scss">
 @use 'sass:color';
 .services {
   min-height: 100vh;
+  padding: clamp(2rem, 4vw, 5rem) 0;
 }
 
 .services__navigation {
-  margin: 0 auto 4rem;
+  margin: 0 auto 6rem;
   padding: 2rem;
   border-radius: 2rem;
-  border: 1px solid rgba($primary-color, 0.15);
-  background: rgba($primary-color, 0.04);
 }
 
 .services__nav-grid {
@@ -325,98 +309,10 @@ onBeforeUnmount(() => {
   gap: 1.5rem;
 }
 
-.services__nav-item {
-  display: grid;
-  grid-template-columns: auto 1px 1fr auto;
-  gap: 1.5rem;
-  align-items: center;
-  padding: 1.5rem;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: 1.5rem;
-  background: white;
-  color: #1f1f1f;
-  text-align: left;
-  transition: all 0.3s ease;
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.05);
-
-  &:hover {
-    border-color: rgba($primary-color, 0.5);
-    transform: translateY(6px);
-  }
-
-  &--active {
-    background: $primary-color;
-    color: white;
-    border-color: $primary-color;
-    box-shadow: 0 1.5rem 3rem rgba($primary-color, 0.25);
-
-    .services__nav-divider {
-      background: rgba(255, 255, 255, 0.5);
-    }
-
-    .services__nav-arrow {
-      color: white;
-      transform: translateY(0.4rem);
-    }
-
-  }
-}
-
-.services__nav-index {
-  font-size: 1.4rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba($primary-color, 0.8);
-
-  .services__nav-item--active & {
-    color: rgba(255, 255, 255, 0.9);
-  }
-}
-
-.services__nav-divider {
-  width: 1px;
-  height: 100%;
-  background: rgba($primary-color, 0.2);
-}
-
-.services__nav-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.services__nav-title {
-  font-weight: 600;
-  font-size: 1.6rem;
-  color: inherit;
-}
-
-.services__nav-arrow {
-  font-size: 2rem;
-  color: rgba($primary-color, 0.4);
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
 .services__content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-}
-
-.services__panel-intro {
-  @include px-to-vw(margin-bottom, 50);
-  @include px-to-vw(font-size, 28);
-  color: #555;
-  line-height: 1.7;
-  text-align: center;
-  font-style: italic;
-  p {
-    margin-bottom: 0.75rem;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
+  gap: 5rem;
 }
 
 .services__clip {

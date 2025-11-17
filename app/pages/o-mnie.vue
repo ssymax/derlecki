@@ -1,45 +1,50 @@
 <template>
-  <section class="bio">
-    <div class="bio__images">
-      <div ref="image1" class="bio__image-wrapper bio__image-wrapper--1">
-        <NuxtImg
-          src="/img/o-mnie.jpg"
-          alt="Mateusz Derlecki"
-          format="webp"
-          width="960"
-          height="1280"
-          loading="lazy"
-          class="bio__image"
-        />
+  <div class="bio-page">
+    <MoleculesSectionIntroPanel title="O MNIE" :intro="bioIntro" />
+    <section class="bio">
+      <div class="bio__images">
+        <div ref="image1" class="bio__image-wrapper bio__image-wrapper--1">
+          <NuxtImg
+            src="/img/o-mnie.jpg"
+            alt="Mateusz Derlecki"
+            format="webp"
+            width="960"
+            height="1280"
+            loading="lazy"
+            class="bio__image"
+          />
+        </div>
+        <div ref="image2" class="bio__image-wrapper bio__image-wrapper--2">
+          <NuxtImg
+            src="/img/o-mnie-2.jpg"
+            alt="Mateusz Derlecki - Kwalifikacje"
+            format="webp"
+            width="960"
+            height="1280"
+            loading="lazy"
+            class="bio__image bio__image--left"
+          />
+        </div>
       </div>
-      <div ref="image2" class="bio__image-wrapper bio__image-wrapper--2">
-        <NuxtImg
-          src="/img/o-mnie-2.jpg"
-          alt="Mateusz Derlecki - Kwalifikacje"
-          format="webp"
-          width="960"
-          height="1280"
-          loading="lazy"
-          class="bio__image bio__image--left"
-        />
+      <div class="bio__content">
+        <div ref="bioSection" class="bio__section">
+          <AtomsDecoratedHeading align="left">Bio</AtomsDecoratedHeading>
+          <ContentRenderer v-if="bio" :value="bio" />
+          <p v-else>Ładowanie...</p>
+        </div>
+        <div ref="eduSection" class="bio__section">
+          <AtomsDecoratedHeading align="right">Kwalifikacje</AtomsDecoratedHeading>
+          <ContentRenderer v-if="education" :value="education" />
+          <p v-else>Ładowanie...</p>
+        </div>
       </div>
-    </div>
-    <div class="bio__content">
-      <div ref="bioSection" class="bio__section">
-        <AtomsAppDecoratedHeading align="left">O mnie</AtomsAppDecoratedHeading>
-        <ContentRenderer v-if="bio" :value="bio" />
-        <p v-else>Ładowanie...</p>
-      </div>
-      <div ref="eduSection" class="bio__section">
-        <AtomsAppDecoratedHeading align="right">Kwalifikacje</AtomsAppDecoratedHeading>
-        <ContentRenderer v-if="education" :value="education" />
-        <p v-else>Ładowanie...</p>
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <script setup lang="ts">
+import { bioIntro } from '~/utils/constants';
+
 const { $gsap, $ScrollTrigger } = useNuxtApp();
 const { data: bio } = await useAsyncData('bio', () =>
   queryCollection('content').path('/bio').first(),
@@ -127,6 +132,13 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.bio-page {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  padding: clamp(2rem, 4vw, 5rem) 0;
+}
+
 .bio {
   display: flex;
   gap: 4rem;

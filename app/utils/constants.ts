@@ -46,6 +46,9 @@ export const contactLinks = [
   },
 ];
 
+export const bioIntro =
+  'Nazywam się Mateusz Derlecki. Jestem fizjoterapeutą oraz naturopatą z kilkunastoletnim doświadczeniem.';
+
 export interface HelpService {
   title: string;
   content: string[];
@@ -56,7 +59,7 @@ export interface HelpService {
 interface HelpSectionCopy {
   panel: {
     title: string;
-    intro: string[];
+    intro: string;
   };
   services: HelpService[];
 }
@@ -64,9 +67,8 @@ interface HelpSectionCopy {
 export const help: HelpSectionCopy = {
   panel: {
     title: 'W czym mogę pomóc?',
-    intro: [
+    intro:
       'Poniżej znajdziesz wszystkie obszary pracy, w których wspieram pacjentów na co dzień. Każdą terapię dobieram indywidualnie – do Twojego stanu, potrzeb i celów.',
-    ],
   },
   services: [
     {

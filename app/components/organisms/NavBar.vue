@@ -1,19 +1,19 @@
 <template>
   <header class="app-nav">
-    <MoleculesAppNavBrandRow
+    <MoleculesNavBrandRow
       :logo-url="logoUrl"
       :is-menu-open="isMenuOpen"
       @toggle="toggleMenu"
     />
 
-    <MoleculesAppNavDrawer
+    <MoleculesNavDrawer
       :routes="routes"
       :links="contactLinks"
       :is-menu-open="isMenuOpen"
       @request-close="closeMenu"
     />
 
-    <AtomsAppNavOverlay :is-visible="isMenuOpen" @close="closeMenu" />
+    <AtomsNavOverlay :is-visible="isMenuOpen" @close="closeMenu" />
   </header>
 </template>
 

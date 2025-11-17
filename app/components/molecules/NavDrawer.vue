@@ -1,7 +1,7 @@
 <template>
   <div class="app-nav-drawer" :class="{ 'app-nav-drawer--open': isMenuOpen }">
-    <MoleculesAppNavMenu :routes="routes" @navigate="handleRequestClose" />
-    <MoleculesAppNavActions :links="links" @select="handleRequestClose" />
+    <MoleculesNavMenu :routes="routes" @navigate="handleRequestClose" />
+    <MoleculesNavActions :links="links" @select="handleRequestClose" />
   </div>
 </template>
 
