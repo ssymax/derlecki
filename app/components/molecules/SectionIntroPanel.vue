@@ -1,12 +1,8 @@
 <template>
   <div class="section-panel" :class="`section-panel--align-${introAlign}`">
     <div v-if="title" class="section-panel__heading">
-      <h1 ref="headingRef" aria-hidden="true">{{ title }}</h1>
-      <span
-        class="section-panel__underline"
-        aria-hidden="true"
-        :style="{ width: underlineWidth }"
-      />
+      <h1 aria-hidden="true">{{ title }}</h1>
+      <span class="section-panel__underline" aria-hidden="true" />
     </div>
     <div v-if="intro" class="section-panel__intro">
       <p>{{ intro }}</p>
@@ -15,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRef } from 'vue';
+import { computed, toRef } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -32,13 +28,7 @@ const props = withDefaults(
 
 const title = toRef(props, 'title');
 const intro = toRef(props, 'intro');
-const headingRef = ref<HTMLHeadingElement | null>(null);
 const introAlign = computed(() => props.introAlign);
-const underlineWidth = computed(() => {
-  const el = headingRef.value;
-  if (!el) return 'clamp(6rem, 20vw, 14rem)';
-  return `${el.offsetWidth / 2}px`;
-});
 </script>
 
 <style scoped lang="scss">
@@ -68,7 +58,7 @@ const underlineWidth = computed(() => {
 }
 
 .section-panel__underline {
-  width: clamp(6rem, 20vw, 14rem);
+  width: 50%;
   height: 3px;
   background: linear-gradient(90deg, $primary-color 0%, rgba($primary-color, 0.3) 100%);
   border-radius: 999px;

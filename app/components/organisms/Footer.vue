@@ -1,5 +1,18 @@
 <template>
   <footer class="app-footer">
+    <div v-if="isContactPage" class="app-footer__map">
+      <div class="app-footer__map-divider" />
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.7341783517177!2d20.484002399999994!3d53.7666689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e27928d3310455%3A0xd4ed7f0e526459e6!2sMateusz%20Derlecki!5e1!3m2!1sen!2spl!4v1763487424699!5m2!1sen!2spl"
+        width="100%"
+        height="450"
+        style="border: 0"
+        allowfullscreen="true"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      />
+    </div>
+
     <div class="app-footer__columns">
       <div class="app-footer__brand">
         <p class="app-footer__brand-title">
@@ -12,9 +25,9 @@
       <div class="app-footer__column">
         <h3>Nawigacja</h3>
         <ul>
-          <li v-for="route in routes" :key="route.path">
-            <NuxtLink :to="route.path">
-              {{ route.name }}
+          <li v-for="navRoute in routes" :key="navRoute.path">
+            <NuxtLink :to="navRoute.path">
+              {{ navRoute.name }}
             </NuxtLink>
           </li>
         </ul>
@@ -51,13 +64,15 @@
     </div>
 
     <div class="app-footer__bottom">
-      © {{ currentYear }} Mateusz Derlecki Fizjoterapia, all rights reserved.
+      © {{ currentYear }} Mateusz Derlecki Fizjoterapia, Wszelkie prawa zastrzeżone.
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
+const route = useRoute();
 const currentYear = new Date().getFullYear();
+const isContactPage = computed(() => route.path === '/kontakt');
 const directionsLink = contactLinks.find((link) => link.href === directionsUrl) || {
   href: directionsUrl,
   newTab: true,
@@ -73,6 +88,28 @@ const directionsLink = contactLinks.find((link) => link.href === directionsUrl) 
   @include max-width-lg() {
     padding: 3.2rem 1.6rem;
   }
+}
+
+.app-footer__map {
+  width: calc(100% + 4.8rem);
+  margin: -4rem -2.4rem 4rem;
+  border-bottom: 8px solid rgba(255, 255, 255, 0.2);
+
+  iframe {
+    display: block;
+  }
+
+  @include max-width-lg() {
+    width: calc(100% + 3.2rem);
+    margin: -3.2rem -1.6rem 3.2rem;
+    padding-bottom: 3.2rem;
+  }
+}
+
+.app-footer__map-divider {
+  height: 8px;
+  background: linear-gradient(90deg, $primary-color 0%, rgba($primary-color, 0.3) 100%);
+  margin-bottom: 0;
 }
 
 .app-footer__columns {

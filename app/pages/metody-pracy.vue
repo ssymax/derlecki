@@ -291,7 +291,6 @@ onBeforeUnmount(() => {
 
 .methods__details-card {
   background: #fff;
-  border-radius: 2rem;
   padding: 3rem;
 }
 
@@ -365,7 +364,6 @@ onBeforeUnmount(() => {
 }
 
 .methods__details-image {
-  border-radius: 1.5rem;
   overflow: hidden;
   min-height: 28rem;
   box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.1);
@@ -394,10 +392,6 @@ onBeforeUnmount(() => {
 @media (max-width: 640px) {
   .methods__details-card {
     padding: 2rem;
-  }
-
-  .methods__list-item {
-    border-radius: 1rem;
   }
 
   .methods__details-image {

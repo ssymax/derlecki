@@ -300,7 +300,6 @@ onBeforeUnmount(() => {
 .services__navigation {
   margin: 0 auto 6rem;
   padding: 2rem;
-  border-radius: 2rem;
 }
 
 .services__nav-grid {
@@ -375,7 +374,6 @@ onBeforeUnmount(() => {
 
 .services__image {
   height: 70vh;
-  border-radius: 0.5rem;
   overflow: hidden;
   will-change: transform;
 }
