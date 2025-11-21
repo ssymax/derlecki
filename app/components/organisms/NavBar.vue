@@ -24,13 +24,6 @@ const { contactItemsForNav } = await useContactInfo();
 
 const isMenuOpen = defineModel<boolean>({ default: false });
 
-// Prevent body scroll when menu is open
-if (import.meta.client) {
-  watch(isMenuOpen, (newVal) => {
-    document.body.style.overflow = newVal ? 'hidden' : '';
-  });
-}
-
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };

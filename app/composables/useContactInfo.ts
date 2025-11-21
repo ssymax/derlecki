@@ -1,5 +1,5 @@
-export const useContactInfo = async () => {
-  const { story } = await useAsyncStoryblok('kontakt', {
+export const useContactInfo = async (slug: string = 'kontakt') => {
+  const { story } = await useAsyncStoryblok(slug, {
     api: { version: 'published' },
     bridge: {},
   });

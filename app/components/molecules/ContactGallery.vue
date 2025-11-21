@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="contact-gallery__heading">Tu mnie znajdziesz</h2>
+    <h2 class="contact-gallery__heading">{{ imagesHeader }}</h2>
     <div class="contact-gallery__images">
       <div
         v-for="(img, index) in images"
@@ -81,6 +81,7 @@ interface GalleryImage {
 
 defineProps<{
   images: GalleryImage[];
+  imagesHeader?: string;
 }>();
 
 const { $gsap } = useNuxtApp();

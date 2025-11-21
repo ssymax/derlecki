@@ -3,7 +3,7 @@
     <div v-if="isContactPage" class="app-footer__map">
       <div class="app-footer__map-divider" />
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.7341783517177!2d20.484002399999994!3d53.7666689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e27928d3310455%3A0xd4ed7f0e526459e6!2sMateusz%20Derlecki!5e1!3m2!1sen!2spl!4v1763487424699!5m2!1sen!2spl"
+        :src="contactData?.google_maps_url"
         width="100%"
         height="450"
         style="border: 0"
@@ -16,10 +16,10 @@
     <div class="app-footer__columns">
       <div class="app-footer__brand">
         <p class="app-footer__brand-title">
-          Mateusz Derlecki<br />
-          Fizjoterapia
+          {{ contactData?.owner_name }} <br />
+          {{ contactData?.owner_profession }}
         </p>
-        <p>Kompleksowa fizjoterapia w Olsztynie.</p>
+        <p>Kompleksowa fizjoterapia w Olsztynie</p>
       </div>
 
       <div class="app-footer__column">
@@ -64,7 +64,8 @@
     </div>
 
     <div class="app-footer__bottom">
-      © {{ currentYear }} Mateusz Derlecki Fizjoterapia, Wszelkie prawa zastrzeżone.
+      © {{ currentYear }} {{ contactData?.owner_name }}
+      {{ contactData?.owner_profession }}, Wszelkie prawa zastrzeżone.
     </div>
   </footer>
 </template>

@@ -1,6 +1,8 @@
 <template>
   <div class="contact-info">
-    <h3 class="contact-info__name">Mateusz Derlecki<br />Fizjoterapia</h3>
+    <h3 class="contact-info__name">
+      {{ contactData?.owner_name }}<br />{{ contactData?.owner_profession }}
+    </h3>
     <a
       v-for="(contact, index) in contactItems"
       :key="index"
@@ -19,49 +21,39 @@
 
 <script setup lang="ts">
 interface Props {
-  phone?: string;
-  phoneDisplay?: string;
-  email?: string;
-  addressStreet?: string;
-  addressCity?: string;
-  facebookUrl?: string;
-  directionsUrl?: string;
+  contactData?: ContactContent;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  phone: '',
-  phoneDisplay: '',
-  email: '',
-  addressStreet: '',
-  addressCity: '',
-  facebookUrl: '',
-  directionsUrl: '',
-});
+const props = defineProps<Props>();
 
-const contactItems = computed(() => [
-  {
-    icon: 'mdi:phone',
-    href: `tel:${props.phone}`,
-    text: props.phoneDisplay,
-  },
-  {
-    icon: 'mdi:email-outline',
-    href: `mailto:${props.email}`,
-    text: props.email,
-  },
-  {
-    icon: 'mdi:map-marker',
-    href: props.directionsUrl,
-    text: `${props.addressStreet}, ${props.addressCity}`,
-    newTab: true,
-  },
-  {
-    icon: 'mdi:facebook',
-    href: props.facebookUrl,
-    text: 'Facebook',
-    newTab: true,
-  },
-]);
+const contactItems = computed(() => {
+  if (!props.contactData) return [];
+
+  return [
+    {
+      icon: 'mdi:phone',
+      href: `tel:${props.contactData.phone}`,
+      text: props.contactData.phone_display || props.contactData.phone,
+    },
+    {
+      icon: 'mdi:email-outline',
+      href: `mailto:${props.contactData.email}`,
+      text: props.contactData.email,
+    },
+    {
+      icon: 'mdi:map-marker',
+      href: props.contactData.directions_url,
+      text: `${props.contactData.address_street}, ${props.contactData.address_city}`,
+      newTab: true,
+    },
+    {
+      icon: 'mdi:facebook',
+      href: props.contactData.facebook_url,
+      text: 'Facebook',
+      newTab: true,
+    },
+  ];
+});
 </script>
 
 <style scoped lang="scss">

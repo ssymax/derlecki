@@ -43,6 +43,10 @@ declare global {
     address_city: string;
     facebook_url: string;
     directions_url: string;
+    google_maps_url: string;
+    owner_name: string;
+    owner_profession: string;
+    images_header: string;
     images: StoryblokAsset[];
     _editable?: string;
   };
