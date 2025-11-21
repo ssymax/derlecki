@@ -1,11 +1,9 @@
 export const useContactInfo = async () => {
-  // Fetch the kontakt story from Storyblok
   const { story } = await useAsyncStoryblok('kontakt', {
     api: { version: 'published' },
     bridge: {},
   });
 
-  // Extract contact data from the first body block
   const contactData = computed(
     () => story.value?.content?.body?.[0] as ContactContent | undefined,
   );

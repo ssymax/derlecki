@@ -1,7 +1,7 @@
 <template>
   <div class="layout-default">
-    <VueLenis root />
-    <OrganismsNavBar />
+    <VueLenis ref="lenisRef" root />
+    <OrganismsNavBar v-model="isMenuOpen" />
     <main class="layout-default__content">
       <slot />
     </main>
@@ -13,19 +13,21 @@
 <script setup lang="ts">
 import { VueLenis, useLenis } from 'lenis/vue';
 
-const lenis = useLenis((lenis) => {
-  // called every scroll
-  console.log(lenis);
-});
+const lenisRef = ref();
+const isMenuOpen = ref(false);
 
-watch(
-  lenis,
-  (lenis) => {
-    // lenis instance
-    console.log(lenis);
-  },
-  { immediate: true },
-);
+const lenis = useLenis();
+
+// Stop Lenis when mobile menu is open
+watch(isMenuOpen, (isOpen) => {
+  if (lenis.value) {
+    if (isOpen) {
+      lenis.value.stop();
+    } else {
+      lenis.value.start();
+    }
+  }
+});
 </script>
 
 <style lang="scss">

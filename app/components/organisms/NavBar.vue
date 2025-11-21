@@ -22,7 +22,14 @@ import logoUrl from '~/assets/logo.svg';
 
 const { contactItemsForNav } = await useContactInfo();
 
-const isMenuOpen = ref(false);
+const isMenuOpen = defineModel<boolean>({ default: false });
+
+// Prevent body scroll when menu is open
+if (import.meta.client) {
+  watch(isMenuOpen, (newVal) => {
+    document.body.style.overflow = newVal ? 'hidden' : '';
+  });
+}
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
@@ -50,7 +57,7 @@ watch(
   padding: 1.6rem 2.4rem;
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  z-index: 5;
+  z-index: 20;
 
   @include min-width-lg() {
     flex-direction: row;
