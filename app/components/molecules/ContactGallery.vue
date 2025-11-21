@@ -1,50 +1,32 @@
 <template>
   <div>
     <h2 class="contact-gallery__heading">Tu mnie znajdziesz</h2>
-    <div class="contact-gallery">
-      <!-- Left side: Scattered images -->
-      <div class="contact-gallery__images">
-        <div
-          v-for="(img, index) in images"
-          :key="index"
-          class="contact-gallery__image-wrapper"
-          @click="openFullscreen(index)"
-        >
-          <div class="contact-gallery__image-container">
-            <NuxtImg
-              :src="img.src"
-              :alt="img.alt"
-              format="webp"
-              width="400"
-              height="300"
-              class="contact-gallery__image"
-            />
-            <div
-              class="contact-gallery__expand-btn"
-              :aria-label="`Pokaż ${img.alt} w pełnym rozmiarze`"
-            >
-              <Icon name="mdi:plus" size="24" />
-            </div>
+    <div class="contact-gallery__images">
+      <div
+        v-for="(img, index) in images"
+        :key="index"
+        class="contact-gallery__image-wrapper"
+        @click="openFullscreen(index)"
+      >
+        <div class="contact-gallery__image-container">
+          <NuxtImg
+            :src="img.src.replace('https://a.storyblok.com', '')"
+            :alt="img.alt"
+            format="webp"
+            provider="storyblok"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            width="400"
+            height="300"
+            class="contact-gallery__image"
+            loading="eager"
+          />
+          <div
+            class="contact-gallery__expand-btn"
+            :aria-label="`Pokaż ${img.alt} w pełnym rozmiarze`"
+          >
+            <Icon name="mdi:plus" size="24" />
           </div>
         </div>
-      </div>
-
-      <!-- Right side: Contact info -->
-      <div class="contact-gallery__info">
-        <h3 class="contact-gallery__name">Mateusz Derlecki<br />Fizjoterapia</h3>
-        <a
-          v-for="(contact, index) in contactItems"
-          :key="index"
-          :href="contact.href"
-          :target="contact.newTab ? '_blank' : undefined"
-          :rel="contact.newTab ? 'noreferrer noopener' : undefined"
-          class="contact-gallery__link"
-        >
-          <span class="contact-gallery__icon">
-            <Icon :name="contact.icon" size="32" />
-          </span>
-          <span>{{ contact.text }}</span>
-        </a>
       </div>
     </div>
 
@@ -70,11 +52,18 @@
             @click.stop
           >
             <NuxtImg
-              :src="images[fullscreenIndex]?.src ?? ''"
+              provider="storyblok"
+              :src="
+                (images[fullscreenIndex]?.src || '').replace(
+                  'https://a.storyblok.com',
+                  '',
+                )
+              "
               :alt="images[fullscreenIndex]?.alt ?? ''"
-              format="webp"
               width="1920"
               height="1280"
+              quality="80"
+              format="webp"
               class="contact-gallery__fullscreen-image"
             />
           </div>
@@ -93,31 +82,6 @@ interface GalleryImage {
 defineProps<{
   images: GalleryImage[];
 }>();
-
-const contactItems = [
-  {
-    icon: 'mdi:phone',
-    href: `tel:${phoneNumber.replace(/\s+/g, '')}`,
-    text: phoneNumber,
-  },
-  {
-    icon: 'mdi:email-outline',
-    href: `mailto:${emailAddress}`,
-    text: emailAddress,
-  },
-  {
-    icon: 'mdi:map-marker',
-    href: directionsUrl,
-    text: `${address.street}, ${address.city}`,
-    newTab: true,
-  },
-  {
-    icon: 'mdi:facebook',
-    href: facebookUrl,
-    text: 'Facebook',
-    newTab: true,
-  },
-];
 
 const { $gsap } = useNuxtApp();
 const fullscreenIndex = ref<number | null>(null);
@@ -193,20 +157,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped lang="scss">
-.contact-gallery {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8rem;
-  padding: 6rem 0;
-  align-items: center;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
-    gap: 6rem;
-    padding: 4rem 0;
-  }
-}
-
 .contact-gallery__heading {
   font-size: 3.6rem;
   font-weight: 700;
@@ -331,68 +281,6 @@ onBeforeUnmount(() => {
   filter: drop-shadow(0 0.6rem 1.6rem rgba(0, 0, 0, 0.8));
 }
 
-.contact-gallery__info {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  padding: 2rem;
-
-  @media (max-width: 768px) {
-    gap: 2.5rem;
-  }
-}
-
-.contact-gallery__name {
-  font-size: 3.2rem;
-  font-weight: 700;
-  color: $primary-color;
-  text-align: left;
-  margin: 0 0 3rem;
-  line-height: 1.3;
-
-  @media (max-width: 768px) {
-    font-size: 2.6rem;
-    margin: 0 0 2.5rem;
-  }
-}
-
-.contact-gallery__link {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  font-size: 2.4rem;
-  font-weight: 500;
-  color: #333;
-  text-decoration: none;
-  transition: all 0.3s ease;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-    gap: 1.5rem;
-  }
-
-  &:hover {
-    color: $primary-color;
-
-    .contact-gallery__icon {
-      transform: scale(1.3);
-    }
-  }
-}
-
-.contact-gallery__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: $primary-color;
-  flex-shrink: 0;
-  transition: transform 0.3s ease;
-
-  :deep(svg) {
-    color: $primary-color;
-  }
-}
-
 .contact-gallery__fullscreen {
   position: fixed;
   inset: 0;
@@ -433,12 +321,17 @@ onBeforeUnmount(() => {
   max-width: 90vw;
   max-height: 90vh;
   cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .contact-gallery__fullscreen-image {
   display: block;
-  width: 100%;
-  height: 100%;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
   object-fit: contain;
 }
 

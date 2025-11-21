@@ -49,14 +49,14 @@
       <div class="app-footer__column">
         <h3>Kontakt</h3>
         <ul>
-          <li v-for="link in contactLinks" :key="link.href">
+          <li v-for="link in contactItemsForNav" :key="link.href">
             <a
               :href="link.href"
               :target="link.newTab ? '_blank' : undefined"
               :rel="link.newTab ? 'noreferrer noopener' : undefined"
             >
               <Icon :name="link.icon" size="18" />
-              <span>{{ link.text }}</span>
+              <span>{{ link.label }}</span>
             </a>
           </li>
         </ul>
@@ -73,10 +73,23 @@
 const route = useRoute();
 const currentYear = new Date().getFullYear();
 const isContactPage = computed(() => route.path === '/kontakt');
-const directionsLink = contactLinks.find((link) => link.href === directionsUrl) || {
-  href: directionsUrl,
-  newTab: true,
-};
+
+const { contactData, contactItemsForNav } = await useContactInfo();
+
+const directionsLink = computed(
+  () =>
+    contactItemsForNav.value.find(
+      (link) => link.href === contactData.value?.directions_url,
+    ) || {
+      href: contactData.value?.directions_url || '',
+      newTab: true,
+    },
+);
+
+const address = computed(() => ({
+  street: contactData.value?.address_street || '',
+  city: contactData.value?.address_city || '',
+}));
 </script>
 
 <style lang="scss" scoped>

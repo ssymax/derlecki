@@ -7,10 +7,16 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxt/fonts',
-    '@nuxt/content',
     '@hypernym/nuxt-gsap',
     'lenis/nuxt',
+    '@storyblok/nuxt',
   ],
+  image: {
+    provider: 'storyblok',
+    storyblok: {
+      baseURL: 'https://a.storyblok.com',
+    },
+  },
   fonts: {
     families: [
       {
@@ -37,5 +43,12 @@ export default defineNuxtConfig({
         },
       },
     },
+  },
+  storyblok: {
+    accessToken: process.env.STORYBLOK_DELIVERY_API_TOKEN,
+    apiOptions: {
+      region: 'eu',
+    },
+    bridge: true,
   },
 });

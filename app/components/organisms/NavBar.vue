@@ -8,7 +8,7 @@
 
     <MoleculesNavDrawer
       :routes="routes"
-      :links="contactLinks"
+      :links="contactItemsForNav"
       :is-menu-open="isMenuOpen"
       @request-close="closeMenu"
     />
@@ -19,6 +19,8 @@
 
 <script setup lang="ts">
 import logoUrl from '~/assets/logo.svg';
+
+const { contactItemsForNav } = await useContactInfo();
 
 const isMenuOpen = ref(false);
 

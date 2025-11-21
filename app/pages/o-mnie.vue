@@ -29,13 +29,9 @@
       <div class="bio__content">
         <div ref="bioSection" class="bio__section">
           <AtomsDecoratedHeading align="left">Bio</AtomsDecoratedHeading>
-          <ContentRenderer v-if="bio" :value="bio" />
-          <p v-else>Ładowanie...</p>
         </div>
         <div ref="eduSection" class="bio__section">
           <AtomsDecoratedHeading align="right">Kwalifikacje</AtomsDecoratedHeading>
-          <ContentRenderer v-if="education" :value="education" />
-          <p v-else>Ładowanie...</p>
         </div>
       </div>
     </section>
@@ -46,12 +42,6 @@
 import { bioIntro } from '~/utils/constants';
 
 const { $gsap, $ScrollTrigger } = useNuxtApp();
-const { data: bio } = await useAsyncData('bio', () =>
-  queryCollection('content').path('/bio').first(),
-);
-const { data: education } = await useAsyncData('edu', () =>
-  queryCollection('content').path('/edu').first(),
-);
 
 const image1 = ref<HTMLElement | null>(null);
 const image2 = ref<HTMLElement | null>(null);

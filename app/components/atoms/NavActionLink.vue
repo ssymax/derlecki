@@ -2,13 +2,13 @@
   <a
     :href="link.href"
     class="app-nav-action"
-    :aria-label="link.ariaLabel"
+    :aria-label="link.ariaLabel || link.label"
     :target="link.newTab ? '_blank' : undefined"
     :rel="link.newTab ? 'noreferrer noopener' : undefined"
     @click="handleClick"
   >
     <Icon :name="link.icon" size="20" />
-    <span class="app-nav-action__label">{{ link.text }}</span>
+    <span class="app-nav-action__label">{{ link.label || link.text }}</span>
   </a>
 </template>
 

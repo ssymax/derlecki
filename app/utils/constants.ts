@@ -3,6 +3,7 @@ export const routes = [
   { name: 'O mnie', path: '/o-mnie' },
   { name: 'W czym mogę pomóc', path: '/w-czym-moge-pomoc' },
   { name: 'Metody pracy', path: '/metody-pracy' },
+  { name: 'Cennik', path: '/cennik' },
   { name: 'Kontakt', path: '/kontakt' },
 ];
 
@@ -14,37 +15,6 @@ export const address = {
   street: 'ul. Kasprzaka 3/4',
   city: 'Olsztyn',
 };
-
-const normalizedPhoneNumber = phoneNumber.replace(/\s+/g, '');
-
-export const contactLinks = [
-  {
-    icon: 'mdi:phone',
-    href: `tel:${normalizedPhoneNumber}`,
-    text: phoneNumber,
-    ariaLabel: `Zadzwoń ${phoneNumber}`,
-  },
-  {
-    icon: 'mdi:email-outline',
-    href: `mailto:${emailAddress}`,
-    text: 'Email',
-    ariaLabel: `Napisz na ${emailAddress}`,
-  },
-  {
-    icon: 'mdi:facebook',
-    href: facebookUrl,
-    text: 'Facebook',
-    ariaLabel: 'Facebook',
-    newTab: true,
-  },
-  {
-    icon: 'mdi:map-marker',
-    href: directionsUrl,
-    text: 'Lokalizacja',
-    ariaLabel: 'Zobacz lokalizację',
-    newTab: true,
-  },
-];
 
 export const bioIntro =
   'Nazywam się Mateusz Derlecki. Jestem fizjoterapeutą oraz naturopatą z kilkunastoletnim doświadczeniem.';
