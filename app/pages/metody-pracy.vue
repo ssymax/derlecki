@@ -309,6 +309,7 @@ onBeforeUnmount(() => {
   overflow: hidden;
   min-height: 28rem;
   box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.1);
+  border-radius: 1.2rem;
 }
 
 .methods__img {

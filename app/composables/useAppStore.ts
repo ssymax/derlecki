@@ -4,6 +4,7 @@ interface AppStoreState {
   services: ServicesContent | null;
   methods: MethodsContent | null;
   contact: ContactContent | null;
+  pricing: PricingContent | null;
   isLoaded: boolean;
 }
 
@@ -13,77 +14,73 @@ const state = reactive<AppStoreState>({
   services: null,
   methods: null,
   contact: null,
+  pricing: null,
   isLoaded: false,
 });
 
 export const useAppStore = () => {
+  const progress = ref(0);
+
   const loadAllData = async () => {
     if (state.isLoaded) {
       return state;
     }
 
-    const totalSteps = 5;
-    let completedSteps = 0;
-
-    const updateProgress = () => {
-      completedSteps++;
-      return Math.round((completedSteps / totalSteps) * 100);
-    };
-
     try {
-      // Load navigation
-      const { story: navStory } = await useAsyncStoryblok('navigation', {
-        api: { version: 'published' },
-        bridge: {},
-      });
-      state.navigation = (navStory.value?.content?.body || []) as MenuItem[];
-      const progress1 = updateProgress();
+      // Load all data in parallel and track completion
+      const loadPromises = [
+        useAsyncStoryblok('navigation', {
+          api: { version: 'published' },
+          bridge: {},
+        }),
+        useAsyncStoryblok('about', {
+          api: { version: 'published' },
+          bridge: {},
+        }),
+        useAsyncStoryblok('help', {
+          api: { version: 'published' },
+          bridge: {},
+        }),
+        useAsyncStoryblok('methods', {
+          api: { version: 'published' },
+          bridge: {},
+        }),
+        useAsyncStoryblok('kontakt', {
+          api: { version: 'published' },
+          bridge: {},
+        }),
+        useAsyncStoryblok('pricing', {
+          api: { version: 'published' },
+          bridge: {},
+        }),
+      ];
 
-      // Load about
-      const { story: aboutStory } = await useAsyncStoryblok('about', {
-        api: { version: 'published' },
-        bridge: {},
-      });
-      const aboutBody = aboutStory.value?.content?.body || [];
-      state.about = (aboutBody[0] as AboutContent) || null;
-      const progress2 = updateProgress();
+      const totalSteps = loadPromises.length;
+      let completedSteps = 0;
 
-      // Load services/help
-      const { story: helpStory } = await useAsyncStoryblok('help', {
-        api: { version: 'published' },
-        bridge: {},
-      });
-      const helpBody = helpStory.value?.content?.body || [];
-      state.services = (helpBody[0] as ServicesContent) || null;
-      const progress3 = updateProgress();
+      const results = await Promise.all(
+        loadPromises.map(async (promise) => {
+          const result = await promise;
+          completedSteps++;
+          progress.value = Math.round((completedSteps / totalSteps) * 100);
+          return result;
+        }),
+      );
 
-      // Load methods
-      const { story: methodsStory } = await useAsyncStoryblok('methods', {
-        api: { version: 'published' },
-        bridge: {},
-      });
-      const methodsBody = methodsStory.value?.content?.body || [];
-      state.methods = (methodsBody[0] as MethodsContent) || null;
-      const progress4 = updateProgress();
-
-      // Load contact
-      const { story: contactStory } = await useAsyncStoryblok('kontakt', {
-        api: { version: 'published' },
-        bridge: {},
-      });
-      const contactBody = contactStory.value?.content?.body || [];
-      state.contact = (contactBody[0] as ContactContent) || null;
-      const progress5 = updateProgress();
+      // Assign results to state
+      state.navigation = (results[0]?.story.value?.content?.body || []) as MenuItem[];
+      state.about =
+        ((results[1]?.story.value?.content?.body || [])[0] as AboutContent) || null;
+      state.services =
+        ((results[2]?.story.value?.content?.body || [])[0] as ServicesContent) || null;
+      state.methods =
+        ((results[3]?.story.value?.content?.body || [])[0] as MethodsContent) || null;
+      state.contact =
+        ((results[4]?.story.value?.content?.body || [])[0] as ContactContent) || null;
+      state.pricing =
+        ((results[5]?.story.value?.content?.body || [])[0] as PricingContent) || null;
 
       state.isLoaded = true;
-
-      return {
-        progress1,
-        progress2,
-        progress3,
-        progress4,
-        progress5,
-      };
     } catch (error) {
       console.error('Error loading app data:', error);
       throw error;
@@ -92,6 +89,7 @@ export const useAppStore = () => {
 
   return {
     state: readonly(state),
+    progress: readonly(progress),
     loadAllData,
   };
 };

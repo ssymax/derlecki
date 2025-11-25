@@ -256,6 +256,7 @@ onBeforeUnmount(() => {
   width: 100%;
   height: auto;
   max-width: 35rem;
+  border-radius: 1.2rem;
 
   @media (max-width: 768px) {
     max-width: 28rem;

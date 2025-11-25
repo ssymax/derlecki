@@ -117,4 +117,22 @@ declare global {
     methods_items: MethodItem[];
     _editable?: string;
   };
+
+  type PricingItem = {
+    _uid: string;
+    component: 'pricing_item';
+    visit_type: string;
+    price: string;
+    description: string;
+  };
+
+  type PricingContent = {
+    _uid: string;
+    component: 'pricing';
+    header: string;
+    intro: string;
+    pricing_list: PricingItem[];
+    images: StoryblokAsset[];
+    _editable?: string;
+  };
 }

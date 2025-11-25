@@ -386,6 +386,7 @@ onBeforeUnmount(() => {
   height: 70vh;
   overflow: hidden;
   will-change: transform;
+  border-radius: 1.2rem;
 }
 
 .services__img {

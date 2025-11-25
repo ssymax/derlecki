@@ -182,6 +182,7 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 1.2rem;
 
   &--left {
     object-position: left center;
