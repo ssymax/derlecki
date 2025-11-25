@@ -13,6 +13,13 @@ declare global {
     newTab?: boolean;
   };
 
+  type MenuItem = {
+    _uid: string;
+    name: string;
+    path: string;
+    component: 'menu_item';
+  };
+
   type StoryblokAsset = {
     id: number;
     alt: string;

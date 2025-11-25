@@ -76,6 +76,7 @@ const currentYear = new Date().getFullYear();
 const isContactPage = computed(() => route.path === '/kontakt');
 
 const { contactData, contactItemsForNav } = await useContactInfo();
+const { routes } = await useNavigation();
 
 const directionsLink = computed(
   () =>
