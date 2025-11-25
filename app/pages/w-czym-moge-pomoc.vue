@@ -1,12 +1,15 @@
 <template>
-  <section class="services">
-    <MoleculesSectionIntroPanel title="W CZYM MOGĘ POMÓC" :intro="panelIntro" />
+  <section v-if="servicesContent" class="services">
+    <MoleculesSectionIntroPanel
+      :title="servicesContent.header"
+      :intro="servicesContent.intro"
+    />
 
     <div class="services__navigation" role="tablist" aria-label="Obszary pracy">
       <div class="services__nav-grid">
         <MoleculesPanelNavButton
           v-for="(service, index) in services"
-          :key="index"
+          :key="service._uid"
           :index-label="formatNavIndex(index)"
           :title="service.title"
           :is-active="activeIndex === index"
@@ -27,14 +30,19 @@
         <div :key="activeIndex" class="services__description">
           <div class="services__clip services__clip--paragraphs">
             <div ref="paragraphContent" class="services__paragraphs">
-              <p v-for="(paragraph, idx) in currentService.content" :key="idx">
-                {{ paragraph }}
+              <p v-for="contentItem in currentService.content" :key="contentItem._uid">
+                {{ contentItem.item }}
               </p>
             </div>
           </div>
-          <div v-if="currentService.list" class="services__clip services__clip--list">
+          <div
+            v-if="currentService.list?.length"
+            class="services__clip services__clip--list"
+          >
             <ul ref="listContent">
-              <li v-for="(item, idx) in currentService.list" :key="idx">{{ item }}</li>
+              <li v-for="listItem in currentService.list" :key="listItem._uid">
+                {{ listItem.item }}
+              </li>
             </ul>
           </div>
         </div>
@@ -42,12 +50,13 @@
 
       <div ref="imageWrapper" class="services__image">
         <NuxtImg
+          :key="currentService._uid"
           ref="image"
-          :src="currentService.image"
-          :alt="currentService.title"
+          :src="currentService.image.filename"
+          :alt="currentService.image.alt || currentService.title"
           format="webp"
-          width="800"
-          height="1000"
+          width="1280"
+          height="1280"
           class="services__img"
         />
       </div>
@@ -58,10 +67,11 @@
 <script setup lang="ts">
 import SplitType from 'split-type';
 
+const { servicesContent } = await useHelpContent();
+
 const { $gsap } = useNuxtApp();
 
-const panelIntro = help.panel.intro;
-const services: HelpService[] = help.services;
+const services = computed(() => servicesContent.value?.list || []);
 
 const activeIndex = ref(0);
 const heading = ref<HTMLElement | null>(null);
@@ -71,7 +81,7 @@ const imageWrapper = ref<HTMLElement | null>(null);
 const image = ref<{ $el: HTMLElement } | HTMLElement | null>(null);
 let splitInstance: SplitType | null = null;
 
-const currentService = computed<HelpService>(() => services[activeIndex.value]!);
+const currentService = computed<ServiceItem>(() => services.value[activeIndex.value]!);
 const formatNavIndex = (index: number) => `${String(index + 1).padStart(2, '0')}.`;
 const getImageEl = () =>
   (image.value && '$el' in image.value

@@ -39,26 +39,10 @@
                 {{ activeMethod.description }}
               </p>
 
-              <div
-                v-if="activeMethod.techniques?.length"
-                class="methods__details-section"
-              >
-                <p class="methods__section-label">Techniki i narzędzia</p>
+              <div v-if="activeMethod.list?.length" class="methods__details-section">
                 <ul ref="techniquesList">
-                  <li v-for="technique in activeMethod.techniques" :key="technique">
-                    {{ technique }}
-                  </li>
-                </ul>
-              </div>
-
-              <div
-                v-if="activeMethod.focusAreas?.length"
-                class="methods__details-section"
-              >
-                <p class="methods__section-label">Obszary pracy</p>
-                <ul ref="focusList">
-                  <li v-for="area in activeMethod.focusAreas" :key="area">
-                    {{ area }}
+                  <li v-for="item in activeMethod.list" :key="item">
+                    {{ item }}
                   </li>
                 </ul>
               </div>
@@ -128,7 +112,6 @@ const detailsHeading = ref<HTMLElement | null>(null);
 const detailsLead = ref<HTMLElement | null>(null);
 const detailsDescription = ref<HTMLElement | null>(null);
 const techniquesList = ref<HTMLUListElement | null>(null);
-const focusList = ref<HTMLUListElement | null>(null);
 const imageWrapper = ref<HTMLElement | null>(null);
 const methodsListRef = ref<HTMLElement | null>(null);
 let splitInstance: SplitType | null = null;
@@ -200,7 +183,6 @@ const animateDetails = () => {
   };
 
   animateList(techniquesList.value, 0.2);
-  animateList(focusList.value, 0.25);
 
   if (imageWrapper.value) {
     tl.fromTo(

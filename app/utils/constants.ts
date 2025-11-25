@@ -1,144 +1,3 @@
-export const bioIntro =
-  'Nazywam się Mateusz Derlecki. Jestem fizjoterapeutą oraz naturopatą z kilkunastoletnim doświadczeniem.';
-
-export interface HelpService {
-  title: string;
-  content: string[];
-  list?: string[];
-  image: string;
-}
-
-interface HelpSectionCopy {
-  panel: {
-    title: string;
-    intro: string;
-  };
-  services: HelpService[];
-}
-
-export const help: HelpSectionCopy = {
-  panel: {
-    title: 'W czym mogę pomóc?',
-    intro:
-      'Poniżej znajdziesz wszystkie obszary pracy, w których wspieram pacjentów na co dzień. Każdą terapię dobieram indywidualnie – do Twojego stanu, potrzeb i celów.',
-  },
-  services: [
-    {
-      title: 'Terapia bólu',
-      content: [
-        'Fizjoterapia jest skuteczną metodą walki z bólem ostrym i przewlekłym. Pracuję m.in. technikami: terapii manualnej, suchego igłowania, akupunktury.',
-        'Celem terapii jest natychmiastowa i długotrwała redukcja bólu oraz edukacja w zakresie autoterapii.',
-      ],
-      list: [
-        'kręgosłupa (szyjnego, piersiowego, lędźwiowego, krzyżowego, rwa kulszowa, rwa barkowa, dyskopatie)',
-        'barków, łokci, nadgarstków',
-        'bioder, kolan, stóp',
-        'miednicy (bóle menstruacyjne, kości ogonowej)',
-        'głowy (migreny, napięciowe bóle, zawroty głowy)',
-        'mięśniowych i psychosomatycznych',
-        'czynnościowych zaburzeniach układu trawiennego',
-      ],
-      image: '/img/o-mnie.jpg',
-    },
-    {
-      title: 'Fizjoterapia ortopedyczna',
-      content: [
-        'Pierwsza wizyta obejmuje wywiad, analizę dokumentacji i badanie manualne. Na tej podstawie tworzę indywidualny plan terapii.',
-      ],
-      list: [
-        'zespoły bólowe i dysfunkcje kręgosłupa',
-        'bóle mięśniowo-powięziowe',
-        'migreny i napięcia psychosomatyczne',
-        'dyskopatie, rwa kulszowa, rwa barkowa',
-        'urazy stawów (kolano, bark, skokowy, biodro, nadgarstek)',
-        'urazy więzadeł (ACL, MCL), łąkotek, ścięgna Achillesa',
-        'pacjenci pooperacyjni',
-        'zmiany przeciążeniowe (tendinopatie, entezopatie, zwyrodnienia)',
-      ],
-      image: '/img/o-mnie-2.jpg',
-    },
-    {
-      title: 'Terapia manualna',
-      content: [
-        'Terapia oparta na badaniu i leczeniu ręcznym. Jej celem jest zmniejszenie bólu oraz przywrócenie prawidłowej ruchomości.',
-      ],
-      list: [
-        'mobilizacje i manipulacje stawowe',
-        'rozluźnianie mięśniowo-powięziowe',
-        'masaż tkanek głębokich',
-        'techniki rozciągające',
-        'terapię narzędziową',
-      ],
-      image: '/img/o-mnie.jpg',
-    },
-    {
-      title: 'Rehabilitacja sportowa',
-      content: [
-        'Pomagam sportowcom zawodowym i amatorom w rehabilitacji urazów ostrych, leczeniu przeciążeń i prewencji urazów.',
-        'W razie potrzeby analizuję technikę ruchu (np. biegową) i dobieram ćwiczenia korygujące biomechanikę.',
-      ],
-      list: [
-        'rehabilitacja urazów ostrych (skręcenia, operacje, zerwania)',
-        'leczenie przeciążeń (tendinopatie, bóle przewlekłe)',
-        'prewencja urazów (pre-rehab)',
-      ],
-      image: '/img/o-mnie-2.jpg',
-    },
-    {
-      title: 'Rehabilitacja wad postawy',
-      content: [
-        'Pracuję z dziećmi i dorosłymi, oferując kompleksową ocenę i korekcję wad postawy.',
-      ],
-      list: [
-        'ocena postawy i testy funkcjonalne',
-        'korekcja wad: plecy okrągłe, wklęsłe, skoliozy, koślawość/szpotawość kolan, płaskostopie',
-        'indywidualne ćwiczenia oraz edukacja ergonomiczna',
-      ],
-      image: '/img/o-mnie.jpg',
-    },
-    {
-      title: 'Fizjoterapia stomatologiczna (TMJ)',
-      content: [
-        'Terapia zaburzeń w obrębie stawu skroniowo-żuchwowego. W terapii wykorzystuję techniki wewnątrzustne oraz pracę na mięśniach żucia i szyi.',
-      ],
-      list: [
-        'bóle żuchwy i twarzy',
-        'zaciskanie zębów, bruksizm',
-        'bóle głowy pochodzenia stomatologicznego',
-        'trzaski i ograniczenie otwierania ust',
-      ],
-      image: '/img/o-mnie-2.jpg',
-    },
-    {
-      title: 'Trening medyczny i zdrowotny',
-      content: [
-        'Indywidualne zajęcia ukierunkowane na poprawę funkcjonowania i przygotowanie do aktywności.',
-      ],
-      list: [
-        'poprawa stabilizacji i mobilności',
-        'odbudowa siły po urazach',
-        'bezpieczne przygotowanie do aktywności fizycznej',
-        'wsparcie dla osób z bólem przewlekłym i wadami postawy',
-      ],
-      image: '/img/o-mnie.jpg',
-    },
-    {
-      title: 'Akupunktura',
-      content: [
-        'Naturalna metoda wspierająca leczenie bólu i zaburzeń funkcjonalnych. Może być stosowana samodzielnie lub jako element złożonej terapii.',
-      ],
-      list: [
-        'bóle kręgosłupa i stawów',
-        'napięcia mięśniowe',
-        'stres, bezsenność',
-        'migreny',
-        'zaburzenia trawienia',
-      ],
-      image: '/img/o-mnie-2.jpg',
-    },
-  ],
-};
-
 export const methods = {
   title: 'Metody pracy',
   intro:
@@ -152,7 +11,7 @@ export const methods = {
         'Jedna z kluczowych metod leczenia zaburzeń funkcjonalnych narządu ruchu, oparta na manualnym badaniu i terapii.',
       description:
         'Terapia manualna jest jedną z kluczowych metod leczenia zaburzeń funkcjonalnych narządu ruchu. Podstawą tej metody jest dokładne, manualne badanie oraz terapia wykonywana dłońmi terapeuty. Jej celem jest redukcja bólu, poprawa zakresu ruchu i przywrócenie prawidłowej funkcji stawów, mięśni oraz powięzi. Dzięki obserwacji reakcji pacjenta podczas sesji terapia może być na bieżąco modyfikowana, co czyni ją jedną z najskuteczniejszych metod leczenia zespołów bólowych.',
-      techniques: [
+      list: [
         'mobilizacje uciskowe (kompresja)',
         'techniki mięśniowo-powięziowe',
         'manipulacje i mobilizacje stawowe',
@@ -187,7 +46,7 @@ export const methods = {
         'Indywidualnie dobrane ćwiczenia lecznicze, trening medyczny i funkcjonalny przywracające prawidłowe wzorce ruchowe.',
       description:
         'Rehabilitacja ruchowa opiera się na indywidualnie dobranych ćwiczeniach leczniczych, które są podstawą skutecznego procesu rehabilitacji. Celem jest przywrócenie prawidłowych wzorców ruchowych, poprawa stabilizacji, siły, koordynacji oraz przygotowanie do pełnego funkcjonowania w życiu codziennym i aktywności fizycznej. Szczególne znaczenie ma odpowiednia rehabilitacja po urazach i zabiegach ortopedycznych. Końcowym etapem jest często trening medyczny lub funkcjonalny, ukierunkowany na utrzymanie sprawności i równowagi posturalnej.',
-      focusAreas: [
+      list: [
         'przywracanie wzorców ruchowych',
         'trening medyczny i funkcjonalny',
         'stabilizacja i siła mięśniowa',

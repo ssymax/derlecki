@@ -1,23 +1,26 @@
 <template>
-  <div class="bio-page">
-    <MoleculesSectionIntroPanel title="O MNIE" :intro="bioIntro" />
+  <div v-if="aboutContent" class="bio-page">
+    <MoleculesSectionIntroPanel
+      :title="aboutContent.header"
+      :intro="aboutContent.intro"
+    />
     <section class="bio">
       <div class="bio__images">
         <div ref="image1" class="bio__image-wrapper bio__image-wrapper--1">
           <NuxtImg
-            src="/img/o-mnie.jpg"
-            alt="Mateusz Derlecki"
+            :src="aboutContent.bio_image.filename"
+            :alt="aboutContent.bio_image.alt"
             format="webp"
             width="960"
             height="1280"
-            loading="lazy"
+            loading="eager"
             class="bio__image"
           />
         </div>
         <div ref="image2" class="bio__image-wrapper bio__image-wrapper--2">
           <NuxtImg
-            src="/img/o-mnie-2.jpg"
-            alt="Mateusz Derlecki - Kwalifikacje"
+            :src="aboutContent.edu_image.filename"
+            :alt="aboutContent.edu_image.alt"
             format="webp"
             width="960"
             height="1280"
@@ -28,10 +31,31 @@
       </div>
       <div class="bio__content">
         <div ref="bioSection" class="bio__section">
-          <AtomsDecoratedHeading align="left">Bio</AtomsDecoratedHeading>
+          <AtomsDecoratedHeading align="left">
+            {{ aboutContent.bio_header }}
+          </AtomsDecoratedHeading>
+          <ul>
+            <li v-for="bioItem in aboutContent.bio_items" :key="bioItem._uid">
+              {{ bioItem.item }}
+            </li>
+          </ul>
         </div>
         <div ref="eduSection" class="bio__section">
-          <AtomsDecoratedHeading align="right">Kwalifikacje</AtomsDecoratedHeading>
+          <AtomsDecoratedHeading align="right">
+            {{ aboutContent.edu_header }}
+          </AtomsDecoratedHeading>
+          <h3>{{ aboutContent.edu_first_subheader }}</h3>
+          <ul>
+            <li v-for="eduItem in aboutContent.edu_first_items" :key="eduItem._uid">
+              {{ eduItem.item }}
+            </li>
+          </ul>
+          <h3>{{ aboutContent.edu_second_subheader }}</h3>
+          <ul>
+            <li v-for="eduItem in aboutContent.edu_second_items" :key="eduItem._uid">
+              {{ eduItem.item }}
+            </li>
+          </ul>
         </div>
       </div>
     </section>
@@ -39,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { bioIntro } from '~/utils/constants';
+const { aboutContent } = await useAboutInfo();
 
 const { $gsap, $ScrollTrigger } = useNuxtApp();
 

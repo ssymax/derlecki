@@ -57,4 +57,45 @@ declare global {
     images: StoryblokAsset[];
     _editable?: string;
   };
+
+  type ListItem = {
+    _uid: string;
+    item: string;
+    component: 'list_item';
+  };
+
+  type AboutContent = {
+    _uid: string;
+    component: 'about';
+    header: string;
+    intro: string;
+    bio_header: string;
+    bio_image: StoryblokAsset;
+    bio_items: ListItem[];
+    edu_header: string;
+    edu_image: StoryblokAsset;
+    edu_first_subheader: string;
+    edu_first_items: ListItem[];
+    edu_second_subheader: string;
+    edu_second_items: ListItem[];
+    _editable?: string;
+  };
+
+  type ServiceItem = {
+    _uid: string;
+    component: 'service_item';
+    title: string;
+    content: ListItem[];
+    list: ListItem[];
+    image: StoryblokAsset;
+  };
+
+  type ServicesContent = {
+    _uid: string;
+    component: 'services';
+    header: string;
+    intro: string;
+    list: ServiceItem[];
+    _editable?: string;
+  };
 }
