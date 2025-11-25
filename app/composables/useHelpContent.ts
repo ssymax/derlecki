@@ -1,13 +1,7 @@
-export const useHelpContent = async () => {
-  const { story } = await useAsyncStoryblok('help', {
-    api: { version: 'published' },
-    bridge: {},
-  });
+export const useHelpContent = () => {
+  const { state } = useAppStore();
 
-  const servicesContent = computed<ServicesContent | null>(() => {
-    const body = story.value?.content?.body || [];
-    return (body[0] as ServicesContent) || null;
-  });
+  const servicesContent = computed(() => state.services);
 
-  return { story, servicesContent };
+  return { servicesContent };
 };

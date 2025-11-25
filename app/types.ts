@@ -98,4 +98,23 @@ declare global {
     list: ServiceItem[];
     _editable?: string;
   };
+
+  type MethodItem = {
+    _uid: string;
+    component: 'method_item';
+    name: string;
+    short_description: string;
+    description: string;
+    list: ListItem[];
+    image: StoryblokAsset;
+  };
+
+  type MethodsContent = {
+    _uid: string;
+    component: 'methods';
+    header: string;
+    intro: string;
+    methods_items: MethodItem[];
+    _editable?: string;
+  };
 }

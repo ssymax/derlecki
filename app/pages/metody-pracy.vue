@@ -1,6 +1,9 @@
 <template>
-  <section class="methods">
-    <MoleculesSectionIntroPanel title="METODY PRACY" :intro="panelIntro" />
+  <section v-if="methodsContent" class="methods">
+    <MoleculesSectionIntroPanel
+      :title="methodsContent.header"
+      :intro="methodsContent.intro"
+    />
 
     <div class="methods__layout">
       <div
@@ -11,17 +14,21 @@
       >
         <MoleculesPanelNavButton
           v-for="(method, index) in methodsList"
-          :key="method.id"
+          :key="method._uid"
           variant="methods"
           :index-label="formatMethodIndex(index)"
           :title="method.name"
-          :is-active="method.id === activeMethodId"
-          @click="selectMethod(method.id)"
+          :is-active="method._uid === activeMethodId"
+          @click="selectMethod(method._uid)"
         />
       </div>
 
       <div class="methods__details">
-        <article v-if="activeMethod" :key="activeMethod.id" class="methods__details-card">
+        <article
+          v-if="activeMethod"
+          :key="activeMethod._uid"
+          class="methods__details-card"
+        >
           <header class="methods__details-header">
             <div ref="detailsHeading" class="methods__details-heading">
               <AtomsDecoratedHeading align="right">
@@ -29,7 +36,7 @@
               </AtomsDecoratedHeading>
             </div>
             <p ref="detailsLead" class="methods__details-lead">
-              {{ activeMethod.shortDescription }}
+              {{ activeMethod.short_description }}
             </p>
           </header>
 
@@ -41,8 +48,8 @@
 
               <div v-if="activeMethod.list?.length" class="methods__details-section">
                 <ul ref="techniquesList">
-                  <li v-for="item in activeMethod.list" :key="item">
-                    {{ item }}
+                  <li v-for="listItem in activeMethod.list" :key="listItem._uid">
+                    {{ listItem.item }}
                   </li>
                 </ul>
               </div>
@@ -50,10 +57,11 @@
 
             <div ref="imageWrapper" class="methods__details-image">
               <NuxtImg
-                :src="activeMethodImage"
-                :alt="activeMethod.name"
-                width="800"
-                height="1000"
+                :key="activeMethod._uid"
+                :src="activeMethod.image.filename"
+                :alt="activeMethod.image.alt || activeMethod.name"
+                width="1024"
+                height="1280"
                 format="webp"
                 class="methods__img"
               />
@@ -67,33 +75,20 @@
 
 <script setup lang="ts">
 import SplitType from 'split-type';
+import { useMethods } from '~/composables/useMethods';
 
-const { $gsap, $ScrollTrigger } = useNuxtApp();
+const { methodsContent } = useMethods();
+const { $gsap } = useNuxtApp();
 
-const methodsIntro = methods.intro;
-const methodsList = methods.methods;
-const panelIntro = methodsIntro;
-const methodImages: Record<string, string> = {
-  'terapia-manualna': '/img/o-mnie.jpg',
-  'igloterapia-sucha': '/img/o-mnie-2.jpg',
-  akupunktura: '/img/o-mnie-2.jpg',
-  'rehabilitacja-ruchowa': '/img/o-mnie.jpg',
-  'fizjoterapia-stomatologiczna': '/img/o-mnie-2.jpg',
-  'terapia-wisceralna': '/img/o-mnie.jpg',
-  klawiterapia: '/img/o-mnie-2.jpg',
-  kinesiotaping: '/img/o-mnie.jpg',
-  default: '/img/o-mnie.jpg',
-};
+const methodsList = computed(() => methodsContent.value?.methods_items || []);
 
-type MethodItem = (typeof methodsList)[number];
-
-const activeMethodId = ref(methodsList[0]?.id ?? '');
+const activeMethodId = ref(methodsList.value[0]?._uid ?? '');
 
 const activeMethod = computed<MethodItem | null>(() => {
-  if (!methodsList.length) return null;
+  if (!methodsList.value.length) return null;
   return (
-    methodsList.find((method) => method.id === activeMethodId.value) ||
-    methodsList[0] ||
+    methodsList.value.find((method) => method._uid === activeMethodId.value) ||
+    methodsList.value[0] ||
     null
   );
 });
@@ -104,9 +99,6 @@ const selectMethod = (methodId: string) => {
 };
 
 const formatMethodIndex = (index: number) => `${String(index + 1).padStart(2, '0')}.`;
-const activeMethodImage = computed(
-  () => methodImages[activeMethodId.value] ?? methodImages.default,
-);
 
 const detailsHeading = ref<HTMLElement | null>(null);
 const detailsLead = ref<HTMLElement | null>(null);
@@ -115,7 +107,6 @@ const techniquesList = ref<HTMLUListElement | null>(null);
 const imageWrapper = ref<HTMLElement | null>(null);
 const methodsListRef = ref<HTMLElement | null>(null);
 let splitInstance: SplitType | null = null;
-let buttonFloatTween: ReturnType<typeof $gsap.to> | null = null;
 
 const animateDetails = () => {
   if (!$gsap) return;
@@ -200,36 +191,8 @@ const triggerDetailsAnimation = () => {
   });
 };
 
-const setupButtonFloatScrollTrigger = () => {
-  if (buttonFloatTween) {
-    buttonFloatTween.kill();
-    buttonFloatTween = null;
-  }
-
-  if (!$gsap || !$ScrollTrigger || !methodsListRef.value) return;
-
-  $gsap.set(methodsListRef.value, { y: 0 });
-
-  buttonFloatTween = $gsap.to(methodsListRef.value, {
-    y: 100,
-    ease: 'none',
-    scrollTrigger: {
-      trigger: methodsListRef.value,
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: true,
-    },
-  });
-};
-
 onMounted(() => {
   triggerDetailsAnimation();
-  nextTick(() => {
-    if ($gsap && $ScrollTrigger) {
-      $gsap.registerPlugin($ScrollTrigger);
-    }
-    setupButtonFloatScrollTrigger();
-  });
 });
 
 watch(activeMethodId, () => {
@@ -239,10 +202,6 @@ watch(activeMethodId, () => {
 onBeforeUnmount(() => {
   if (splitInstance) {
     splitInstance.revert();
-  }
-  if (buttonFloatTween) {
-    buttonFloatTween.kill();
-    buttonFloatTween = null;
   }
 });
 </script>
@@ -265,6 +224,7 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  @include px-to-vw(padding-top, 100);
 }
 
 .methods__details {

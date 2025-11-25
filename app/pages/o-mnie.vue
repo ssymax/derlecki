@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-const { aboutContent } = await useAboutInfo();
+const { aboutContent } = useAboutInfo();
 
 const { $gsap, $ScrollTrigger } = useNuxtApp();
 

@@ -12,14 +12,14 @@
           :images="images"
           :images-header="contactData?.images_header"
         />
-        <MoleculesContactInfo :contact-data="contactData" />
+        <MoleculesContactInfo :contact-data="contactData as ContactContent | undefined" />
       </div>
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
-const { contactData, images } = await useContactInfo();
+const { contactData, images } = useContactInfo();
 </script>
 
 <style scoped lang="scss">

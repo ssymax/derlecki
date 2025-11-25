@@ -1,11 +1,8 @@
-export const useNavigation = async () => {
-  const { story } = await useAsyncStoryblok('navigation', {
-    api: { version: 'published' },
-    bridge: {},
-  });
+export const useNavigation = () => {
+  const { state } = useAppStore();
 
   const routes = computed<AppRoute[]>(() => {
-    const items = (story.value?.content?.body || []) as MenuItem[];
+    const items = state.navigation || [];
     return items.map((item) => ({
       name: item.name,
       path: item.path,
@@ -13,7 +10,6 @@ export const useNavigation = async () => {
   });
 
   return {
-    story,
     routes,
   };
 };

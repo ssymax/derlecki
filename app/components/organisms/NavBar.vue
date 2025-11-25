@@ -20,8 +20,8 @@
 <script setup lang="ts">
 import logoUrl from '~/assets/logo.svg';
 
-const { contactItemsForNav } = await useContactInfo();
-const { routes } = await useNavigation();
+const { contactItemsForNav } = useContactInfo();
+const { routes } = useNavigation();
 
 const isMenuOpen = defineModel<boolean>({ default: false });
 

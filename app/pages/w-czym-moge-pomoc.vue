@@ -67,7 +67,7 @@
 <script setup lang="ts">
 import SplitType from 'split-type';
 
-const { servicesContent } = await useHelpContent();
+const { servicesContent } = useHelpContent();
 
 const { $gsap } = useNuxtApp();
 

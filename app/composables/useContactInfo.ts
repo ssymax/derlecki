@@ -1,12 +1,7 @@
-export const useContactInfo = async () => {
-  const { story } = await useAsyncStoryblok('kontakt', {
-    api: { version: 'published' },
-    bridge: {},
-  });
+export const useContactInfo = () => {
+  const { state } = useAppStore();
 
-  const contactData = computed(
-    () => story.value?.content?.body?.[0] as ContactContent | undefined,
-  );
+  const contactData = computed(() => state.contact);
 
   const contactItems = computed(() => {
     const data = contactData.value;
@@ -81,7 +76,6 @@ export const useContactInfo = async () => {
   });
 
   return {
-    story,
     contactData,
     contactItems,
     contactItemsForNav,
