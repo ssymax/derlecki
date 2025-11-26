@@ -135,4 +135,11 @@ declare global {
     images: StoryblokAsset[];
     _editable?: string;
   };
+
+  type SlidesContent = {
+    _uid: string;
+    component: 'slides';
+    images: StoryblokAsset[];
+    _editable?: string;
+  };
 }

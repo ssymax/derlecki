@@ -118,6 +118,7 @@ onBeforeUnmount(() => {
   height: auto;
   position: relative;
   z-index: 2;
+  transform: translateY(-5px);
 }
 
 .app-loader__circle {

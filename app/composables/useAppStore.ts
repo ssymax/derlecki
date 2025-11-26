@@ -5,6 +5,7 @@ interface AppStoreState {
   methods: MethodsContent | null;
   contact: ContactContent | null;
   pricing: PricingContent | null;
+  slides: SlidesContent | null;
   isLoaded: boolean;
 }
 
@@ -15,6 +16,7 @@ const state = reactive<AppStoreState>({
   methods: null,
   contact: null,
   pricing: null,
+  slides: null,
   isLoaded: false,
 });
 
@@ -53,6 +55,10 @@ export const useAppStore = () => {
           api: { version: 'published' },
           bridge: {},
         }),
+        useAsyncStoryblok('slides', {
+          api: { version: 'published' },
+          bridge: {},
+        }),
       ];
 
       const totalSteps = loadPromises.length;
@@ -79,6 +85,8 @@ export const useAppStore = () => {
         ((results[4]?.story.value?.content?.body || [])[0] as ContactContent) || null;
       state.pricing =
         ((results[5]?.story.value?.content?.body || [])[0] as PricingContent) || null;
+      state.slides =
+        ((results[6]?.story.value?.content?.body || [])[0] as SlidesContent) || null;
 
       state.isLoaded = true;
     } catch (error) {
