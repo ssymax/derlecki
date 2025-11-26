@@ -15,6 +15,7 @@ import { VueLenis, useLenis } from 'lenis/vue';
 
 const lenisRef = ref();
 const isMenuOpen = ref(false);
+const route = useRoute();
 
 const lenis = useLenis();
 
@@ -28,6 +29,16 @@ watch(isMenuOpen, (isOpen) => {
     }
   }
 });
+
+// Scroll to top when route changes
+watch(
+  () => route.path,
+  () => {
+    if (lenis.value) {
+      lenis.value.scrollTo(0, { immediate: true });
+    }
+  },
+);
 </script>
 
 <style lang="scss">
