@@ -1,11 +1,9 @@
 <template>
   <div>
     <AtomsAppLoader />
-    <div v-if="isLoaded">
-      <NuxtLayout>
-        <NuxtPage />
-      </NuxtLayout>
-    </div>
+    <NuxtLayout v-if="isLoaded">
+      <NuxtPage />
+    </NuxtLayout>
   </div>
 </template>
 

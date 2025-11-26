@@ -136,10 +136,30 @@ declare global {
     _editable?: string;
   };
 
-  type SlidesContent = {
+  type OpinionItem = {
     _uid: string;
-    component: 'slides';
+    component: 'opinion_item';
+    author: string;
+    opinion: string;
+  };
+
+  type ImagesContent = {
+    _uid: string;
+    component: 'images';
     images: StoryblokAsset[];
-    _editable?: string;
+  };
+
+  type OpinionsContent = {
+    _uid: string;
+    component: 'opinions';
+    opinions_subheader: string;
+    opinions_items: OpinionItem[];
+    reviews_button_label: string;
+    reviews_url: string;
+  };
+
+  type SlidesContent = {
+    images: ImagesContent | null;
+    opinions: OpinionsContent | null;
   };
 }

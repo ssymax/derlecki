@@ -7,6 +7,7 @@ interface AppStoreState {
   pricing: PricingContent | null;
   slides: SlidesContent | null;
   isLoaded: boolean;
+  progress: number;
 }
 
 const state = reactive<AppStoreState>({
@@ -18,11 +19,10 @@ const state = reactive<AppStoreState>({
   pricing: null,
   slides: null,
   isLoaded: false,
+  progress: 0,
 });
 
 export const useAppStore = () => {
-  const progress = ref(0);
-
   const loadAllData = async () => {
     if (state.isLoaded) {
       return state;
@@ -61,17 +61,7 @@ export const useAppStore = () => {
         }),
       ];
 
-      const totalSteps = loadPromises.length;
-      let completedSteps = 0;
-
-      const results = await Promise.all(
-        loadPromises.map(async (promise) => {
-          const result = await promise;
-          completedSteps++;
-          progress.value = Math.round((completedSteps / totalSteps) * 100);
-          return result;
-        }),
-      );
+      const results = await Promise.all(loadPromises);
 
       // Assign results to state
       state.navigation = (results[0]?.story.value?.content?.body || []) as MenuItem[];
@@ -85,9 +75,21 @@ export const useAppStore = () => {
         ((results[4]?.story.value?.content?.body || [])[0] as ContactContent) || null;
       state.pricing =
         ((results[5]?.story.value?.content?.body || [])[0] as PricingContent) || null;
-      state.slides =
-        ((results[6]?.story.value?.content?.body || [])[0] as SlidesContent) || null;
 
+      // Parse slides content to separate images and opinions
+      const slidesBody = results[6]?.story.value?.content?.body || [];
+      state.slides = {
+        images:
+          (slidesBody.find(
+            (item: ImagesContent | OpinionsContent) => item.component === 'images',
+          ) as ImagesContent) || null,
+        opinions:
+          (slidesBody.find(
+            (item: ImagesContent | OpinionsContent) => item.component === 'opinions',
+          ) as OpinionsContent) || null,
+      };
+
+      state.progress = 100;
       state.isLoaded = true;
     } catch (error) {
       console.error('Error loading app data:', error);
@@ -97,7 +99,6 @@ export const useAppStore = () => {
 
   return {
     state: readonly(state),
-    progress: readonly(progress),
     loadAllData,
   };
 };

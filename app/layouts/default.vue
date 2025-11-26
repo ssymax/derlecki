@@ -3,7 +3,7 @@
     <VueLenis ref="lenisRef" root />
     <OrganismsNavBar v-model="isMenuOpen" />
     <main class="layout-default__content">
-      <slot />
+      <NuxtPage />
     </main>
     <OrganismsFooter />
     <AtomsScrollToTop />

@@ -31,55 +31,35 @@
 
 <script setup lang="ts">
 const isLoading = ref(true);
-const progress = ref(0);
+const displayProgress = ref(0);
+
+const { state } = useAppStore();
 
 const circumference = 2 * Math.PI * 45;
 const circleOffset = computed(
-  () => circumference - (progress.value / 100) * circumference,
+  () => circumference - (displayProgress.value / 100) * circumference,
 );
 
 let progressInterval: ReturnType<typeof setInterval> | null = null;
 
-onMounted(async () => {
-  const { loadAllData } = useAppStore();
-
-  // Watch for progress updates from store
+onMounted(() => {
+  // Animate progress from 0 to current state
   progressInterval = setInterval(() => {
-    if (progress.value < 95) {
-      // Smoothly increment progress while loading
-      progress.value = Math.min(95, progress.value + 5);
+    if (displayProgress.value < state.progress) {
+      displayProgress.value = Math.min(state.progress, displayProgress.value + 5);
+    }
+
+    if (displayProgress.value >= 100) {
+      if (progressInterval) clearInterval(progressInterval);
+      setTimeout(() => {
+        isLoading.value = false;
+      }, 300);
     }
   }, 100);
-
-  try {
-    // Load all data from Storyblok
-    await loadAllData();
-
-    // Set to 100% and hide loader
-    progress.value = 100;
-    if (progressInterval) {
-      clearInterval(progressInterval);
-    }
-    setTimeout(() => {
-      isLoading.value = false;
-    }, 300);
-  } catch (error) {
-    console.error('Failed to load app data:', error);
-    // Still hide loader even on error
-    progress.value = 100;
-    if (progressInterval) {
-      clearInterval(progressInterval);
-    }
-    setTimeout(() => {
-      isLoading.value = false;
-    }, 300);
-  }
 });
 
 onBeforeUnmount(() => {
-  if (progressInterval) {
-    clearInterval(progressInterval);
-  }
+  if (progressInterval) clearInterval(progressInterval);
 });
 </script>
 
