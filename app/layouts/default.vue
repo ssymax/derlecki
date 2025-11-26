@@ -16,7 +16,6 @@ import { VueLenis, useLenis } from 'lenis/vue';
 const lenisRef = ref();
 const isMenuOpen = ref(false);
 const route = useRoute();
-
 const lenis = useLenis();
 
 // Stop Lenis when mobile menu is open

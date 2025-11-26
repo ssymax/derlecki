@@ -30,36 +30,44 @@
 </template>
 
 <script setup lang="ts">
+const { $gsap } = useNuxtApp();
 const isLoading = ref(true);
 const displayProgress = ref(0);
 
-const { state } = useAppStore();
+const { state, setAnimationsReady } = useAppStore();
 
 const circumference = 2 * Math.PI * 45;
 const circleOffset = computed(
   () => circumference - (displayProgress.value / 100) * circumference,
 );
 
-let progressInterval: ReturnType<typeof setInterval> | null = null;
-
 onMounted(() => {
-  // Animate progress from 0 to current state
-  progressInterval = setInterval(() => {
-    if (displayProgress.value < state.progress) {
-      displayProgress.value = Math.min(state.progress, displayProgress.value + 5);
-    }
-
-    if (displayProgress.value >= 100) {
-      if (progressInterval) clearInterval(progressInterval);
-      setTimeout(() => {
-        isLoading.value = false;
-      }, 300);
-    }
-  }, 100);
-});
-
-onBeforeUnmount(() => {
-  if (progressInterval) clearInterval(progressInterval);
+  // Watch state progress and animate with GSAP
+  watch(
+    () => state.progress,
+    (newProgress) => {
+      $gsap.to(displayProgress, {
+        value: newProgress,
+        duration: 0.5,
+        ease: 'power2.out',
+        onComplete: () => {
+          if (displayProgress.value >= 100) {
+            $gsap.to('.app-loader', {
+              opacity: 0,
+              duration: 0.5,
+              ease: 'power2.inOut',
+              onComplete: () => {
+                isLoading.value = false;
+                // Signal that animations can start
+                setAnimationsReady();
+              },
+            });
+          }
+        },
+      });
+    },
+    { immediate: true },
+  );
 });
 </script>
 

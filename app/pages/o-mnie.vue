@@ -66,6 +66,7 @@
 const { aboutContent } = useAboutInfo();
 
 const { $gsap, $ScrollTrigger } = useNuxtApp();
+const { state } = useAppStore();
 
 const image1 = ref<HTMLElement | null>(null);
 const image2 = ref<HTMLElement | null>(null);
@@ -75,17 +76,26 @@ const eduSection = ref<HTMLElement | null>(null);
 onMounted(() => {
   if (!image1.value || !image2.value || !bioSection.value || !eduSection.value) return;
 
-  // Initial state - show first image
+  // Initial state - show first image hidden, second image hidden
   $gsap.set(image2.value, { opacity: 0, scale: 0.95 });
-  $gsap.set(image1.value, { opacity: 1, scale: 1 });
+  $gsap.set(image1.value, { opacity: 0, scale: 0.9 });
 
-  // Animate first image on load
-  $gsap.from(image1.value, {
-    opacity: 0,
-    scale: 0.9,
-    duration: 1.2,
-    ease: 'power2.out',
-  });
+  // Wait for loader to finish before starting animations
+  watch(
+    () => state.animationsReady,
+    (ready) => {
+      if (!ready || !image1.value) return;
+
+      // Animate first image on load
+      $gsap.to(image1.value, {
+        opacity: 1,
+        scale: 1,
+        duration: 1.2,
+        ease: 'power2.out',
+      });
+    },
+    { immediate: true },
+  );
 
   // Image transition based on scroll with border-radius morphing
   $ScrollTrigger.create({

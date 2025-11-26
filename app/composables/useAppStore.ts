@@ -8,6 +8,7 @@ interface AppStoreState {
   slides: SlidesContent | null;
   isLoaded: boolean;
   progress: number;
+  animationsReady: boolean;
 }
 
 const state = reactive<AppStoreState>({
@@ -20,6 +21,7 @@ const state = reactive<AppStoreState>({
   slides: null,
   isLoaded: false,
   progress: 0,
+  animationsReady: false,
 });
 
 export const useAppStore = () => {
@@ -97,8 +99,13 @@ export const useAppStore = () => {
     }
   };
 
+  const setAnimationsReady = () => {
+    state.animationsReady = true;
+  };
+
   return {
     state: readonly(state),
     loadAllData,
+    setAnimationsReady,
   };
 };

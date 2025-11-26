@@ -247,50 +247,79 @@ const changeService = (index: number) => {
   }
 };
 
+const { state } = useAppStore();
+
 onMounted(() => {
+  // Set initial states
   if (paragraphContent.value) {
     splitInstance = new SplitType(paragraphContent.value, { types: 'lines' });
-    $gsap.from(splitInstance.lines, {
-      opacity: 0,
-      y: 20,
-      duration: 0.6,
-      stagger: 0.05,
-      ease: 'power2.out',
-      delay: 0.5,
-    });
+    if (splitInstance.lines) {
+      $gsap.set(splitInstance.lines, { opacity: 0, y: 20 });
+    }
   }
-
   if (heading.value) {
-    $gsap.from(heading.value, {
-      opacity: 0,
-      y: 20,
-      duration: 0.6,
-      ease: 'power2.out',
-    });
+    $gsap.set(heading.value, { opacity: 0, y: 20 });
   }
-
   const initialListItems = getListItems();
   if (initialListItems.length) {
-    $gsap.from(initialListItems, {
-      opacity: 0,
-      y: 20,
-      duration: 0.5,
-      stagger: 0.05,
-      ease: 'power2.out',
-      delay: 0.6,
-    });
+    $gsap.set(initialListItems, { opacity: 0, y: 20 });
   }
-
   const initialImageEl = getImageEl();
   if (initialImageEl) {
-    $gsap.from(initialImageEl, {
-      opacity: 0,
-      y: -30,
-      duration: 0.8,
-      ease: 'power2.out',
-      delay: 0.3,
-    });
+    $gsap.set(initialImageEl, { opacity: 0, y: -30 });
   }
+
+  // Wait for loader to finish before starting animations
+  watch(
+    () => state.animationsReady,
+    (ready) => {
+      if (!ready) return;
+
+      if (splitInstance?.lines) {
+        $gsap.to(splitInstance.lines, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.05,
+          ease: 'power2.out',
+          delay: 0.5,
+        });
+      }
+
+      if (heading.value) {
+        $gsap.to(heading.value, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+        });
+      }
+
+      const initialListItems = getListItems();
+      if (initialListItems.length) {
+        $gsap.to(initialListItems, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          stagger: 0.05,
+          ease: 'power2.out',
+          delay: 0.6,
+        });
+      }
+
+      const initialImageEl = getImageEl();
+      if (initialImageEl) {
+        $gsap.to(initialImageEl, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out',
+          delay: 0.3,
+        });
+      }
+    },
+    { immediate: true },
+  );
 });
 
 onBeforeUnmount(() => {

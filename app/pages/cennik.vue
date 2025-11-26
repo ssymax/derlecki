@@ -42,29 +42,39 @@
 <script setup lang="ts">
 const { pricingContent } = usePricing();
 const { $gsap } = useNuxtApp();
+const { state } = useAppStore();
 
 onMounted(() => {
-  // Animate images with scale effect on scroll
-  const images = document.querySelectorAll('.pricing__image');
-  images.forEach((image) => {
-    $gsap.fromTo(
-      image,
-      {
-        scale: 1.05,
-      },
-      {
-        scale: 1,
-        duration: 1.2,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: image,
-          start: 'top 85%',
-          end: 'top 30%',
-          scrub: 1,
-        },
-      },
-    );
-  });
+  // Wait for loader to finish before starting animations
+  watch(
+    () => state.animationsReady,
+    (ready) => {
+      if (!ready) return;
+
+      // Animate images with scale effect on scroll
+      const images = document.querySelectorAll('.pricing__image');
+      images.forEach((image) => {
+        $gsap.fromTo(
+          image,
+          {
+            scale: 1.05,
+          },
+          {
+            scale: 1,
+            duration: 1.2,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: image,
+              start: 'top 85%',
+              end: 'top 30%',
+              scrub: 1,
+            },
+          },
+        );
+      });
+    },
+    { immediate: true },
+  );
 });
 </script>
 

@@ -185,6 +185,8 @@ const animateDetails = () => {
   }
 };
 
+const { state } = useAppStore();
+
 const triggerDetailsAnimation = () => {
   nextTick(() => {
     animateDetails();
@@ -192,7 +194,33 @@ const triggerDetailsAnimation = () => {
 };
 
 onMounted(() => {
-  triggerDetailsAnimation();
+  // Set initial states immediately to prevent flash
+  if (detailsHeading.value) {
+    $gsap.set(detailsHeading.value, { opacity: 0, y: 20 });
+  }
+  if (detailsLead.value) {
+    $gsap.set(detailsLead.value, { opacity: 0, y: 15 });
+  }
+  if (detailsDescription.value) {
+    // Split text first, then hide the lines
+    splitInstance = new SplitType(detailsDescription.value, { types: 'lines' });
+    if (splitInstance.lines) {
+      $gsap.set(splitInstance.lines, { opacity: 0, y: 20 });
+    }
+  }
+  if (imageWrapper.value) {
+    $gsap.set(imageWrapper.value, { opacity: 0, y: 25, scale: 0.97 });
+  }
+
+  // Wait for loader to finish before starting animations
+  watch(
+    () => state.animationsReady,
+    (ready) => {
+      if (!ready) return;
+      triggerDetailsAnimation();
+    },
+    { immediate: true },
+  );
 });
 
 watch(activeMethodId, () => {

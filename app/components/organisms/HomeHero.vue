@@ -51,46 +51,58 @@ const heroRoutes = computed(() => {
 const heroContentRef = ref<HTMLElement | null>(null);
 const { $gsap } = useNuxtApp();
 const currentSlide = ref(0);
+const { state } = useAppStore();
 
 onMounted(() => {
-  // Animate hero content on load
+  // Set initial states
   if (heroContentRef.value && $gsap) {
     const title = heroContentRef.value.querySelector('.home__hero-title');
     const subtitle = heroContentRef.value.querySelector('.home__hero-subtitle');
     const cta = heroContentRef.value.querySelector('.home__hero-links');
-
-    $gsap.fromTo(
-      [title, subtitle, cta],
-      {
-        opacity: 0,
-      },
-      {
-        opacity: 1,
-        duration: 1.2,
-        stagger: 0.2,
-        ease: 'power2.out',
-        delay: 0.3,
-      },
-    );
+    $gsap.set([title, subtitle, cta], { opacity: 0 });
   }
 
-  if (
-    slidesContent.value?.images?.images &&
-    slidesContent.value.images.images.length > 1 &&
-    $gsap
-  ) {
-    const totalSlides = slidesContent.value.images.images.length;
+  // Wait for loader to finish before starting animations
+  watch(
+    () => state.animationsReady,
+    (ready) => {
+      if (!ready) return;
 
-    $gsap.to(currentSlide, {
-      value: totalSlides,
-      duration: totalSlides * 8,
-      ease: 'none',
-      repeat: -1,
-      modifiers: {
-        value: (value: number) => Math.floor(value % totalSlides),
-      },
-    });
-  }
+      // Animate hero content on load
+      if (heroContentRef.value && $gsap) {
+        const title = heroContentRef.value.querySelector('.home__hero-title');
+        const subtitle = heroContentRef.value.querySelector('.home__hero-subtitle');
+        const cta = heroContentRef.value.querySelector('.home__hero-links');
+
+        $gsap.to([title, subtitle, cta], {
+          opacity: 1,
+          duration: 1.2,
+          stagger: 0.2,
+          ease: 'power2.out',
+          delay: 0.3,
+        });
+      }
+
+      if (
+        slidesContent.value?.images?.images &&
+        slidesContent.value.images.images.length > 1 &&
+        $gsap
+      ) {
+        const totalSlides = slidesContent.value.images.images.length;
+
+        $gsap.to(currentSlide, {
+          value: totalSlides,
+          duration: totalSlides * 8,
+          ease: 'none',
+          repeat: -1,
+          modifiers: {
+            value: (value: number) => Math.floor(value % totalSlides),
+          },
+        });
+      }
+    },
+    { immediate: true },
+  );
 });
 </script>
 
