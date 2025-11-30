@@ -12,6 +12,7 @@
           :key="service._uid"
           :index-label="formatNavIndex(index)"
           :title="service.title"
+          :icon="getServiceIcon(index)"
           :is-active="activeIndex === index"
           @click="changeService(index)"
         />
@@ -72,6 +73,8 @@ const { servicesContent } = useHelpContent();
 const { $gsap } = useNuxtApp();
 
 const services = computed(() => servicesContent.value?.list || []);
+
+const getServiceIcon = (index: number) => serviceIcons[index] || '';
 
 const activeIndex = ref(0);
 const heading = ref<HTMLElement | null>(null);

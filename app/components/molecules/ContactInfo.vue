@@ -1,7 +1,9 @@
 <template>
   <div class="contact-info">
     <h3 class="contact-info__name">
-      {{ contactData?.owner_name }}<br />{{ contactData?.owner_profession }}
+      {{ contactData?.owner_office_part_one }}<br />{{
+        contactData?.owner_office_part_two
+      }}
     </h3>
     <a
       v-for="(contact, index) in contactItems"

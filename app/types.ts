@@ -53,6 +53,9 @@ declare global {
     google_maps_url: string;
     owner_name: string;
     owner_profession: string;
+    owner_office_part_one: string;
+    owner_office_part_two: string;
+    hero_description: string;
     images_header: string;
     images: StoryblokAsset[];
     _editable?: string;

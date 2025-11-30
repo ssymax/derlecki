@@ -6,24 +6,26 @@
         :intro="pricingContent?.intro"
       />
 
-      <div class="pricing__list">
-        <div
-          v-for="item in pricingContent?.pricing_list"
-          :key="item._uid"
-          class="pricing__item"
-        >
-          <div class="pricing__item-header">
-            <h3 class="pricing__item-title">{{ item.visit_type }}</h3>
-            <span class="pricing__item-price">{{ item.price }}</span>
+      <div class="pricing__grid">
+        <!-- Single pricing tile with all items -->
+        <div class="pricing__tile">
+          <div
+            v-for="item in pricingContent?.pricing_list"
+            :key="item._uid"
+            class="pricing__item"
+          >
+            <div class="pricing__item-header">
+              <h3 class="pricing__item-title">{{ item.visit_type }}</h3>
+              <span class="pricing__item-price">{{ item.price }}</span>
+            </div>
+            <p class="pricing__item-description">{{ item.description }}</p>
           </div>
-          <p class="pricing__item-description">{{ item.description }}</p>
         </div>
-      </div>
 
-      <div v-if="pricingContent?.images?.length" class="pricing__images">
+        <!-- Images displayed as separate tiles -->
         <div
-          v-for="image in pricingContent.images"
-          :key="image.id"
+          v-for="(image, index) in pricingContent?.images"
+          :key="`${image.id || image.filename}-${index}`"
           class="pricing__image-wrapper"
         >
           <NuxtImg
@@ -51,26 +53,25 @@ onMounted(() => {
     (ready) => {
       if (!ready) return;
 
-      // Animate images with scale effect on scroll
-      const images = document.querySelectorAll('.pricing__image');
-      images.forEach((image) => {
-        $gsap.fromTo(
-          image,
-          {
-            scale: 1.05,
-          },
-          {
+      // Use nextTick to ensure DOM is fully rendered
+      nextTick(() => {
+        // Animate images with scale effect on scroll
+        const wrappers = document.querySelectorAll('.pricing__image-wrapper');
+        wrappers.forEach((wrapper) => {
+          const image = wrapper.querySelector('.pricing__image');
+          if (!image) return;
+
+          $gsap.to(image, {
             scale: 1,
-            duration: 1.2,
-            ease: 'power2.out',
+            ease: 'none',
             scrollTrigger: {
-              trigger: image,
-              start: 'top 85%',
-              end: 'top 30%',
-              scrub: 1,
+              trigger: wrapper,
+              start: 'top 90%',
+              end: 'bottom 10%',
+              scrub: 3,
             },
-          },
-        );
+          });
+        });
       });
     },
     { immediate: true },
@@ -90,7 +91,7 @@ onMounted(() => {
   }
 }
 
-.pricing__list {
+.pricing__grid {
   display: grid;
   gap: 2.4rem;
   margin-top: 4rem;
@@ -105,15 +106,26 @@ onMounted(() => {
   }
 }
 
-.pricing__item {
+.pricing__tile {
   background: #fff;
   border: 1px solid rgba($primary-color, 0.1);
   border-radius: 1.2rem;
-  padding: 3rem 2.4rem;
+  padding: 2.4rem 2rem;
   box-shadow: 0 4px 20px rgba($primary-color, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
 
   @media (max-width: 768px) {
-    padding: 2.4rem 2rem;
+    padding: 2rem 1.6rem;
+  }
+}
+
+.pricing__item {
+  &:not(:last-child) {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba($primary-color, 0.1);
   }
 }
 
@@ -121,12 +133,12 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 1.6rem;
-  margin-bottom: 1.2rem;
+  gap: 1.2rem;
+  margin-bottom: 0.8rem;
 }
 
 .pricing__item-title {
-  font-size: clamp(2rem, 2.5vw, 2.4rem);
+  font-size: clamp(1.6rem, 2vw, 1.8rem);
   font-weight: 600;
   color: $primary-color;
   line-height: 1.3;
@@ -134,32 +146,17 @@ onMounted(() => {
 }
 
 .pricing__item-price {
-  font-size: clamp(2.2rem, 2.8vw, 2.8rem);
-  font-weight: 700;
+  font-size: clamp(1.5rem, 1.8vw, 1.6rem);
+  font-weight: 600;
   color: $primary-color;
   white-space: nowrap;
 }
 
 .pricing__item-description {
-  font-size: 1.6rem;
-  line-height: 1.6;
+  font-size: 1.4rem;
+  line-height: 1.5;
   color: #666;
   margin: 0;
-}
-
-.pricing__images {
-  display: grid;
-  gap: 2.4rem;
-  margin-top: 6rem;
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 3.2rem;
-  }
-
-  @media (min-width: 1024px) {
-    gap: 4rem;
-  }
 }
 
 .pricing__image-wrapper {
@@ -167,11 +164,15 @@ onMounted(() => {
   overflow: hidden;
   border-radius: 1.2rem;
   aspect-ratio: 3 / 2;
+  box-shadow: 0 4px 20px rgba($primary-color, 0.08);
 }
 
 .pricing__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(1.05);
+  will-change: transform;
+  transition: transform 0.1s ease-out;
 }
 </style>

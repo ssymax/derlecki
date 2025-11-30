@@ -1,11 +1,39 @@
 <template>
   <div class="home-page">
     <OrganismsHomeHero />
-    <OrganismsHomeOpinions />
+    <div ref="parallaxSectionsRef" class="home-page__parallax-sections">
+      <OrganismsHomeServices />
+      <OrganismsHomeOpinions />
+    </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const parallaxSectionsRef = ref<HTMLElement | null>(null);
+const { $gsap, $ScrollTrigger } = useNuxtApp();
+
+onMounted(() => {
+  // Parallax effect for services and opinions sections
+  if (parallaxSectionsRef.value && $gsap && $ScrollTrigger) {
+    $gsap.fromTo(
+      parallaxSectionsRef.value,
+      {
+        y: 0,
+      },
+      {
+        y: -50,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.home__hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      },
+    );
+  }
+});
+</script>
 
 <style scoped lang="scss">
 .home-page {
@@ -20,5 +48,12 @@
     margin-top: -50px;
     margin-bottom: -50px;
   }
+}
+
+.home-page__parallax-sections {
+  position: relative;
+  z-index: 3;
+  will-change: transform;
+  background-color: #fff;
 }
 </style>

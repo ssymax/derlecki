@@ -5,7 +5,10 @@
     :aria-pressed="ariaPressed ?? isActive"
     @click="$emit('click', $event)"
   >
-    <span class="panel-nav-button__index">{{ indexLabel }}</span>
+    <span v-if="icon" class="panel-nav-button__icon">
+      <Icon :name="icon" size="24" />
+    </span>
+    <span v-else class="panel-nav-button__index">{{ indexLabel }}</span>
     <span class="panel-nav-button__divider" aria-hidden="true" />
     <span class="panel-nav-button__text">
       <span class="panel-nav-button__title">{{ title }}</span>
@@ -24,6 +27,7 @@ const props = withDefaults(
     title: string;
     subtitle?: string;
     arrow?: string;
+    icon?: string;
     isActive?: boolean;
     ariaPressed?: boolean;
     type?: 'button' | 'submit' | 'reset';
@@ -32,6 +36,7 @@ const props = withDefaults(
   {
     subtitle: '',
     arrow: '',
+    icon: '',
     isActive: false,
     type: 'button',
     variant: 'services',
@@ -99,12 +104,6 @@ const { indexLabel, title, subtitle } = toRefs(props);
     }
   }
 
-  &--services {
-    &:hover {
-      transform: translateY(6px);
-    }
-  }
-
   &--methods {
     padding: 1.75rem;
 
@@ -120,6 +119,22 @@ const { indexLabel, title, subtitle } = toRefs(props);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba($primary-color, 0.8);
+
+  .panel-nav-button--active & {
+    color: rgba(255, 255, 255, 0.9);
+  }
+}
+
+.panel-nav-button__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba($primary-color, 0.8);
+  transition: all 0.3s ease;
+
+  .panel-nav-button:hover & {
+    transform: scale(1.15) rotate(5deg);
+  }
 
   .panel-nav-button--active & {
     color: rgba(255, 255, 255, 0.9);

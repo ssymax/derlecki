@@ -1,5 +1,5 @@
 <template>
-  <section ref="opinionsRef" class="home__opinions">
+  <section class="home__opinions">
     <AtomsDecoratedHeading>
       {{ slidesContent?.opinions?.opinions_subheader || 'Opinie' }}
     </AtomsDecoratedHeading>
@@ -23,14 +23,12 @@
     </div>
 
     <div class="home__opinions-cta">
-      <a
+      <AtomsAppButton
+        variant="primary"
         :href="slidesContent?.opinions?.reviews_url || 'https://www.google.com/maps'"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="home__opinions-button"
       >
         {{ slidesContent?.opinions?.reviews_button_label || 'Zobacz więcej' }}
-      </a>
+      </AtomsAppButton>
     </div>
 
     <Teleport to="body">
@@ -81,9 +79,8 @@ const closeModal = () => {
 
 const sliderRef = ref<HTMLElement | null>(null);
 const trackRef = ref<HTMLElement | null>(null);
-const opinionsRef = ref<HTMLElement | null>(null);
 
-const { $gsap, $ScrollTrigger } = useNuxtApp();
+const { $gsap } = useNuxtApp();
 
 onMounted(() => {
   if (trackRef.value && sliderRef.value && $gsap) {
@@ -104,26 +101,6 @@ onMounted(() => {
       },
     });
   }
-
-  // Parallax effect for opinions section
-  if (opinionsRef.value && $gsap && $ScrollTrigger) {
-    $gsap.fromTo(
-      opinionsRef.value,
-      {
-        y: 0,
-      },
-      {
-        y: -50,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.home__hero',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      },
-    );
-  }
 });
 </script>
 
@@ -137,8 +114,6 @@ onMounted(() => {
   margin-bottom: calc(100 / 1920 * 100vw);
   background: #fff;
   position: relative;
-  z-index: 3;
-  will-change: transform;
 
   @media (min-width: 1920px) {
     padding-top: 100px;
@@ -215,25 +190,6 @@ onMounted(() => {
 
   @media (min-width: 1920px) {
     margin-top: 60px;
-  }
-}
-
-.home__opinions-button {
-  display: inline-block;
-  padding: 1.8rem 4rem;
-  font-size: 1.8rem;
-  font-weight: 500;
-  color: #fff;
-  text-decoration: none;
-  background: $primary-color;
-  border-radius: 0;
-  transition: all 0.4s ease;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-
-  &:hover {
-    background: color.adjust($primary-color, $lightness: -10%);
-    transform: translateY(-2px);
   }
 }
 

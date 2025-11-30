@@ -20,17 +20,17 @@
       <div class="home__hero-overlay">
         <div ref="heroContentRef" class="home__hero-content">
           <h1 class="home__hero-title">{{ contactData?.owner_name }}</h1>
-          <p class="home__hero-subtitle">{{ contactData?.owner_profession }}</p>
+          <p class="home__hero-subtitle">{{ contactData?.hero_description }}</p>
           <div class="home__hero-links">
             <Transition name="fade" mode="out-in">
-              <NuxtLink
+              <AtomsAppButton
                 v-if="heroRoutes[currentSlide]"
                 :key="currentSlide"
+                variant="outline"
                 :to="heroRoutes[currentSlide]?.path || '/'"
-                class="home__hero-cta"
               >
                 {{ heroRoutes[currentSlide]?.name }}
-              </NuxtLink>
+              </AtomsAppButton>
             </Transition>
           </div>
         </div>
@@ -173,7 +173,7 @@ onMounted(() => {
 }
 
 .home__hero-subtitle {
-  font-size: clamp(2rem, 3vw, 3.2rem);
+  font-size: clamp(2rem, 3vw, 3rem);
   font-weight: 300;
   line-height: 1.4;
   margin-bottom: 4.8rem;
@@ -186,26 +186,6 @@ onMounted(() => {
   gap: 2.4rem;
   justify-content: center;
   flex-wrap: wrap;
-}
-
-.home__hero-cta {
-  display: inline-block;
-  padding: 1.8rem 4rem;
-  font-size: 1.8rem;
-  font-weight: 500;
-  color: #fff;
-  text-decoration: none;
-  background: transparent;
-  border: 2px solid #fff;
-  border-radius: 0;
-  transition: all 0.4s ease;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-
-  &:hover {
-    background: #fff;
-    color: #000;
-  }
 }
 
 .fade-enter-active {
