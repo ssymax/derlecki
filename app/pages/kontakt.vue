@@ -12,7 +12,18 @@
           :images="images"
           :images-header="contactData?.images_header"
         />
-        <MoleculesContactInfo :contact-data="contactData as ContactContent | undefined" />
+        <MoleculesContactInfo
+          :contact-data="
+            contactData
+              ? {
+                  ...contactData,
+                  images: Array.isArray(contactData.images)
+                    ? contactData.images.slice()
+                    : [],
+                }
+              : undefined
+          "
+        />
       </div>
     </section>
   </div>

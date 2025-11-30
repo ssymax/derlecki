@@ -84,7 +84,7 @@ const imageWrapper = ref<HTMLElement | null>(null);
 const image = ref<{ $el: HTMLElement } | HTMLElement | null>(null);
 let splitInstance: SplitType | null = null;
 
-const currentService = computed<ServiceItem>(() => services.value[activeIndex.value]!);
+const currentService = computed(() => services.value[activeIndex.value] as ServiceItem);
 const formatNavIndex = (index: number) => `${String(index + 1).padStart(2, '0')}.`;
 const getImageEl = () =>
   (image.value && '$el' in image.value

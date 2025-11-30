@@ -86,11 +86,11 @@ const activeMethodId = ref(methodsList.value[0]?._uid ?? '');
 
 const activeMethod = computed<MethodItem | null>(() => {
   if (!methodsList.value.length) return null;
-  return (
+  const found =
     methodsList.value.find((method) => method._uid === activeMethodId.value) ||
     methodsList.value[0] ||
-    null
-  );
+    null;
+  return found as unknown as MethodItem | null;
 });
 
 const selectMethod = (methodId: string) => {
