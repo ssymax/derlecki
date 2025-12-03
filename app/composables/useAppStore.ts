@@ -3,6 +3,7 @@ interface AppStoreState {
   about: AboutContent | null;
   services: ServicesContent | null;
   methods: MethodsContent | null;
+  course: CourseContent | null;
   contact: ContactContent | null;
   pricing: PricingContent | null;
   slides: SlidesContent | null;
@@ -16,6 +17,7 @@ const state = reactive<AppStoreState>({
   about: null,
   services: null,
   methods: null,
+  course: null,
   contact: null,
   pricing: null,
   slides: null,
@@ -49,6 +51,10 @@ export const useAppStore = () => {
           api: { version: 'published' },
           bridge: {},
         }),
+        useAsyncStoryblok('course', {
+          api: { version: 'published' },
+          bridge: {},
+        }),
         useAsyncStoryblok('kontakt', {
           api: { version: 'published' },
           bridge: {},
@@ -73,13 +79,15 @@ export const useAppStore = () => {
         ((results[2]?.story.value?.content?.body || [])[0] as ServicesContent) || null;
       state.methods =
         ((results[3]?.story.value?.content?.body || [])[0] as MethodsContent) || null;
+      state.course =
+        ((results[4]?.story.value?.content?.body || [])[0] as CourseContent) || null;
       state.contact =
-        ((results[4]?.story.value?.content?.body || [])[0] as ContactContent) || null;
+        ((results[5]?.story.value?.content?.body || [])[0] as ContactContent) || null;
       state.pricing =
-        ((results[5]?.story.value?.content?.body || [])[0] as PricingContent) || null;
+        ((results[6]?.story.value?.content?.body || [])[0] as PricingContent) || null;
 
       // Parse slides content to separate images and opinions
-      const slidesBody = results[6]?.story.value?.content?.body || [];
+      const slidesBody = results[7]?.story.value?.content?.body || [];
       state.slides = {
         images:
           (slidesBody.find(
@@ -91,6 +99,7 @@ export const useAppStore = () => {
           ) as OpinionsContent) || null,
       };
 
+      console.log('Course content:', results[4]?.story.value?.content?.body);
       state.progress = 100;
       state.isLoaded = true;
     } catch (error) {

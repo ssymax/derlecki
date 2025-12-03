@@ -165,4 +165,16 @@ declare global {
     images: ImagesContent | null;
     opinions: OpinionsContent | null;
   };
+
+  type CourseContent = {
+    _uid: string;
+    component: 'course_content';
+    header: string;
+    intro: string;
+    quote: string;
+    for_who: string;
+    images: StoryblokAsset[];
+    text_items: ListItem[];
+    _editable?: string;
+  };
 }

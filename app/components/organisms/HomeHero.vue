@@ -108,14 +108,14 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .home {
-  min-height: 100vh;
+  min-height: 100lvh;
   overflow: hidden;
 }
 
 .home__hero {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100lvh;
   overflow: hidden;
 }
 

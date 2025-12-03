@@ -231,7 +231,7 @@ onMounted(() => {
       left: 0;
       top: 0.2rem;
       font-size: 1.2rem;
-      color: $primary-color;
+      color: var(--color-primary, #2c3e50);
       opacity: 0.6;
     }
   }
