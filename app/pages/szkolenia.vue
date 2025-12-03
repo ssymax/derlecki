@@ -84,7 +84,7 @@ import SplitType from 'split-type';
 
 const { courseContent } = useCourse();
 
-const { $gsap, $ScrollTrigger } = useNuxtApp();
+const { $gsap } = useNuxtApp();
 const { state } = useAppStore();
 
 const heroSection = ref<HTMLElement | null>(null);
