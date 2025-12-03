@@ -239,7 +239,7 @@ onBeforeUnmount(() => {
 
 .methods {
   min-height: 100vh;
-  padding: clamp(2rem, 4vw, 5rem) 0;
+  padding-top: clamp(2rem, 4vw, 5rem);
 }
 
 .methods__layout {

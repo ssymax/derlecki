@@ -99,7 +99,6 @@ export const useAppStore = () => {
           ) as OpinionsContent) || null,
       };
 
-      console.log('Course content:', results[4]?.story.value?.content?.body);
       state.progress = 100;
       state.isLoaded = true;
     } catch (error) {

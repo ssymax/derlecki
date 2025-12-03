@@ -38,7 +38,7 @@ const { contactData, images } = useContactInfo();
   min-height: 100vh;
   max-width: 140rem;
   margin: 0 auto;
-  padding: clamp(3rem, 5vw, 6rem) 2.4rem 0;
+  padding: clamp(3rem, 5vw, 6rem) 2.4rem;
 }
 
 .contact__content {

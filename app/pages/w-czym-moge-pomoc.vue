@@ -31,9 +31,16 @@
         <div :key="activeIndex" class="services__description">
           <div class="services__clip services__clip--paragraphs">
             <div ref="paragraphContent" class="services__paragraphs">
-              <p v-for="contentItem in currentService.content" :key="contentItem._uid">
-                {{ contentItem.item }}
-              </p>
+              <template v-if="[0, 2, 3].includes(activeIndex)">
+                <p v-if="currentService.content[0]">
+                  {{ currentService.content[0].item }}
+                </p>
+              </template>
+              <template v-else>
+                <p v-for="contentItem in currentService.content" :key="contentItem._uid">
+                  {{ contentItem.item }}
+                </p>
+              </template>
             </div>
           </div>
           <div
@@ -45,6 +52,14 @@
                 {{ listItem.item }}
               </li>
             </ul>
+          </div>
+          <div
+            v-if="currentService.content[1] && [0, 2, 3].includes(activeIndex)"
+            class="services__clip services__clip--paragraphs services__clip--after-list"
+          >
+            <div ref="afterListContent" class="services__paragraphs">
+              <p>{{ currentService.content[1].item }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -79,10 +94,12 @@ const getServiceIcon = (index: number) => serviceIcons[index] || '';
 const activeIndex = ref(0);
 const heading = ref<HTMLElement | null>(null);
 const paragraphContent = ref<HTMLElement | null>(null);
+const afterListContent = ref<HTMLElement | null>(null);
 const listContent = ref<HTMLUListElement | null>(null);
 const imageWrapper = ref<HTMLElement | null>(null);
 const image = ref<{ $el: HTMLElement } | HTMLElement | null>(null);
 let splitInstance: SplitType | null = null;
+let afterListSplitInstance: SplitType | null = null;
 
 const currentService = computed(() => services.value[activeIndex.value] as ServiceItem);
 const formatNavIndex = (index: number) => `${String(index + 1).padStart(2, '0')}.`;
@@ -109,10 +126,14 @@ const changeService = (index: number) => {
   // Create timeline for out animation
   const tl = $gsap.timeline({
     onComplete: () => {
-      // Clean up split instance
+      // Clean up split instances
       if (splitInstance) {
         splitInstance.revert();
         splitInstance = null;
+      }
+      if (afterListSplitInstance) {
+        afterListSplitInstance.revert();
+        afterListSplitInstance = null;
       }
 
       // Update active index
@@ -186,6 +207,21 @@ const changeService = (index: number) => {
             },
             0.35,
           );
+        }
+
+        // Animate after-list content if exists
+        if (afterListContent.value && [0, 2, 3].includes(index)) {
+          afterListSplitInstance = new SplitType(afterListContent.value, {
+            types: 'lines',
+          });
+          if (afterListSplitInstance.lines) {
+            tlIn.fromTo(
+              afterListSplitInstance.lines,
+              { opacity: 0, y: 20 },
+              { opacity: 1, y: 0, duration: 0.5, stagger: 0.05, ease: 'power2.out' },
+              0.4,
+            );
+          }
         }
       });
     },
@@ -320,6 +356,24 @@ onMounted(() => {
           delay: 0.3,
         });
       }
+
+      // Animate after-list content if exists
+      if (afterListContent.value && [0, 2, 3].includes(activeIndex.value)) {
+        afterListSplitInstance = new SplitType(afterListContent.value, {
+          types: 'lines',
+        });
+        if (afterListSplitInstance.lines) {
+          $gsap.set(afterListSplitInstance.lines, { opacity: 0, y: 20 });
+          $gsap.to(afterListSplitInstance.lines, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.05,
+            ease: 'power2.out',
+            delay: 0.7,
+          });
+        }
+      }
     },
     { immediate: true },
   );
@@ -329,6 +383,9 @@ onBeforeUnmount(() => {
   if (splitInstance) {
     splitInstance.revert();
   }
+  if (afterListSplitInstance) {
+    afterListSplitInstance.revert();
+  }
 });
 </script>
 
@@ -336,7 +393,7 @@ onBeforeUnmount(() => {
 @use 'sass:color';
 .services {
   min-height: 100vh;
-  padding: clamp(2rem, 4vw, 5rem) 0;
+  padding-top: clamp(2rem, 4vw, 5rem);
 }
 
 .services__navigation {
@@ -367,6 +424,10 @@ onBeforeUnmount(() => {
 
 .services__clip--list {
   margin-top: 1rem;
+}
+
+.services__clip--after-list {
+  margin-top: 1.5rem;
 }
 
 .services__clip > * {

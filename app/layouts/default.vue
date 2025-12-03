@@ -43,5 +43,6 @@ watch(
 <style lang="scss">
 .layout-default__content {
   @include padding-style;
+  padding-bottom: clamp(3rem, 5vw, 6rem);
 }
 </style>

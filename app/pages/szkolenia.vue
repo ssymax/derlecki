@@ -182,7 +182,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 4rem;
-  padding-bottom: clamp(3rem, 6vw, 8rem);
+  padding-top: clamp(2rem, 4vw, 5rem);
 }
 
 // Hero Section

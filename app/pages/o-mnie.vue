@@ -160,7 +160,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 4rem;
-  padding: clamp(2rem, 4vw, 5rem) 0;
+  padding-top: clamp(2rem, 4vw, 5rem);
 }
 
 .bio {
