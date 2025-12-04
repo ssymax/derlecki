@@ -90,6 +90,7 @@ defineProps<{
 }>();
 
 const { $gsap } = useNuxtApp() as any;
+const { state } = useAppStore();
 const fullscreenIndex = ref<number | null>(null);
 const fullscreenContentRef = ref<HTMLElement | null>(null);
 
@@ -136,25 +137,31 @@ const closeFullscreen = () => {
 onMounted(() => {
   const wrappers = document.querySelectorAll('.contact-gallery__image-wrapper');
 
-  wrappers.forEach((wrapper, index) => {
-    const moveY = index === 0 ? -30 : index === 1 ? 25 : -20;
-    const moveX = index === 0 ? 20 : index === 1 ? -30 : 15;
+  // Wait for loader to finish before starting animations
+  watch(
+    () => state.animationsReady,
+    (ready) => {
+      if (!ready) return;
 
-    $gsap.fromTo(
-      wrapper,
-      { y: 0, x: 0 },
-      {
-        y: moveY,
-        x: moveX,
-        scrollTrigger: {
-          trigger: wrapper,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      },
-    );
-  });
+      wrappers.forEach((wrapper, index) => {
+        const moveY = index === 0 ? -30 : index === 1 ? 25 : -20;
+        const moveX = index === 0 ? 20 : index === 1 ? -30 : 15;
+
+        $gsap.to(wrapper, {
+          x: moveX,
+          y: moveY,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: wrapper,
+            start: 'top center',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        });
+      });
+    },
+    { immediate: true },
+  );
 });
 
 onBeforeUnmount(() => {
@@ -196,6 +203,7 @@ onBeforeUnmount(() => {
 
 .contact-gallery__image-wrapper {
   position: absolute;
+  will-change: transform;
 
   &:nth-child(1) {
     top: 0;

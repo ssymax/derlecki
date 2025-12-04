@@ -98,35 +98,43 @@ const image3 = ref<HTMLElement | null>(null);
 onMounted(() => {
   if (!heroImage.value || !quoteText.value) return;
 
-  // Hero image parallax effect
-  $gsap.to(heroImage.value, {
-    yPercent: 20,
-    ease: 'none',
-    scrollTrigger: {
-      trigger: heroSection.value,
-      start: 'top top',
-      end: 'bottom top',
-      scrub: 1,
-    },
-  });
+  // Set initial state for quote text to prevent flash
+  if (quoteText.value) {
+    $gsap.set(quoteText.value, { opacity: 0 });
+  }
 
-  // Split quote text for reveal animation
-  const quoteSplit = new SplitType(quoteText.value, {
-    types: 'lines,words',
-    lineClass: 'split-line',
-  });
-
-  // Initial state - hide quote words
-  $gsap.set(quoteSplit.words, {
-    opacity: 0,
-    y: 20,
-  });
-
-  // Wait for animations ready
+  // Wait for loader to finish before starting animations
   watch(
     () => state.animationsReady,
     (ready) => {
-      if (!ready || !quoteSplit.words) return;
+      if (!ready) return;
+
+      // Hero image parallax effect
+      $gsap.to(heroImage.value, {
+        yPercent: 20,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroSection.value,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      });
+
+      // Make quote visible before splitting
+      $gsap.set(quoteText.value, { opacity: 1 });
+
+      // Split quote text for reveal animation
+      const quoteSplit = new SplitType(quoteText.value, {
+        types: 'lines,words',
+        lineClass: 'split-line',
+      });
+
+      // Initial state - hide quote words
+      $gsap.set(quoteSplit.words, {
+        opacity: 0,
+        y: 20,
+      });
 
       // Reveal quote words with stagger
       $gsap.to(quoteSplit.words, {
@@ -137,45 +145,43 @@ onMounted(() => {
         ease: 'power2.out',
         delay: 0.5,
       });
+
+      // Parallax on image 2 - fixed effect without layout shift
+      if (image2.value) {
+        const img = image2.value.querySelector('img');
+        if (img) {
+          $gsap.to(img, {
+            y: -50,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: image2.value,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1,
+            },
+          });
+        }
+      }
+
+      // Parallax on image 3 - fixed effect without layout shift
+      if (image3.value) {
+        const img = image3.value.querySelector('img');
+        if (img) {
+          $gsap.to(img, {
+            y: -30,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: image3.value,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1,
+            },
+          });
+        }
+      }
     },
     { immediate: true },
   );
-
-  // Parallax on image 2 - fixed effect without layout shift
-  if (image2.value) {
-    const img = image2.value.querySelector('img');
-    if (img) {
-      $gsap.set(img, { scale: 1.15 });
-      $gsap.to(img, {
-        y: -50,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: image2.value,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      });
-    }
-  }
-
-  // Parallax on image 3 - fixed effect without layout shift
-  if (image3.value) {
-    const img = image3.value.querySelector('img');
-    if (img) {
-      $gsap.set(img, { scale: 1.15 });
-      $gsap.to(img, {
-        y: -30,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: image3.value,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      });
-    }
-  }
 });
 </script>
 
@@ -295,6 +301,11 @@ onMounted(() => {
   overflow: hidden;
   border-radius: 1rem;
   height: 100%;
+
+  img {
+    transform: scale(1.15);
+    will-change: transform;
+  }
 }
 
 .img {

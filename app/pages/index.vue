@@ -19,28 +19,38 @@ useSeoMeta({
 });
 
 const parallaxSectionsRef = ref<HTMLElement | null>(null);
-const { $gsap, $ScrollTrigger } = useNuxtApp() as any;
+const { $gsap } = useNuxtApp() as any;
+const { state } = useAppStore();
 
 onMounted(() => {
-  // Parallax effect for services and opinions sections
-  if (parallaxSectionsRef.value && $gsap && $ScrollTrigger) {
-    $gsap.fromTo(
-      parallaxSectionsRef.value,
-      {
-        y: 0,
-      },
-      {
-        y: -50,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.home__hero',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      },
-    );
-  }
+  // Wait for loader to finish before starting animations
+  watch(
+    () => state.animationsReady,
+    (ready) => {
+      if (!ready) return;
+
+      // Parallax effect for services and opinions sections
+      if (parallaxSectionsRef.value) {
+        $gsap.fromTo(
+          parallaxSectionsRef.value,
+          {
+            y: 0,
+          },
+          {
+            y: -50,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '.home__hero',
+              start: 'top top',
+              end: 'bottom top',
+              scrub: 1,
+            },
+          },
+        );
+      }
+    },
+    { immediate: true },
+  );
 });
 </script>
 

@@ -68,16 +68,20 @@ onMounted(() => {
           const image = wrapper.querySelector('.pricing__image');
           if (!image) return;
 
-          $gsap.to(image, {
-            scale: 1,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: wrapper,
-              start: 'top 90%',
-              end: 'bottom 10%',
-              scrub: 3,
+          $gsap.fromTo(
+            image,
+            { scale: 1.05 },
+            {
+              scale: 1,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: wrapper,
+                start: 'top center-=100',
+                end: 'bottom 10%',
+                scrub: 3,
+              },
             },
-          });
+          );
         });
       });
     },

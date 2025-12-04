@@ -127,102 +127,102 @@ onMounted(() => {
         duration: 1.2,
         ease: 'power2.out',
       });
+
+      // Desktop animations
+      mm.add('(min-width: 768px)', () => {
+        // Image transition based on scroll
+        $ScrollTrigger.create({
+          trigger: eduSection.value,
+          start: 'top center',
+          end: 'top top',
+          onEnter: () => {
+            $gsap.to(image1.value, {
+              opacity: 0,
+              scale: 1.05,
+              duration: 0.8,
+              ease: 'power2.inOut',
+            });
+            $gsap.to(image2.value, {
+              opacity: 1,
+              scale: 1,
+              duration: 0.8,
+              ease: 'power2.inOut',
+            });
+          },
+          onLeaveBack: () => {
+            $gsap.to(image1.value, {
+              opacity: 1,
+              scale: 1,
+              duration: 0.8,
+              ease: 'power2.inOut',
+            });
+            $gsap.to(image2.value, {
+              opacity: 0,
+              scale: 0.95,
+              duration: 0.8,
+              ease: 'power2.inOut',
+            });
+          },
+        });
+
+        // Parallax effect on images
+        $gsap.to(image1.value, {
+          y: 50,
+          scrollTrigger: {
+            trigger: bioSection.value,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        });
+
+        $gsap.to(image2.value, {
+          y: 50,
+          scrollTrigger: {
+            trigger: eduSection.value,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        });
+      });
+
+      // Mobile animations
+      mm.add('(max-width: 767px)', () => {
+        if (!image1Mobile.value || !image2Mobile.value) return;
+
+        // Scale down images on scroll
+        $gsap.fromTo(
+          image1Mobile.value.querySelector('.img'),
+          { scale: 1.1 },
+          {
+            scale: 1,
+            scrollTrigger: {
+              trigger: image1Mobile.value,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.5,
+            },
+          },
+        );
+
+        $gsap.fromTo(
+          image2Mobile.value.querySelector('.img'),
+          { scale: 1.1 },
+          {
+            scale: 1,
+            scrollTrigger: {
+              trigger: image2Mobile.value,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.5,
+            },
+          },
+        );
+      });
     },
     { immediate: true },
   );
-
-  // Desktop animations
-  mm.add('(min-width: 768px)', () => {
-    // Image transition based on scroll
-    $ScrollTrigger.create({
-      trigger: eduSection.value,
-      start: 'top center',
-      end: 'top top',
-      onEnter: () => {
-        $gsap.to(image1.value, {
-          opacity: 0,
-          scale: 1.05,
-          duration: 0.8,
-          ease: 'power2.inOut',
-        });
-        $gsap.to(image2.value, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          ease: 'power2.inOut',
-        });
-      },
-      onLeaveBack: () => {
-        $gsap.to(image1.value, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          ease: 'power2.inOut',
-        });
-        $gsap.to(image2.value, {
-          opacity: 0,
-          scale: 0.95,
-          duration: 0.8,
-          ease: 'power2.inOut',
-        });
-      },
-    });
-
-    // Parallax effect on images
-    $gsap.to(image1.value, {
-      y: 50,
-      scrollTrigger: {
-        trigger: bioSection.value,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
-      },
-    });
-
-    $gsap.to(image2.value, {
-      y: 50,
-      scrollTrigger: {
-        trigger: eduSection.value,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
-      },
-    });
-  });
-
-  // Mobile animations
-  mm.add('(max-width: 767px)', () => {
-    if (!image1Mobile.value || !image2Mobile.value) return;
-
-    // Scale down images on scroll
-    $gsap.fromTo(
-      image1Mobile.value.querySelector('.img'),
-      { scale: 1.1 },
-      {
-        scale: 1,
-        scrollTrigger: {
-          trigger: image1Mobile.value,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1.5,
-        },
-      },
-    );
-
-    $gsap.fromTo(
-      image2Mobile.value.querySelector('.img'),
-      { scale: 1.1 },
-      {
-        scale: 1,
-        scrollTrigger: {
-          trigger: image2Mobile.value,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1.5,
-        },
-      },
-    );
-  });
 });
 </script>
 
