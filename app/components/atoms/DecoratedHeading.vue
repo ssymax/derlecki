@@ -15,7 +15,7 @@ withDefaults(defineProps<Props>(), {
   align: 'left',
 });
 
-const { $gsap } = useNuxtApp();
+const { $gsap } = useNuxtApp() as any;
 const sparkle = ref<HTMLElement | null>(null);
 
 onMounted(() => {

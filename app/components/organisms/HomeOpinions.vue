@@ -80,7 +80,7 @@ const closeModal = () => {
 const sliderRef = ref<HTMLElement | null>(null);
 const trackRef = ref<HTMLElement | null>(null);
 
-const { $gsap } = useNuxtApp();
+const { $gsap } = useNuxtApp() as any;
 
 onMounted(() => {
   if (trackRef.value && sliderRef.value && $gsap) {

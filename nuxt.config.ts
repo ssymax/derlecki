@@ -10,7 +10,22 @@ export default defineNuxtConfig({
     '@hypernym/nuxt-gsap',
     'lenis/nuxt',
     '@storyblok/nuxt',
+    '@nuxtjs/seo',
   ],
+  site: {
+    url: 'https://fizjoterapia-olsztyn.pl',
+    name: 'Mateusz Derlecki | Fizjoterapeuta Olsztyn',
+    description:
+      'Profesjonalna fizjoterapia w Olsztynie. Specjalizuję się w terapii manualnej, rehabilitacji ortopedycznej i sportowej. Umów się na konsultację.',
+    defaultLocale: 'pl',
+  },
+  sitemap: {
+    strictNuxtContentPaths: true,
+  },
+  robots: {
+    enabled: true,
+  },
+
   image: {
     provider: 'storyblok',
     storyblok: {

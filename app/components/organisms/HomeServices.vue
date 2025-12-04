@@ -30,7 +30,7 @@ const { servicesContent } = useHelpContent();
 const services = computed(() => servicesContent.value?.list || []);
 
 const titleRef = ref<HTMLElement | null>(null);
-const { $gsap } = useNuxtApp();
+const { $gsap } = useNuxtApp() as any;
 const { state } = useAppStore();
 let splitInstance: SplitType | null = null;
 

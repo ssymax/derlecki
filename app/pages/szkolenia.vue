@@ -77,10 +77,16 @@
 
 <script setup lang="ts">
 import SplitType from 'split-type';
+useSeoMeta({
+  title: 'Szkolenia',
+  description:
+    'Profesjonalne szkolenia z fizjoterapii w Olsztynie. Podnoszę kwalifikacje i dzielę się wiedzą z zakresu terapii manualnej, rehabilitacji sportowej i metod fizjoterapeutycznych.',
+  ogImage: '/img/og-image.jpg',
+});
 
 const { courseContent } = useCourse();
 
-const { $gsap } = useNuxtApp();
+const { $gsap } = useNuxtApp() as any;
 const { state } = useAppStore();
 
 const heroSection = ref<HTMLElement | null>(null);

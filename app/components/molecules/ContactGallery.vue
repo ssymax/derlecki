@@ -84,7 +84,7 @@ defineProps<{
   imagesHeader?: string;
 }>();
 
-const { $gsap } = useNuxtApp();
+const { $gsap } = useNuxtApp() as any;
 const fullscreenIndex = ref<number | null>(null);
 const fullscreenContentRef = ref<HTMLElement | null>(null);
 

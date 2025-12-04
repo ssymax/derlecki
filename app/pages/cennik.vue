@@ -42,8 +42,15 @@
 </template>
 
 <script setup lang="ts">
+const { $gsap } = useNuxtApp() as any;
+useSeoMeta({
+  title: 'Cennik',
+  description:
+    'Sprawdź cennik usług fizjoterapeutycznych w Olsztynie. Przejrzyste ceny wizyt fizjoterapeutycznych, terapii manualnej i rehabilitacji. Umów się na konsultację.',
+  ogImage: '/img/og-image.jpg',
+});
+
 const { pricingContent } = usePricing();
-const { $gsap } = useNuxtApp();
 const { state } = useAppStore();
 
 onMounted(() => {

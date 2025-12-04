@@ -9,8 +9,17 @@
 </template>
 
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Fizjoterapia Olsztyn - Profesjonalna Terapia Manualna',
+  description:
+    'Profesjonalna fizjoterapia w Olsztynie. Specjalizuję się w terapii manualnej, rehabilitacji ortopedycznej i sportowej. Indywidualne podejście do każdego pacjenta. Umów się na konsultację.',
+  ogImage: '/img/og-image.jpg',
+  ogType: 'website',
+  twitterCard: 'summary_large_image',
+});
+
 const parallaxSectionsRef = ref<HTMLElement | null>(null);
-const { $gsap, $ScrollTrigger } = useNuxtApp();
+const { $gsap, $ScrollTrigger } = useNuxtApp() as any;
 
 onMounted(() => {
   // Parallax effect for services and opinions sections

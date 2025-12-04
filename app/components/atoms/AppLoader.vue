@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-const { $gsap } = useNuxtApp();
+const { $gsap } = useNuxtApp() as any;
 const isLoading = ref(true);
 const displayProgress = ref(0);
 

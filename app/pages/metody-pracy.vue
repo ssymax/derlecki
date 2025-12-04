@@ -67,9 +67,16 @@
 <script setup lang="ts">
 import SplitType from 'split-type';
 import { useMethods } from '~/composables/useMethods';
+const { $gsap } = useNuxtApp();
+
+useSeoMeta({
+  title: 'Metody pracy',
+  description:
+    'Nowoczesne metody fizjoterapeutyczne: NDT-Bobath, PNF, McKenzie, dry needling, terapia manualna Kaltenborna. Sprawdzone techniki leczenia w Olsztynie.',
+  ogImage: '/img/og-image.jpg',
+});
 
 const { methodsContent } = useMethods();
-const { $gsap } = useNuxtApp();
 const lenis = useLenisState();
 
 const methodsList = computed(() => methodsContent.value?.methods_items || []);

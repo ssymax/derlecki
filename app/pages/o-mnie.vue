@@ -85,9 +85,16 @@
 </template>
 
 <script setup lang="ts">
+useSeoMeta({
+  title: 'O mnie',
+  description:
+    'Poznaj doświadczenie i kwalifikacje Mateusza Derleckiego. Jestem wykwalifikowanym fizjoterapeutą specjalizującym się w terapii manualnej i rehabilitacji sportowej w Olsztynie.',
+  ogImage: '/img/og-image.jpg',
+});
+
 const { aboutContent } = useAboutInfo();
 
-const { $gsap, $ScrollTrigger } = useNuxtApp();
+const { $gsap, $ScrollTrigger } = useNuxtApp() as any;
 const { state } = useAppStore();
 
 const image1 = ref<HTMLElement | null>(null);

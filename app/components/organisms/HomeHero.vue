@@ -49,7 +49,7 @@ const heroRoutes = computed(() => {
 });
 
 const heroContentRef = ref<HTMLElement | null>(null);
-const { $gsap } = useNuxtApp();
+const { $gsap } = useNuxtApp() as any;
 const currentSlide = ref(0);
 const { state } = useAppStore();
 

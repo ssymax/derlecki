@@ -30,6 +30,13 @@
 </template>
 
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Kontakt',
+  description:
+    'Skontaktuj się z gabinetem fizjoterapii w Olsztynie. Umów wizytę telefonicznie lub mailowo. Mateusz Derlecki - profesjonalna fizjoterapia i terapia manualna.',
+  ogImage: '/img/og-image.jpg',
+});
+
 const { contactData, images } = useContactInfo();
 </script>
 

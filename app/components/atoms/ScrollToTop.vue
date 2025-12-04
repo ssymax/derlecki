@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-const { $gsap, $ScrollTrigger } = useNuxtApp();
+const { $gsap, $ScrollTrigger } = useNuxtApp() as any;
 const button = ref<HTMLElement | null>(null);
 const lenis = useLenisState();
 

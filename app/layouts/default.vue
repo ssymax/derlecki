@@ -23,7 +23,7 @@ const route = useRoute();
 const lenis = useLenisState();
 
 onMounted(() => {
-  const { $gsap, $ScrollTrigger } = useNuxtApp();
+  const { $gsap, $ScrollTrigger } = useNuxtApp() as any;
 
   if (scrollWrapperRef.value && contentRef.value) {
     // configure ScrollTrigger to use the scroll wrapper globally

@@ -79,10 +79,16 @@
 
 <script setup lang="ts">
 import SplitType from 'split-type';
+const { $gsap } = useNuxtApp() as any;
+useSeoMeta({
+  title: 'W czym mogę pomóc',
+  description:
+    'Profesjonalne usługi fizjoterapeutyczne w Olsztynie: terapia manualna, rehabilitacja ortopedyczna, sportowa, pooperacyjna i neurologiczna. Indywidualne podejście do każdego pacjenta.',
+  ogImage: '/img/og-image.jpg',
+});
 
 const { servicesContent } = useHelpContent();
 
-const { $gsap } = useNuxtApp();
 const lenis = useLenisState();
 
 const services = computed(() => servicesContent.value?.list || []);
