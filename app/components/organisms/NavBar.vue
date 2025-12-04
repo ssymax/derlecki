@@ -46,7 +46,7 @@ watch(
 onMounted(() => {
   if (!navRef.value) return;
 
-  const { $gsap, $ScrollTrigger } = useNuxtApp() as any;
+  const { $gsap, $ScrollTrigger } = useNuxtApp();
   if (!$gsap || !$ScrollTrigger) return;
 
   // Find the scroll wrapper element
