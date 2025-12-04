@@ -14,12 +14,22 @@
           :index-label="formatMethodIndex(index)"
           :title="method.name"
           :is-active="method._uid === activeMethodId"
+          :id="getMethodTabId(method._uid, index)"
+          :aria-controls="getMethodPanelId(method._uid, index)"
           @click="selectMethod(method._uid)"
         />
       </div>
 
       <div class="details">
-        <article v-if="activeMethod" :key="activeMethod._uid" class="card">
+        <article
+          v-if="activeMethod"
+          :key="activeMethod._uid"
+          class="card"
+          role="tabpanel"
+          :id="getMethodPanelId(activeMethod._uid)"
+          :aria-labelledby="getMethodTabId(activeMethod._uid)"
+          tabindex="0"
+        >
           <header class="header">
             <div ref="detailsHeading" class="heading">
               <AtomsDecoratedHeading align="right">
@@ -80,6 +90,12 @@ const { methodsContent } = useMethods();
 const lenis = useLenisState();
 
 const methodsList = computed(() => methodsContent.value?.methods_items || []);
+
+const buildMethodId = (prefix: string, id: string, index?: number) =>
+  `${prefix}-${id || (index ?? 0)}`;
+const getMethodTabId = (id: string, index?: number) => buildMethodId('method-tab', id, index);
+const getMethodPanelId = (id: string, index?: number) =>
+  buildMethodId('method-panel', id, index);
 
 const activeMethodId = ref(methodsList.value[0]?._uid ?? '');
 

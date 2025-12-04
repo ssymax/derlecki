@@ -13,6 +13,7 @@
             :alt="image.alt"
             class="home__hero-image"
             format="webp"
+            fetchpriority="high"
           />
         </div>
       </div>

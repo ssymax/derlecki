@@ -19,12 +19,17 @@
             height="300"
             class="contact-gallery__image"
             loading="eager"
+            :fetchpriority="index === 0 ? 'high' : 'auto'"
           />
-          <div
-            class="contact-gallery__expand-btn"
-            :aria-label="`Pokaż ${img.alt} w pełnym rozmiarze`"
-          >
-            <Icon name="mdi:plus" size="24" />
+          <div class="contact-gallery__expand-btn">
+            <button
+              type="button"
+              class="contact-gallery__expand-btn-inner"
+              :aria-label="`Pokaż ${img.alt} w pełnym rozmiarze`"
+              @click.stop="openFullscreen(index)"
+            >
+              <Icon name="mdi:plus" size="24" aria-hidden="true" />
+            </button>
           </div>
         </div>
       </div>
@@ -280,12 +285,30 @@ onBeforeUnmount(() => {
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(5px);
   color: white;
-  pointer-events: none;
+  pointer-events: auto;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   filter: drop-shadow(0 0.6rem 1.6rem rgba(0, 0, 0, 0.8));
+}
+
+.contact-gallery__expand-btn-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 50%;
+
+  &:focus-visible {
+    outline: 3px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 2px;
+  }
 }
 
 .contact-gallery__fullscreen {

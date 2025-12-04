@@ -39,6 +39,7 @@
             height="1280"
             loading="eager"
             class="img"
+            fetchpriority="high"
           />
         </div>
         <div ref="bioSection" class="section">

@@ -3,6 +3,7 @@
     <div v-if="isContactPage" class="app-footer__map">
       <div class="app-footer__map-divider" />
       <iframe
+        :title="`Mapa lokalizacji ${contactData?.owner_name}`"
         :src="contactData?.google_maps_url"
         width="100%"
         height="450"

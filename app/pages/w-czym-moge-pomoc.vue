@@ -14,12 +14,20 @@
           :title="service.title"
           :icon="getServiceIcon(index)"
           :is-active="activeIndex === index"
+          :id="getServiceTabId(service, index)"
+          :aria-controls="getServicePanelId(service, index)"
           @click="changeService(index)"
         />
       </div>
     </div>
 
-    <div class="content">
+    <div
+      class="content"
+      role="tabpanel"
+      :id="getServicePanelId(currentService, activeIndex)"
+      :aria-labelledby="getServiceTabId(currentService, activeIndex)"
+      tabindex="0"
+    >
       <div class="text">
         <div class="clip">
           <div ref="heading" class="heading">
@@ -94,6 +102,10 @@ const lenis = useLenisState();
 const services = computed(() => servicesContent.value?.list || []);
 
 const getServiceIcon = (index: number) => serviceIcons[index] || '';
+const getServiceTabId = (service: ServiceItem, index: number) =>
+  `service-tab-${service?._uid || index}`;
+const getServicePanelId = (service: ServiceItem, index: number) =>
+  `service-panel-${service?._uid || index}`;
 
 const activeIndex = ref(0);
 const heading = ref<HTMLElement | null>(null);

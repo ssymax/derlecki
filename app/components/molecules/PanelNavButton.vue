@@ -1,8 +1,10 @@
 <template>
   <button
+    role="tab"
     :type="type"
     :class="['panel-nav-button', variantClass, { 'panel-nav-button--active': isActive }]"
-    :aria-pressed="ariaPressed ?? isActive"
+    :aria-selected="ariaSelected"
+    :tabindex="isActive ? 0 : -1"
     @click="$emit('click', $event)"
   >
     <span v-if="icon" class="panel-nav-button__icon">
@@ -55,7 +57,7 @@ const computedArrow = computed(() => {
 
 const type = computed(() => props.type);
 const isActive = computed(() => props.isActive ?? false);
-const ariaPressed = computed(() => props.ariaPressed);
+const ariaSelected = computed(() => props.ariaPressed ?? props.isActive ?? false);
 const variantClass = computed(() => `panel-nav-button--${variant.value}`);
 const { indexLabel, title, subtitle } = toRefs(props);
 </script>

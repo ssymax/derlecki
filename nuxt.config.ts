@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     description:
       'Profesjonalna fizjoterapia w Olsztynie. Specjalizuję się w terapii manualnej, rehabilitacji ortopedycznej i sportowej. Umów się na konsultację.',
     defaultLocale: 'pl',
+    enabled: true,
   },
   sitemap: {
     strictNuxtContentPaths: true,
@@ -46,7 +47,6 @@ export default defineNuxtConfig({
     provide: true,
     extraPlugins: {
       scrollTrigger: true,
-      observer: true,
     },
   },
   vite: {
@@ -64,6 +64,6 @@ export default defineNuxtConfig({
     apiOptions: {
       region: 'eu',
     },
-    bridge: true,
+    bridge: process.env.NODE_ENV !== 'production',
   },
 });
