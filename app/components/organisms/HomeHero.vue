@@ -108,14 +108,16 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .home {
-  min-height: 100lvh;
+  min-height: 100vh;
+  min-height: 100dvh;
   overflow: hidden;
 }
 
 .home__hero {
   position: relative;
   width: 100vw;
-  height: 100lvh;
+  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -165,7 +167,7 @@ onMounted(() => {
 }
 
 .home__hero-title {
-  font-size: clamp(4.8rem, 8vw, 9.6rem);
+  font-size: clamp(3.6rem, 6vw, 7.2rem);
   font-weight: 300;
   margin-bottom: 1.6rem;
   line-height: 1.1;
@@ -173,7 +175,7 @@ onMounted(() => {
 }
 
 .home__hero-subtitle {
-  font-size: clamp(2rem, 3vw, 3rem);
+  font-size: clamp(1.6rem, 2.2vw, 2.2rem);
   font-weight: 300;
   line-height: 1.4;
   margin-bottom: 4.8rem;

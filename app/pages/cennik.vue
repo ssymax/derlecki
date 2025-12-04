@@ -81,22 +81,15 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .pricing {
-  min-height: 100vh;
-  max-width: 140rem;
-  margin: 0 auto;
-  padding: clamp(3rem, 5vw, 6rem) 2.4rem;
-
-  @media (max-width: 768px) {
-    padding: clamp(3rem, 5vw, 6rem) 1.6rem;
-  }
+  @include page-container;
 }
 
 .pricing__grid {
   display: grid;
-  gap: 2.4rem;
-  margin-top: 4rem;
+  gap: 2rem;
+  @include px-to-vw(margin-top, 40);
 
-  @media (min-width: 768px) {
+  @include min-width-md {
     grid-template-columns: repeat(2, 1fr);
     gap: 3.2rem;
   }

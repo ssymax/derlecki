@@ -65,7 +65,7 @@ const contactItems = computed(() => {
   gap: 3rem;
   padding: 2rem;
 
-  @media (max-width: 768px) {
+  @include max-width-md {
     gap: 2.5rem;
   }
 }
@@ -78,9 +78,9 @@ const contactItems = computed(() => {
   margin: 0 0 3rem;
   line-height: 1.3;
 
-  @media (max-width: 768px) {
-    font-size: 2.6rem;
-    margin: 0 0 2.5rem;
+  @include max-width-md {
+    font-size: 2rem;
+    margin: 0 0 2rem;
   }
 }
 
@@ -94,9 +94,9 @@ const contactItems = computed(() => {
   text-decoration: none;
   transition: all 0.3s ease;
 
-  @media (max-width: 768px) {
-    font-size: 2rem;
-    gap: 1.5rem;
+  @include max-width-md {
+    font-size: 1.6rem;
+    gap: 1.2rem;
   }
 
   &:hover {
@@ -115,6 +115,13 @@ const contactItems = computed(() => {
   color: $primary-color;
   flex-shrink: 0;
   transition: transform 0.3s ease;
+
+  @include max-width-md {
+    :deep(svg) {
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+  }
 
   :deep(svg) {
     color: $primary-color;

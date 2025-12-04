@@ -88,8 +88,12 @@ onMounted(() => {
     gap: 1rem;
   }
 
+  .decorated-heading__text {
+    font-size: 2rem;
+  }
+
   .decorated-heading__sparkle {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 
   .decorated-heading__line {

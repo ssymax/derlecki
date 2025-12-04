@@ -117,7 +117,6 @@ const address = computed(() => ({
   @include max-width-lg() {
     width: calc(100% + 3.2rem);
     margin: -3.2rem -1.6rem 3.2rem;
-    padding-bottom: 3.2rem;
   }
 }
 

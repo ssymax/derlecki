@@ -16,6 +16,9 @@ body {
   background: #fff;
   font-family: 'Montserrat', sans-serif;
   line-height: 1.8;
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
 }
 
 h1,
@@ -31,8 +34,13 @@ p {
 }
 
 p {
-  line-height: 1.8;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
   margin-bottom: 1.5rem;
+
+  @include max-width-md {
+    font-size: $font-size-base-mobile;
+  }
 
   &:last-child {
     margin-bottom: 0;

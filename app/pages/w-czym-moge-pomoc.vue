@@ -1,12 +1,12 @@
 <template>
-  <section v-if="servicesContent" class="services">
+  <section v-if="servicesContent" class="page">
     <MoleculesSectionIntroPanel
       :title="servicesContent.header"
       :intro="servicesContent.intro"
     />
 
-    <div class="services__navigation" role="tablist" aria-label="Obszary pracy">
-      <div class="services__nav-grid">
+    <div class="nav" role="tablist" aria-label="Obszary pracy">
+      <div class="nav__grid">
         <MoleculesPanelNavButton
           v-for="(service, index) in services"
           :key="service._uid"
@@ -19,18 +19,18 @@
       </div>
     </div>
 
-    <div class="services__content">
-      <div class="services__text">
-        <div class="services__clip">
-          <div ref="heading" class="services__heading">
+    <div class="content">
+      <div class="text">
+        <div class="clip">
+          <div ref="heading" class="heading">
             <AtomsDecoratedHeading align="left">
               {{ currentService.title }}
             </AtomsDecoratedHeading>
           </div>
         </div>
-        <div :key="activeIndex" class="services__description">
-          <div class="services__clip services__clip--paragraphs">
-            <div ref="paragraphContent" class="services__paragraphs">
+        <div :key="activeIndex" class="description">
+          <div class="clip clip--p">
+            <div ref="paragraphContent" class="paragraphs">
               <template v-if="[0, 2, 3].includes(activeIndex)">
                 <p v-if="currentService.content[0]">
                   {{ currentService.content[0].item }}
@@ -43,10 +43,7 @@
               </template>
             </div>
           </div>
-          <div
-            v-if="currentService.list?.length"
-            class="services__clip services__clip--list"
-          >
+          <div v-if="currentService.list?.length" class="clip clip--list">
             <ul ref="listContent">
               <li v-for="listItem in currentService.list" :key="listItem._uid">
                 {{ listItem.item }}
@@ -55,16 +52,16 @@
           </div>
           <div
             v-if="currentService.content[1] && [0, 2, 3].includes(activeIndex)"
-            class="services__clip services__clip--paragraphs services__clip--after-list"
+            class="clip clip--p clip--after"
           >
-            <div ref="afterListContent" class="services__paragraphs">
+            <div ref="afterListContent" class="paragraphs">
               <p>{{ currentService.content[1].item }}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div ref="imageWrapper" class="services__image">
+      <div ref="imageWrapper" class="img-wrap">
         <NuxtImg
           :key="currentService._uid"
           ref="image"
@@ -73,7 +70,7 @@
           format="webp"
           width="1280"
           height="1280"
-          class="services__img"
+          class="img"
         />
       </div>
     </div>
@@ -86,6 +83,7 @@ import SplitType from 'split-type';
 const { servicesContent } = useHelpContent();
 
 const { $gsap } = useNuxtApp();
+const lenis = useLenisState();
 
 const services = computed(() => servicesContent.value?.list || []);
 
@@ -109,6 +107,18 @@ const getImageEl = () =>
     : image.value) as HTMLElement | null;
 const getListItems = () =>
   listContent.value ? (Array.from(listContent.value.children) as HTMLElement[]) : [];
+
+const scrollToContent = () => {
+  if (window.innerWidth <= 768 && heading.value) {
+    if (lenis.value) {
+      lenis.value.scrollTo(heading.value, {
+        offset: -100,
+        duration: 1,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+    }
+  }
+};
 
 const changeService = (index: number) => {
   if (
@@ -223,6 +233,9 @@ const changeService = (index: number) => {
             );
           }
         }
+
+        // Scroll to content on mobile
+        scrollToContent();
       });
     },
   });
@@ -390,65 +403,57 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped lang="scss">
-@use 'sass:color';
-.services {
+.page {
   min-height: 100vh;
-  padding-top: clamp(2rem, 4vw, 5rem);
+  @include px-to-vw(padding-top, 20);
 }
 
-.services__navigation {
-  margin: 0 auto 6rem;
-  padding: 2rem;
+.nav {
+  @include px-to-vw(margin-bottom, 60);
+  @include px-to-vw(padding, 20);
 }
 
-.services__nav-grid {
+.nav__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.5rem;
 }
 
-.services__content {
+.content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 5rem;
+  @include px-to-vw(gap, 50);
 }
 
-.services__clip {
+.clip {
   position: relative;
   overflow: hidden;
+
+  &--p {
+    margin-bottom: 1.5rem;
+  }
+
+  &--list {
+    margin-top: 1rem;
+  }
+
+  &--after {
+    margin-top: 1.5rem;
+  }
+
+  > * {
+    position: relative;
+  }
 }
 
-.services__clip--paragraphs {
-  margin-bottom: 1.5rem;
-}
-
-.services__clip--list {
-  margin-top: 1rem;
-}
-
-.services__clip--after-list {
-  margin-top: 1.5rem;
-}
-
-.services__clip > * {
-  position: relative;
-}
-
-.services__heading {
+.heading {
   font-size: 3rem;
   font-weight: 700;
   color: $primary-color;
   margin-bottom: 2rem;
 }
 
-.services__description {
-  line-height: 1.8;
-  color: #333;
-
-  p {
-    margin-bottom: 1.5rem;
-  }
-
+.description {
   ul {
     margin-left: 0;
     padding-left: 0;
@@ -457,17 +462,14 @@ onBeforeUnmount(() => {
 
   li {
     position: relative;
-    padding-left: 2.5rem;
+    @include px-to-vw(padding-left, 25);
     margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
 
     &::before {
       content: '✦';
       position: absolute;
       left: 0;
-      top: 50%;
-      transform: translateY(-50%);
+      top: 0.2rem;
       font-size: 1.2rem;
       color: $primary-color;
       opacity: 0.6;
@@ -475,68 +477,67 @@ onBeforeUnmount(() => {
   }
 }
 
-.services__image {
+.img-wrap {
   height: 70vh;
   overflow: hidden;
   will-change: transform;
   border-radius: 1.2rem;
 }
 
-.services__img {
+.img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   will-change: transform;
 }
 
-@media (max-width: 1024px) {
-  .services__content {
+@include max-width-lg {
+  .content {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
 
-  .services__navigation {
+  .nav {
     padding: 1.5rem;
   }
 
-  .services__nav-grid {
+  .nav__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .services__image {
+  .img-wrap {
     height: 50vh;
   }
 
-  .services__heading {
+  .heading {
     font-size: 2.5rem;
   }
 }
 
-@media (max-width: 768px) {
-  .services {
+@include max-width-md {
+  .page {
     padding: 1rem;
   }
 
-  .services__navigation {
+  .nav {
     padding: 1.25rem;
     margin-bottom: 2rem;
   }
 
-  .services__nav-grid {
+  .nav__grid {
     grid-template-columns: 1fr;
   }
 
-  .services__nav-item {
-    padding: 1.25rem;
-    grid-template-columns: auto 1px minmax(0, 1fr) auto;
-  }
-
-  .services__heading {
+  .heading {
     font-size: 2rem;
   }
 
-  .services__description {
-    font-size: 1rem;
+  .description li {
+    padding-left: 2.4rem;
+
+    &::before {
+      left: 0.4rem;
+    }
   }
 }
 </style>

@@ -35,10 +35,7 @@ const { contactData, images } = useContactInfo();
 
 <style scoped lang="scss">
 .contact {
-  min-height: 100vh;
-  max-width: 140rem;
-  margin: 0 auto;
-  padding: clamp(3rem, 5vw, 6rem) 2.4rem;
+  @include page-container;
 }
 
 .contact__content {
@@ -47,7 +44,7 @@ const { contactData, images } = useContactInfo();
   grid-template-columns: 1fr 1fr;
   align-items: start;
 
-  @media (max-width: 1024px) {
+  @include max-width-lg {
     grid-template-columns: 1fr;
     gap: 6rem;
   }

@@ -49,13 +49,18 @@ onMounted(() => {
   const { $gsap, $ScrollTrigger } = useNuxtApp();
   if (!$gsap || !$ScrollTrigger) return;
 
+  // Find the scroll wrapper element
+  const scrollWrapper = document.querySelector('.scroll-wrapper');
+  if (!scrollWrapper) return;
+
   let lastScrollY = 0;
   let ticking = false;
 
   $ScrollTrigger.create({
+    scroller: scrollWrapper,
     start: 'top top',
     end: 'max',
-    onUpdate: (self) => {
+    onUpdate: (self: any) => {
       if (ticking) return;
 
       ticking = true;

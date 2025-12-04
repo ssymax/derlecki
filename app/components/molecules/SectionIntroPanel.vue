@@ -40,6 +40,11 @@ const introAlign = computed(() => props.introAlign);
   max-width: clamp(50rem, 85vw, 110rem);
   margin: 0 auto clamp(3rem, 5vw, 6rem);
   padding: 0 clamp(1rem, 3vw, 3rem);
+
+  @include max-width-md {
+    max-width: 100%;
+    padding: 0;
+  }
 }
 
 .section-panel__heading {
@@ -65,26 +70,19 @@ const introAlign = computed(() => props.introAlign);
 }
 
 .section-panel__intro {
-  @include px-to-vw(font-size, 28);
   color: #555;
   line-height: 1.7;
   text-align: left;
   font-style: italic;
-  max-width: 60ch;
 
   p {
+    font-size: clamp(1.8rem, 2.2vw, 2.2rem);
     margin-bottom: 0.75rem;
     text-align: inherit;
 
     &:last-child {
       margin-bottom: 0;
     }
-  }
-}
-
-@media (max-width: 768px) {
-  .section-panel__intro {
-    font-size: 1.6rem;
   }
 }
 </style>

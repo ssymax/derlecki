@@ -1,5 +1,5 @@
 import type Lenis from 'lenis';
 
-export default function () {
-  return useState<Lenis>('lenis');
-}
+export const useLenisState = () => {
+  return useState<Lenis | undefined>('lenis', () => undefined);
+};

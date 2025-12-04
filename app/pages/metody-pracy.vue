@@ -1,17 +1,12 @@
 <template>
-  <section v-if="methodsContent" class="methods">
+  <section v-if="methodsContent" class="page">
     <MoleculesSectionIntroPanel
       :title="methodsContent.header"
       :intro="methodsContent.intro"
     />
 
-    <div class="methods__layout">
-      <div
-        ref="methodsListRef"
-        class="methods__list"
-        role="tablist"
-        aria-label="Metody pracy"
-      >
+    <div class="layout">
+      <div ref="methodsListRef" class="list" role="tablist" aria-label="Metody pracy">
         <MoleculesPanelNavButton
           v-for="(method, index) in methodsList"
           :key="method._uid"
@@ -23,30 +18,26 @@
         />
       </div>
 
-      <div class="methods__details">
-        <article
-          v-if="activeMethod"
-          :key="activeMethod._uid"
-          class="methods__details-card"
-        >
-          <header class="methods__details-header">
-            <div ref="detailsHeading" class="methods__details-heading">
+      <div class="details">
+        <article v-if="activeMethod" :key="activeMethod._uid" class="card">
+          <header class="header">
+            <div ref="detailsHeading" class="heading">
               <AtomsDecoratedHeading align="right">
                 {{ activeMethod.name }}
               </AtomsDecoratedHeading>
             </div>
-            <p ref="detailsLead" class="methods__details-lead">
+            <p ref="detailsLead" class="lead">
               {{ activeMethod.short_description }}
             </p>
           </header>
 
-          <div class="methods__details-body">
-            <div class="methods__details-text">
+          <div class="body">
+            <div class="text">
               <p ref="detailsDescription">
                 {{ activeMethod.description }}
               </p>
 
-              <div v-if="activeMethod.list?.length" class="methods__details-section">
+              <div v-if="activeMethod.list?.length" class="section">
                 <ul ref="techniquesList">
                   <li v-for="listItem in activeMethod.list" :key="listItem._uid">
                     {{ listItem.item }}
@@ -55,7 +46,7 @@
               </div>
             </div>
 
-            <div ref="imageWrapper" class="methods__details-image">
+            <div ref="imageWrapper" class="img-wrap">
               <NuxtImg
                 :key="activeMethod._uid"
                 :src="activeMethod.image.filename"
@@ -63,7 +54,7 @@
                 width="1024"
                 height="1280"
                 format="webp"
-                class="methods__img"
+                class="img"
               />
             </div>
           </div>
@@ -79,6 +70,7 @@ import { useMethods } from '~/composables/useMethods';
 
 const { methodsContent } = useMethods();
 const { $gsap } = useNuxtApp();
+const lenis = useLenisState();
 
 const methodsList = computed(() => methodsContent.value?.methods_items || []);
 
@@ -93,9 +85,24 @@ const activeMethod = computed<MethodItem | null>(() => {
   return found as unknown as MethodItem | null;
 });
 
+const scrollToContent = () => {
+  if (window.innerWidth <= 768 && detailsHeading.value) {
+    if (lenis.value) {
+      lenis.value.scrollTo(detailsHeading.value, {
+        offset: -100,
+        duration: 1,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+    }
+  }
+};
+
 const selectMethod = (methodId: string) => {
   if (methodId === activeMethodId.value) return;
   activeMethodId.value = methodId;
+  nextTick(() => {
+    scrollToContent();
+  });
 };
 
 const formatMethodIndex = (index: number) => `${String(index + 1).padStart(2, '0')}.`;
@@ -237,34 +244,34 @@ onBeforeUnmount(() => {
 <style scoped lang="scss">
 @use 'sass:color';
 
-.methods {
+.page {
   min-height: 100vh;
-  padding-top: clamp(2rem, 4vw, 5rem);
+  @include px-to-vw(padding-top, 20);
 }
 
-.methods__layout {
+.layout {
   display: grid;
   grid-template-columns: minmax(0, 42rem) minmax(0, 1fr);
-  gap: 4rem;
+  @include px-to-vw(gap, 40);
 }
 
-.methods__list {
+.list {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   @include px-to-vw(padding-top, 100);
 }
 
-.methods__details {
+.details {
   position: relative;
 }
 
-.methods__details-card {
+.card {
   background: #fff;
-  padding: 3rem;
+  @include px-to-vw(padding, 30);
 }
 
-.methods__details-header {
+.header {
   margin-bottom: 2rem;
 
   :deep(.decorated-heading) {
@@ -272,30 +279,26 @@ onBeforeUnmount(() => {
   }
 }
 
-.methods__details-lead {
-  font-size: 1.6rem;
+.lead {
   color: #555;
   line-height: 1.6;
 }
 
-.methods__details-body {
+.body {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(24rem, 0.9fr);
-  gap: 2.5rem;
+  @include px-to-vw(gap, 25);
   align-items: stretch;
 }
 
-.methods__details-text {
-  font-size: 1.7rem;
-  color: #292929;
-  line-height: 1.7;
+.text {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-.methods__details-section {
-  margin-top: 2.5rem;
+.section {
+  @include px-to-vw(margin-top, 25);
 
   ul {
     list-style: none;
@@ -307,7 +310,7 @@ onBeforeUnmount(() => {
 
   li {
     position: relative;
-    padding-left: 2.4rem;
+    @include px-to-vw(padding-left, 24);
     color: #2f2f2f;
     font-size: 1.5rem;
     line-height: 1.5;
@@ -324,48 +327,47 @@ onBeforeUnmount(() => {
   }
 }
 
-.methods__section-label {
-  font-weight: 600;
-  font-size: 1.4rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(#000, 0.6);
-  margin-bottom: 1.2rem;
-}
-
-.methods__details-image {
+.img-wrap {
   overflow: hidden;
   min-height: 28rem;
   box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.1);
   border-radius: 1.2rem;
 }
 
-.methods__img {
+.img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-@media (max-width: 1024px) {
-  .methods__layout {
+@include max-width-lg {
+  .layout {
     grid-template-columns: 1fr;
   }
 
-  .methods__list-item {
-    padding: 1.5rem;
-  }
-
-  .methods__details-body {
+  .body {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 }
 
-@media (max-width: 640px) {
-  .methods__details-card {
-    padding: 2rem;
+@include max-width-md {
+  .card {
+    padding: 0;
+    background: transparent;
   }
 
-  .methods__details-image {
+  .section li {
+    padding-left: 2.4rem;
+
+    &::before {
+      left: 0.4rem;
+    }
+  }
+}
+
+@include max-width-sm {
+  .img-wrap {
     min-height: 22rem;
   }
 }

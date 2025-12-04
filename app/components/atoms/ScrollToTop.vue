@@ -12,12 +12,23 @@
 <script setup lang="ts">
 const { $gsap, $ScrollTrigger } = useNuxtApp();
 const button = ref<HTMLElement | null>(null);
+const lenis = useLenisState();
 
 const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  });
+  if (lenis.value) {
+    lenis.value.scrollTo(0, {
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+  } else {
+    const scrollWrapper = document.querySelector('.scroll-wrapper');
+    if (scrollWrapper) {
+      scrollWrapper.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+  }
 };
 
 onMounted(() => {
@@ -31,7 +42,10 @@ onMounted(() => {
   });
 
   // Show/hide based on scroll position
+  const scrollWrapper = document.querySelector('.scroll-wrapper');
+
   $ScrollTrigger.create({
+    scroller: scrollWrapper,
     start: 'top -200',
     end: 'max',
     onEnter: () => {
@@ -105,7 +119,7 @@ onMounted(() => {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 
-  @media (max-width: 768px) {
+  @include max-width-md {
     bottom: 2rem;
     right: 2rem;
     width: 4.5rem;

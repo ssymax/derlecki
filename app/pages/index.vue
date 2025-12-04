@@ -1,7 +1,7 @@
 <template>
-  <div class="home-page">
+  <div class="page">
     <OrganismsHomeHero />
-    <div ref="parallaxSectionsRef" class="home-page__parallax-sections">
+    <div ref="parallaxSectionsRef" class="parallax">
       <OrganismsHomeServices />
       <OrganismsHomeOpinions />
     </div>
@@ -36,21 +36,14 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.home-page {
-  margin-left: calc(100 / 1920 * -100vw);
-  margin-right: calc(100 / 1920 * -100vw);
-  margin-top: calc(50 / 1920 * -100vw);
-  margin-bottom: calc(50 / 1920 * -100vw);
-
-  @media (min-width: 1920px) {
-    margin-left: -100px;
-    margin-right: -100px;
-    margin-top: -50px;
-    margin-bottom: -50px;
-  }
+.page {
+  @include px-to-vw(margin-left, -100);
+  @include px-to-vw(margin-right, -100);
+  @include px-to-vw(margin-top, -50);
+  @include px-to-vw(margin-bottom, -50);
 }
 
-.home-page__parallax-sections {
+.parallax {
   position: relative;
   z-index: 3;
   will-change: transform;

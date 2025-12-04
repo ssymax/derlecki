@@ -174,4 +174,24 @@ const { indexLabel, title, subtitle } = toRefs(props);
     transform 0.3s ease,
     color 0.3s ease;
 }
+
+@include max-width-md {
+  .panel-nav-button {
+    grid-template-columns: auto 1fr auto;
+    gap: 1.2rem;
+    padding: 1.2rem;
+  }
+
+  .panel-nav-button__divider {
+    display: none;
+  }
+
+  .panel-nav-button__title {
+    font-size: 1.4rem;
+  }
+
+  .panel-nav-button--methods .panel-nav-button__title {
+    font-size: 1.6rem;
+  }
+}
 </style>

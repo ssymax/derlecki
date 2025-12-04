@@ -165,9 +165,11 @@ onBeforeUnmount(() => {
   margin: 0 0 4rem;
   rotate: -8deg;
 
-  @media (max-width: 768px) {
+  @include max-width-md {
     font-size: 2.8rem;
     margin: 0 0 3rem;
+    text-align: center;
+    rotate: 0deg;
   }
 }
 
@@ -175,12 +177,15 @@ onBeforeUnmount(() => {
   position: relative;
   min-height: 60rem;
 
-  @media (max-width: 1024px) {
+  @include max-width-lg {
     min-height: 50rem;
   }
 
-  @media (max-width: 768px) {
+  @include max-width-md {
     min-height: 45rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -208,7 +213,7 @@ onBeforeUnmount(() => {
     z-index: 3;
   }
 
-  @media (max-width: 768px) {
+  @include max-width-md {
     &:nth-child(1) {
       top: 0;
       left: 0;
@@ -258,7 +263,7 @@ onBeforeUnmount(() => {
   max-width: 35rem;
   border-radius: 1.2rem;
 
-  @media (max-width: 768px) {
+  @include max-width-md {
     max-width: 28rem;
   }
 }

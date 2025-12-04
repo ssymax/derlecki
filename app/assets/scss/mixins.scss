@@ -11,7 +11,20 @@
   @include px-to-vw(padding-left, 100);
   @include px-to-vw(padding-right, 100);
   @include px-to-vw(padding-top, 50);
-  @include px-to-vw(padding-bottom, 50);
+}
+
+@mixin page-container {
+  min-height: 100vh;
+  max-width: 140rem;
+  margin: 0 auto;
+  @include px-to-vw(padding-top, 80);
+  @include px-to-vw(padding-left, 24);
+  @include px-to-vw(padding-right, 24);
+
+  @include max-width-md {
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+  }
 }
 
 $xxxl: 1920;

@@ -1,13 +1,13 @@
 <template>
-  <div v-if="courseContent" class="course-page">
+  <div v-if="courseContent" class="page">
     <MoleculesSectionIntroPanel
       :title="courseContent.header"
       :intro="courseContent.intro"
     />
 
     <!-- Hero Section with Quote -->
-    <section ref="heroSection" class="course-hero">
-      <div ref="heroImage" class="course-hero__image-wrapper">
+    <section ref="heroSection" class="hero">
+      <div ref="heroImage" class="hero__wrap">
         <NuxtImg
           v-if="courseContent.images[0]"
           :src="courseContent.images[0].filename"
@@ -16,32 +16,28 @@
           width="1920"
           height="1080"
           loading="eager"
-          class="course-hero__image"
+          class="hero__img"
         />
       </div>
-      <div class="course-hero__overlay">
-        <blockquote ref="quoteText" class="course-hero__quote">
+      <div class="hero__overlay">
+        <blockquote ref="quoteText" class="hero__quote">
           {{ courseContent.quote }}
         </blockquote>
       </div>
     </section>
 
     <!-- Main Content -->
-    <section class="course-content">
+    <section class="content">
       <!-- Items and Image 2 Row -->
-      <div class="course-content__row course-content__row--first">
-        <div ref="itemsSection" class="course-content__items">
+      <div class="row">
+        <div ref="itemsSection" class="items">
           <AtomsDecoratedHeading align="left">O szkoleniu</AtomsDecoratedHeading>
-          <p
-            v-for="item in courseContent.text_items"
-            :key="item._uid"
-            class="course-content__item"
-          >
+          <p v-for="item in courseContent.text_items" :key="item._uid" class="item">
             {{ item.item }}
           </p>
         </div>
 
-        <div v-if="courseContent.images[1]" ref="image2" class="course-content__image">
+        <div v-if="courseContent.images[1]" ref="image2" class="img-wrap">
           <NuxtImg
             :src="courseContent.images[1].filename"
             :alt="courseContent.images[1].alt || 'Course image 2'"
@@ -49,14 +45,14 @@
             width="960"
             height="1280"
             loading="lazy"
-            class="course-content__img"
+            class="img"
           />
         </div>
       </div>
 
       <!-- Image 3 and For Who Row -->
-      <div class="course-content__row course-content__row--second">
-        <div v-if="courseContent.images[2]" ref="image3" class="course-content__image">
+      <div class="row">
+        <div v-if="courseContent.images[2]" ref="image3" class="img-wrap">
           <NuxtImg
             :src="courseContent.images[2].filename"
             :alt="courseContent.images[2].alt || 'Course image 3'"
@@ -64,13 +60,13 @@
             width="1280"
             height="720"
             loading="lazy"
-            class="course-content__img"
+            class="img"
           />
         </div>
 
-        <div ref="forWhoSection" class="course-content__for-who">
-          <Icon name="mdi:account-group" class="course-content__icon" />
-          <p ref="forWhoDescription" class="course-content__description">
+        <div ref="forWhoSection" class="for-who">
+          <Icon name="mdi:account-group" class="for-who__icon" />
+          <p ref="forWhoDescription" class="for-who__text">
             {{ courseContent.for_who }}
           </p>
         </div>
@@ -178,21 +174,21 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.course-page {
+.page {
   display: flex;
   flex-direction: column;
-  gap: 4rem;
-  padding-top: clamp(2rem, 4vw, 5rem);
+  @include px-to-vw(gap, 40);
+  @include px-to-vw(padding-top, 20);
 }
 
-// Hero Section
-.course-hero {
+.hero {
   position: relative;
   height: 70vh;
   min-height: 600px;
   overflow: hidden;
   border-radius: 1.2rem;
-  margin: 0 clamp(1rem, 3vw, 3rem);
+  @include px-to-vw(margin-left, 10);
+  @include px-to-vw(margin-right, 10);
 
   @media (max-width: 768px) {
     height: 60vh;
@@ -200,7 +196,7 @@ onMounted(() => {
   }
 }
 
-.course-hero__image-wrapper {
+.hero__wrap {
   position: absolute;
   top: -10%;
   left: 0;
@@ -209,14 +205,14 @@ onMounted(() => {
   overflow: hidden;
 }
 
-.course-hero__image {
+.hero__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
 }
 
-.course-hero__overlay {
+.hero__overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -226,10 +222,10 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.4) 100%);
-  padding: clamp(2rem, 4vw, 4rem);
+  @include px-to-vw(padding, 40);
 }
 
-.course-hero__quote {
+.hero__quote {
   font-size: clamp(1.5rem, 3.5vw, 3rem);
   font-weight: 600;
   line-height: 1.4;
@@ -245,18 +241,19 @@ onMounted(() => {
   }
 }
 
-// Main Content
-.course-content {
+.content {
   display: flex;
   flex-direction: column;
-  gap: 4rem;
-  padding: 2rem clamp(1rem, 3vw, 3rem);
+  @include px-to-vw(gap, 40);
+  @include px-to-vw(padding-top, 20);
+  @include px-to-vw(padding-left, 10);
+  @include px-to-vw(padding-right, 10);
 }
 
-.course-content__row {
+.row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(2rem, 4vw, 4rem);
+  @include px-to-vw(gap, 40);
   align-items: center;
 
   @media (max-width: 1024px) {
@@ -265,17 +262,15 @@ onMounted(() => {
   }
 }
 
-.course-content__items {
+.items {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.course-content__item {
-  line-height: 1.8;
-  color: var(--color-text, #333);
+.item {
   position: relative;
-  padding-left: 2.5rem;
+  @include px-to-vw(padding-left, 25);
   margin-bottom: 1rem;
 
   &::before {
@@ -289,14 +284,14 @@ onMounted(() => {
   }
 }
 
-.course-content__image {
+.img-wrap {
   position: relative;
   overflow: hidden;
   border-radius: 1rem;
   height: 100%;
 }
 
-.course-content__img {
+.img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -304,7 +299,7 @@ onMounted(() => {
   border-radius: 1rem;
 }
 
-.course-content__for-who {
+.for-who {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -313,16 +308,48 @@ onMounted(() => {
   text-align: center;
 }
 
-.course-content__icon {
+.for-who__icon {
   font-size: clamp(3rem, 5vw, 4rem);
   color: $primary-color;
   opacity: 0.8;
 }
 
-.course-content__description {
+.for-who__text {
   font-size: clamp(1.75rem, 3vw, 2.25rem);
   line-height: 1.6;
   color: $primary-color;
   font-weight: 500;
+}
+
+@include max-width-md {
+  .hero {
+    margin-bottom: 3rem;
+  }
+
+  .hero__img {
+    object-position: 40% center;
+  }
+
+  .row {
+    gap: 4rem;
+
+    &:first-of-type {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &:last-of-type {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+  }
+
+  .item {
+    padding-left: 2.4rem;
+
+    &::before {
+      left: 0.4rem;
+    }
+  }
 }
 </style>

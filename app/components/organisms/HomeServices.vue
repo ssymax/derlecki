@@ -118,9 +118,11 @@ onBeforeUnmount(() => {
 .home-services {
   max-width: 140rem;
   @include px-to-vw(padding-top, 100);
+  @include px-to-vw(padding-left, 24);
+  @include px-to-vw(padding-right, 24);
   margin: 0 auto;
 
-  @media (max-width: 768px) {
+  @include max-width-md {
     padding: clamp(4rem, 8vw, 6rem) 1.6rem;
   }
 }
@@ -130,7 +132,7 @@ onBeforeUnmount(() => {
   font-weight: 600;
   color: $primary-color;
   text-align: center;
-  margin-bottom: 6rem;
+  @include px-to-vw(margin-bottom, 60);
   line-height: 1.2;
   overflow: hidden;
 
@@ -139,7 +141,7 @@ onBeforeUnmount(() => {
     overflow: hidden;
   }
 
-  @media (max-width: 768px) {
+  @include max-width-md {
     margin-bottom: 4rem;
   }
 }
@@ -147,15 +149,24 @@ onBeforeUnmount(() => {
 .home-services__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 3rem;
-  margin-bottom: 6rem;
+  @include px-to-vw(gap, 30);
+  @include px-to-vw(margin-bottom, 60);
 
-  @media (max-width: 1024px) {
+  @include max-width-xxl {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include max-width-xl {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.4rem;
+  }
+
+  @include max-width-lg {
     grid-template-columns: repeat(2, 1fr);
     gap: 2.4rem;
   }
 
-  @media (max-width: 768px) {
+  @include max-width-sm {
     grid-template-columns: 1fr;
     gap: 2rem;
     margin-bottom: 4rem;
@@ -167,15 +178,21 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 3rem 2rem;
+  @include px-to-vw(padding-top, 30);
+  @include px-to-vw(padding-bottom, 30);
+  @include px-to-vw(padding-left, 20);
+  @include px-to-vw(padding-right, 20);
   border: 1px solid rgba($primary-color, 0.3);
   border-radius: 1.2rem;
   background: #fff;
   box-shadow: 0 8px 24px rgba($primary-color, 0.15);
   will-change: border-color, box-shadow;
 
-  @media (max-width: 768px) {
-    padding: 2.4rem 1.6rem;
+  @include max-width-md {
+    flex-direction: row;
+    text-align: left;
+    padding: 2rem 1.6rem;
+    gap: 1.5rem;
   }
 }
 
@@ -183,18 +200,19 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 6rem;
-  height: 6rem;
+  @include px-to-vw(width, 60);
+  @include px-to-vw(height, 60);
   border-radius: 50%;
   background: rgba($primary-color, 0.05);
   color: rgba($primary-color, 0.75);
-  margin-bottom: 1.6rem;
+  @include px-to-vw(margin-bottom, 16);
   will-change: background-color;
+  flex-shrink: 0;
 
-  @media (max-width: 768px) {
+  @include max-width-md {
     width: 5rem;
     height: 5rem;
-    margin-bottom: 1.2rem;
+    margin-bottom: 0;
   }
 }
 
@@ -204,14 +222,15 @@ onBeforeUnmount(() => {
   color: #333;
   line-height: 1.4;
   margin: 0;
+
+  @include max-width-md {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .home-services__cta {
   text-align: center;
-  margin-top: calc(60 / 1920 * 100vw);
-
-  @media (min-width: 1920px) {
-    margin-top: 60px;
-  }
+  @include px-to-vw(margin-top, 60);
 }
 </style>

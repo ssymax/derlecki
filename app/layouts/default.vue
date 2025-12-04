@@ -1,22 +1,62 @@
 <template>
-  <div class="layout-default">
-    <VueLenis ref="lenisRef" root />
-    <OrganismsNavBar v-model="isMenuOpen" />
-    <main class="layout-default__content">
-      <NuxtPage />
-    </main>
-    <OrganismsFooter />
-    <AtomsScrollToTop />
+  <div class="layout">
+    <div ref="scrollWrapperRef" class="scroll-wrapper">
+      <div ref="contentRef" class="scroll-content">
+        <OrganismsNavBar v-model="isMenuOpen" />
+        <main class="content">
+          <NuxtPage />
+        </main>
+        <OrganismsFooter />
+        <AtomsScrollToTop />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { VueLenis, useLenis } from 'lenis/vue';
+import Lenis from 'lenis';
 
-const lenisRef = ref();
+const scrollWrapperRef = ref<HTMLElement>();
+const contentRef = ref<HTMLElement>();
 const isMenuOpen = ref(false);
 const route = useRoute();
-const lenis = useLenis();
+const lenis = useLenisState();
+
+onMounted(() => {
+  const { $gsap, $ScrollTrigger } = useNuxtApp();
+
+  if (scrollWrapperRef.value && contentRef.value) {
+    // configure ScrollTrigger to use the scroll wrapper globally
+    if ($ScrollTrigger) {
+      $ScrollTrigger.defaults({
+        scroller: scrollWrapperRef.value,
+      });
+    }
+
+    // initialize Lenis with wrapper and content
+    lenis.value = new Lenis({
+      wrapper: scrollWrapperRef.value,
+      content: contentRef.value,
+      lerp: 0.1,
+      duration: 1.2,
+      smoothWheel: true,
+    });
+
+    // integrate Lenis with GSAP ScrollTrigger
+    if ($gsap && $ScrollTrigger) {
+      lenis.value.on('scroll', $ScrollTrigger.update);
+
+      $gsap.ticker.add((time: number) => {
+        lenis.value?.raf(time * 1000);
+      });
+
+      $gsap.ticker.lagSmoothing(0);
+    }
+  }
+});
+onUnmounted(() => {
+  lenis.value?.destroy();
+});
 
 // Stop Lenis when mobile menu is open
 watch(isMenuOpen, (isOpen) => {
@@ -40,8 +80,26 @@ watch(
 );
 </script>
 
-<style lang="scss">
-.layout-default__content {
+<style scoped lang="scss">
+.layout {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.scroll-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-content {
+  width: 100%;
+}
+
+.content {
   @include padding-style;
   padding-bottom: clamp(3rem, 5vw, 6rem);
 }
