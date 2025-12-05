@@ -39,15 +39,15 @@ watch(
       $gsap.to(drawerRef.value, {
         x: 0,
         opacity: 1,
-        duration: 0.7,
-        ease: 'expo.out',
+        duration: 0.6,
+        ease: 'power3.out',
       });
     } else {
       $gsap.to(drawerRef.value, {
         x: '110%',
         opacity: 0,
-        duration: 0.5,
-        ease: 'expo.in',
+        duration: 0.4,
+        ease: 'power2.in',
       });
     }
   },

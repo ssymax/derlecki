@@ -27,7 +27,6 @@ const handleClose = () => {
 .app-nav-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
   z-index: 10;
 }
 

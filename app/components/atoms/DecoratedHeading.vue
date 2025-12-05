@@ -1,8 +1,8 @@
 <template>
-  <h2 class="decorated-heading" :class="`decorated-heading--${align}`">
-    <span ref="sparkle" class="decorated-heading__sparkle">✦</span>
-    <span class="decorated-heading__text"><slot /></span>
-    <span class="decorated-heading__line" />
+  <h2 class="heading" :class="`heading--${align}`">
+    <span ref="sparkle" class="sparkle">✦</span>
+    <span class="text"><slot /></span>
+    <span class="line" />
   </h2>
 </template>
 
@@ -35,7 +35,7 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.decorated-heading {
+.heading {
   position: relative;
   display: flex;
   align-items: center;
@@ -48,17 +48,16 @@ onMounted(() => {
   &--left {
     flex-direction: row;
   }
-
   &--right {
     flex-direction: row-reverse;
   }
 }
 
-.decorated-heading__text {
+.text {
   flex-shrink: 0;
 }
 
-.decorated-heading__sparkle {
+.sparkle {
   flex-shrink: 0;
   font-size: 3rem;
   color: $primary-color;
@@ -67,36 +66,32 @@ onMounted(() => {
   will-change: transform;
 }
 
-.decorated-heading__line {
+.line {
   flex-grow: 1;
   max-width: 15rem;
   height: 3px;
   border-radius: 2px;
 
-  .decorated-heading--left & {
+  .heading--left & {
     background: linear-gradient(to right, $primary-color, rgba($primary-color, 0.3));
   }
-
-  .decorated-heading--right & {
+  .heading--right & {
     background: linear-gradient(to left, $primary-color, rgba($primary-color, 0.3));
   }
 }
 
 @media (max-width: 768px) {
-  .decorated-heading {
+  .heading {
     margin-bottom: 2rem;
     gap: 1rem;
   }
-
-  .decorated-heading__text {
+  .text {
     font-size: 2rem;
   }
-
-  .decorated-heading__sparkle {
+  .sparkle {
     font-size: 2rem;
   }
-
-  .decorated-heading__line {
+  .line {
     max-width: 8rem;
   }
 }

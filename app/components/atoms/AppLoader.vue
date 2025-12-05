@@ -1,12 +1,12 @@
 <template>
   <Transition name="loader">
-    <div v-if="isLoading" class="app-loader">
-      <div class="app-loader__content">
-        <div class="app-loader__logo-wrapper">
-          <img src="~/assets/logo.svg" alt="Logo" class="app-loader__logo" />
-          <svg class="app-loader__circle" viewBox="0 0 100 100">
+    <div v-if="isLoading" class="loader">
+      <div class="content">
+        <div class="logo-wrap">
+          <img src="~/assets/logo.svg" alt="Logo" class="logo" />
+          <svg class="circle" viewBox="0 0 100 100">
             <circle
-              class="app-loader__circle-bg"
+              class="circle-bg"
               cx="50"
               cy="50"
               r="45"
@@ -14,7 +14,7 @@
               stroke-width="2"
             />
             <circle
-              class="app-loader__circle-progress"
+              class="circle-progress"
               cx="50"
               cy="50"
               r="45"
@@ -52,7 +52,7 @@ onMounted(() => {
         ease: 'power2.out',
         onComplete: () => {
           if (displayProgress.value >= 100) {
-            $gsap.to('.app-loader', {
+            $gsap.to('.loader', {
               opacity: 0,
               duration: 0.5,
               ease: 'power2.inOut',
@@ -72,7 +72,7 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.app-loader {
+.loader {
   position: fixed;
   top: 0;
   left: 0;
@@ -83,51 +83,51 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-}
 
-.app-loader__content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
 
-.app-loader__logo-wrapper {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    .logo-wrap {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-.app-loader__logo {
-  width: 140px;
-  height: auto;
-  position: relative;
-  z-index: 2;
-  transform: translateY(-5px);
-}
+      .logo {
+        width: 140px;
+        height: auto;
+        position: relative;
+        z-index: 2;
+        transform: translateY(-5px);
+      }
 
-.app-loader__circle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
+      .circle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
 
-.app-loader__circle-bg {
-  stroke: rgba($primary-color, 0.1);
-}
+        .circle-bg {
+          stroke: rgba($primary-color, 0.1);
+        }
 
-.app-loader__circle-progress {
-  stroke: $primary-color;
-  stroke-dasharray: 282.7433388230814;
-  stroke-dashoffset: 282.7433388230814;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.3s ease;
+        .circle-progress {
+          stroke: $primary-color;
+          stroke-dasharray: 282.7433388230814;
+          stroke-dashoffset: 282.7433388230814;
+          stroke-linecap: round;
+          transition: stroke-dashoffset 0.3s ease;
+        }
+      }
+    }
+  }
 }
 
 .loader-enter-active,

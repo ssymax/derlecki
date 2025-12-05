@@ -366,11 +366,12 @@ onBeforeUnmount(() => {
 @include max-width-lg {
   .layout {
     grid-template-columns: 1fr;
+    gap: 4rem;
   }
 
   .body {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 4rem;
   }
 }
 

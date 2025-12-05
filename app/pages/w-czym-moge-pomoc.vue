@@ -5,8 +5,8 @@
       :intro="servicesContent.intro"
     />
 
-    <div class="nav" role="tablist" aria-label="Obszary pracy">
-      <div class="nav__grid">
+    <div class="list" role="tablist" aria-label="Obszary pracy">
+      <div class="list__grid">
         <MoleculesPanelNavButton
           v-for="(service, index) in services"
           :key="service._uid"
@@ -22,64 +22,66 @@
     </div>
 
     <div
-      class="content"
+      class="details"
       role="tabpanel"
       :id="getServicePanelId(currentService, activeIndex)"
       :aria-labelledby="getServiceTabId(currentService, activeIndex)"
       tabindex="0"
     >
-      <div class="text">
-        <div class="clip">
-          <div ref="heading" class="heading">
-            <AtomsDecoratedHeading align="left">
-              {{ currentService.title }}
-            </AtomsDecoratedHeading>
-          </div>
-        </div>
-        <div :key="activeIndex" class="description">
-          <div class="clip clip--p">
-            <div ref="paragraphContent" class="paragraphs">
-              <template v-if="[0, 2, 3].includes(activeIndex)">
-                <p v-if="currentService.content[0]">
-                  {{ currentService.content[0].item }}
-                </p>
-              </template>
-              <template v-else>
-                <p v-for="contentItem in currentService.content" :key="contentItem._uid">
-                  {{ contentItem.item }}
-                </p>
-              </template>
+      <div class="body">
+        <div class="text">
+          <div class="clip">
+            <div ref="heading" class="heading">
+              <AtomsDecoratedHeading align="left">
+                {{ currentService.title }}
+              </AtomsDecoratedHeading>
             </div>
           </div>
-          <div v-if="currentService.list?.length" class="clip clip--list">
-            <ul ref="listContent">
-              <li v-for="listItem in currentService.list" :key="listItem._uid">
-                {{ listItem.item }}
-              </li>
-            </ul>
-          </div>
-          <div
-            v-if="currentService.content[1] && [0, 2, 3].includes(activeIndex)"
-            class="clip clip--p clip--after"
-          >
-            <div ref="afterListContent" class="paragraphs">
-              <p>{{ currentService.content[1].item }}</p>
+          <div :key="activeIndex" class="section">
+            <div class="clip clip--p">
+              <div ref="paragraphContent" class="paragraphs">
+                <template v-if="[0, 2, 3].includes(activeIndex)">
+                  <p v-if="currentService.content[0]">
+                    {{ currentService.content[0].item }}
+                  </p>
+                </template>
+                <template v-else>
+                  <p v-for="contentItem in currentService.content" :key="contentItem._uid">
+                    {{ contentItem.item }}
+                  </p>
+                </template>
+              </div>
+            </div>
+            <div v-if="currentService.list?.length" class="clip clip--list">
+              <ul ref="listContent">
+                <li v-for="listItem in currentService.list" :key="listItem._uid">
+                  {{ listItem.item }}
+                </li>
+              </ul>
+            </div>
+            <div
+              v-if="currentService.content[1] && [0, 2, 3].includes(activeIndex)"
+              class="clip clip--p clip--after"
+            >
+              <div ref="afterListContent" class="paragraphs">
+                <p>{{ currentService.content[1].item }}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div ref="imageWrapper" class="img-wrap">
-        <NuxtImg
-          :key="currentService._uid"
-          ref="image"
-          :src="currentService.image.filename"
-          :alt="currentService.image.alt || currentService.title"
-          format="webp"
-          width="1280"
-          height="1280"
-          class="img"
-        />
+        <div ref="imageWrapper" class="img-wrap">
+          <NuxtImg
+            :key="currentService._uid"
+            ref="image"
+            :src="currentService.image.filename"
+            :alt="currentService.image.alt || currentService.title"
+            format="webp"
+            width="1280"
+            height="1280"
+            class="img"
+          />
+        </div>
       </div>
     </div>
   </section>
@@ -425,18 +427,22 @@ onBeforeUnmount(() => {
   min-height: 100vh;
 }
 
-.nav {
+.list {
   @include px-to-vw(margin-bottom, 60);
   @include px-to-vw(padding, 20);
 }
 
-.nav__grid {
+.list__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.5rem;
 }
 
-.content {
+.details {
+  position: relative;
+}
+
+.body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   @include px-to-vw(gap, 50);
@@ -470,7 +476,7 @@ onBeforeUnmount(() => {
   margin-bottom: 2rem;
 }
 
-.description {
+.section {
   ul {
     margin-left: 0;
     padding-left: 0;
@@ -509,16 +515,16 @@ onBeforeUnmount(() => {
 }
 
 @include max-width-lg {
-  .content {
+  .body {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 4rem;
   }
 
-  .nav {
+  .list {
     padding: 1.5rem;
   }
 
-  .nav__grid {
+  .list__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -536,12 +542,12 @@ onBeforeUnmount(() => {
     padding: 1rem;
   }
 
-  .nav {
+  .list {
     padding: 1.25rem;
     margin-bottom: 2rem;
   }
 
-  .nav__grid {
+  .list__grid {
     grid-template-columns: 1fr;
   }
 
@@ -549,7 +555,7 @@ onBeforeUnmount(() => {
     font-size: 2rem;
   }
 
-  .description li {
+  .section li {
     padding-left: 2.4rem;
 
     &::before {

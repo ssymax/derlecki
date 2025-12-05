@@ -58,13 +58,13 @@ onUnmounted(() => {
   lenis.value?.destroy();
 });
 
-// Stop Lenis when mobile menu is open
+// Prevent body scroll when drawer is open using CSS
 watch(isMenuOpen, (isOpen) => {
-  if (lenis.value) {
+  if (scrollWrapperRef.value) {
     if (isOpen) {
-      lenis.value.stop();
+      scrollWrapperRef.value.style.overflow = 'hidden';
     } else {
-      lenis.value.start();
+      scrollWrapperRef.value.style.overflow = '';
     }
   }
 });

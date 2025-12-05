@@ -46,46 +46,55 @@ watch(
 onMounted(() => {
   if (!navRef.value) return;
 
-  const { $gsap, $ScrollTrigger } = useNuxtApp();
-  if (!$gsap || !$ScrollTrigger) return;
-
-  // Find the scroll wrapper element
-  const scrollWrapper = document.querySelector('.scroll-wrapper');
-  if (!scrollWrapper) return;
+  const lenis = useLenisState();
 
   let lastScrollY = 0;
-  let ticking = false;
+  const scrollThreshold = 10;
 
-  $ScrollTrigger.create({
-    scroller: scrollWrapper,
-    start: 'top top',
-    end: 'max',
-    onUpdate: (self: any) => {
-      if (ticking) return;
+  // Listen to Lenis scroll events
+  const handleScroll = (e: any) => {
+    const currentScrollY = e.scroll;
+    const scrollDelta = Math.abs(currentScrollY - lastScrollY);
 
-      ticking = true;
-      requestAnimationFrame(() => {
-        const currentScrollY = self.scroll();
+    // Always update lastScrollY to keep it current
+    if (scrollDelta < scrollThreshold) {
+      lastScrollY = currentScrollY;
+      return;
+    }
 
-        // Only hide if scrolled down more than 100px
-        if (currentScrollY > 100) {
-          if (currentScrollY > lastScrollY) {
-            // Scrolling down - hide immediately
-            isHidden.value = true;
-          } else {
-            // Scrolling up - show immediately
-            isHidden.value = false;
-          }
-        } else {
-          // Near top - always show
-          isHidden.value = false;
-        }
+    // Don't hide navbar when drawer is open
+    if (isMenuOpen.value) {
+      lastScrollY = currentScrollY;
+      return;
+    }
 
-        lastScrollY = currentScrollY;
-        ticking = false;
-      });
+    // Only hide if scrolled down more than 100px
+    if (currentScrollY > 100) {
+      if (currentScrollY > lastScrollY) {
+        // Scrolling down - hide
+        isHidden.value = true;
+      } else {
+        // Scrolling up - show
+        isHidden.value = false;
+      }
+    } else {
+      // Near top - always show
+      isHidden.value = false;
+    }
+
+    lastScrollY = currentScrollY;
+  };
+
+  // Attach listener when Lenis is ready
+  watch(
+    lenis,
+    (lenisInstance) => {
+      if (lenisInstance) {
+        lenisInstance.on('scroll', handleScroll);
+      }
     },
-  });
+    { immediate: true },
+  );
 });
 </script>
 
