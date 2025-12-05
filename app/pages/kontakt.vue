@@ -42,7 +42,7 @@ const { contactData, images } = useContactInfo();
 
 <style scoped lang="scss">
 .contact {
-  @include page-container;
+  @include padding-style;
 }
 
 .contact__content {

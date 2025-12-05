@@ -97,6 +97,45 @@ const handleToggle = () => {
   }
 }
 
+.app-nav-toggle {
+  @include max-width-md() {
+    width: 3.2rem;
+    height: 3.2rem;
+
+    span {
+      width: 2rem;
+    }
+
+    span:nth-child(1) {
+      top: 0.9rem;
+    }
+
+    span:nth-child(2) {
+      top: 1.5rem;
+    }
+
+    span:nth-child(3) {
+      top: 2.1rem;
+    }
+  }
+}
+
+@include max-width-md() {
+  .app-nav-toggle--open {
+    span:nth-child(1) {
+      top: 1.5rem;
+    }
+
+    span:nth-child(2) {
+      transform: translateX(1rem);
+    }
+
+    span:nth-child(3) {
+      top: 1.5rem;
+    }
+  }
+}
+
 @include min-width-lg() {
   .app-nav-toggle {
     display: none;

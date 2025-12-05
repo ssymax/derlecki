@@ -231,7 +231,6 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   @include px-to-vw(gap, 40);
-  @include px-to-vw(padding-top, 20);
 }
 
 .content {

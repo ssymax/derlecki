@@ -56,10 +56,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .page {
-  @include px-to-vw(margin-left, -100);
-  @include px-to-vw(margin-right, -100);
-  @include px-to-vw(margin-top, -50);
-  @include px-to-vw(margin-bottom, -50);
+  @include px-to-vw(margin, -100);
 }
 
 .parallax {

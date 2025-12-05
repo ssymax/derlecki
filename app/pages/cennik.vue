@@ -91,13 +91,10 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.pricing {
-  @include page-container;
-}
-
 .pricing__grid {
   display: grid;
   gap: 2rem;
+  @include padding-style;
   @include px-to-vw(margin-top, 40);
 
   @include min-width-md {

@@ -9,12 +9,12 @@
       <div ref="methodsListRef" class="list" role="tablist" aria-label="Metody pracy">
         <MoleculesPanelNavButton
           v-for="(method, index) in methodsList"
+          :id="getMethodTabId(method._uid, index)"
           :key="method._uid"
           variant="methods"
           :index-label="formatMethodIndex(index)"
           :title="method.name"
           :is-active="method._uid === activeMethodId"
-          :id="getMethodTabId(method._uid, index)"
           :aria-controls="getMethodPanelId(method._uid, index)"
           @click="selectMethod(method._uid)"
         />
@@ -23,10 +23,10 @@
       <div class="details">
         <article
           v-if="activeMethod"
+          :id="getMethodPanelId(activeMethod._uid)"
           :key="activeMethod._uid"
           class="card"
           role="tabpanel"
-          :id="getMethodPanelId(activeMethod._uid)"
           :aria-labelledby="getMethodTabId(activeMethod._uid)"
           tabindex="0"
         >
@@ -93,7 +93,8 @@ const methodsList = computed(() => methodsContent.value?.methods_items || []);
 
 const buildMethodId = (prefix: string, id: string, index?: number) =>
   `${prefix}-${id || (index ?? 0)}`;
-const getMethodTabId = (id: string, index?: number) => buildMethodId('method-tab', id, index);
+const getMethodTabId = (id: string, index?: number) =>
+  buildMethodId('method-tab', id, index);
 const getMethodPanelId = (id: string, index?: number) =>
   buildMethodId('method-panel', id, index);
 
@@ -269,7 +270,6 @@ onBeforeUnmount(() => {
 
 .page {
   min-height: 100vh;
-  @include px-to-vw(padding-top, 20);
 }
 
 .layout {
@@ -312,6 +312,7 @@ onBeforeUnmount(() => {
   grid-template-columns: minmax(0, 1.1fr) minmax(24rem, 0.9fr);
   @include px-to-vw(gap, 25);
   align-items: stretch;
+  font-size: 1.6rem;
 }
 
 .text {
@@ -333,9 +334,8 @@ onBeforeUnmount(() => {
 
   li {
     position: relative;
-    @include px-to-vw(padding-left, 24);
+    padding-left: 2.5rem;
     color: #2f2f2f;
-    font-size: 1.5rem;
     line-height: 1.5;
 
     &::before {

@@ -14,7 +14,7 @@ defineProps<{
 .app-nav-logo {
   display: flex;
   align-items: center;
-  width: 14rem;
+  width: 12rem;
   flex-shrink: 0;
 
   img {
@@ -23,8 +23,12 @@ defineProps<{
     display: block;
   }
 
-  @include max-width-lg() {
-    width: 12rem;
+  @include max-width-md() {
+    width: 10rem;
+  }
+
+  @include min-width-lg() {
+    width: 14rem;
   }
 }
 </style>

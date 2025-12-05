@@ -1,12 +1,16 @@
 <template>
-  <div class="app-nav-drawer" :class="{ 'app-nav-drawer--open': isMenuOpen }">
+  <div
+    ref="drawerRef"
+    class="app-nav-drawer"
+    :class="{ 'app-nav-drawer--open': isMenuOpen }"
+  >
     <MoleculesNavMenu :routes="routes" @navigate="handleRequestClose" />
     <MoleculesNavActions :links="links" @select="handleRequestClose" />
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   routes: AppRoute[];
   links: ContactLink[];
   isMenuOpen: boolean;
@@ -16,9 +20,38 @@ const emit = defineEmits<{
   (e: 'request-close'): void;
 }>();
 
+const { $gsap } = useNuxtApp() as any;
+const drawerRef = ref<HTMLElement | null>(null);
+
 const handleRequestClose = () => {
   emit('request-close');
 };
+
+watch(
+  () => props.isMenuOpen,
+  (isOpen) => {
+    if (!drawerRef.value) return;
+
+    const isMobile = window.innerWidth < 1024;
+    if (!isMobile) return;
+
+    if (isOpen) {
+      $gsap.to(drawerRef.value, {
+        x: 0,
+        opacity: 1,
+        duration: 0.7,
+        ease: 'expo.out',
+      });
+    } else {
+      $gsap.to(drawerRef.value, {
+        x: '110%',
+        opacity: 0,
+        duration: 0.5,
+        ease: 'expo.in',
+      });
+    }
+  },
+);
 </script>
 
 <style scoped lang="scss">
@@ -37,7 +70,7 @@ const handleRequestClose = () => {
     left: 0;
     width: 100vw;
     height: 100vh;
-    padding: 8rem 2.4rem 3.2rem;
+    padding: 6rem 2rem 3rem;
     flex-direction: column;
     gap: 3.2rem;
     background-color: #fff;
@@ -47,16 +80,12 @@ const handleRequestClose = () => {
     opacity: 0;
     pointer-events: none;
     z-index: 12;
-    transition:
-      opacity 0.3s ease,
-      transform 0.35s ease;
+    will-change: transform, opacity;
   }
 }
 
 .app-nav-drawer--open {
   @include max-width-lg() {
-    opacity: 1;
-    transform: translateX(0);
     pointer-events: auto;
   }
 }

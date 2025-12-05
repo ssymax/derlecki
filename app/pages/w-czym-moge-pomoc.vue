@@ -423,7 +423,6 @@ onBeforeUnmount(() => {
 <style scoped lang="scss">
 .page {
   min-height: 100vh;
-  @include px-to-vw(padding-top, 20);
 }
 
 .nav {
@@ -480,7 +479,7 @@ onBeforeUnmount(() => {
 
   li {
     position: relative;
-    @include px-to-vw(padding-left, 25);
+    padding-left: 2.5rem;
     margin-bottom: 1rem;
 
     &::before {

@@ -95,8 +95,8 @@ onMounted(() => {
   top: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  padding: 1.6rem 2.4rem;
+  gap: 0.8rem;
+  padding: 1.2rem 1.6rem;
   background-color: rgba(255, 255, 255, 1);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   z-index: 20;
@@ -107,11 +107,16 @@ onMounted(() => {
     background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1),
     backdrop-filter 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 
+  @include max-width-md() {
+    padding: 1rem 1.4rem;
+  }
+
   @include min-width-lg() {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     gap: 2.4rem;
+    padding: 1.6rem 2.4rem;
   }
 
   &--hidden {

@@ -43,6 +43,9 @@ const handleNavigate = () => {
   @include min-width-lg() {
     margin: 0 auto;
   }
+  @include max-width-md() {
+    gap: 1.6rem;
+  }
 }
 
 .app-nav-menu__link {
@@ -54,6 +57,16 @@ const handleNavigate = () => {
   padding-bottom: 0.2rem;
   text-transform: uppercase;
   transition: color 0.2s ease;
+
+  @include max-width-lg() {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+  }
+
+  @include max-width-md() {
+    font-size: 1.25rem;
+  }
 
   &::after {
     content: '';

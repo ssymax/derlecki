@@ -72,9 +72,26 @@ watch(isMenuOpen, (isOpen) => {
 // Scroll to top when route changes
 watch(
   () => route.path,
-  () => {
+  async () => {
+    await nextTick();
+
     if (lenis.value) {
       lenis.value.scrollTo(0, { immediate: true });
+
+      // Safety fallback for touch devices where Lenis might not animate
+      requestAnimationFrame(() => {
+        const wrapper = scrollWrapperRef.value;
+        if (wrapper) {
+          wrapper.scrollTo({ top: 0, behavior: 'auto' });
+        }
+      });
+    } else {
+      const wrapper = scrollWrapperRef.value;
+      if (wrapper) {
+        wrapper.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   },
 );
@@ -101,6 +118,6 @@ watch(
 
 .content {
   @include padding-style;
-  padding-bottom: clamp(3rem, 5vw, 6rem);
+  @include page-container;
 }
 </style>
