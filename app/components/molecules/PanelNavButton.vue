@@ -7,10 +7,10 @@
     :tabindex="isActive ? 0 : -1"
     @click="$emit('click', $event)"
   >
-    <span v-if="icon" class="panel-nav-button__icon">
-      <Icon :name="icon" size="24" />
+    <span class="panel-nav-button__icon">
+      <Icon v-if="icon" :name="icon" size="24" />
+      <span v-else class="panel-nav-button__sparkle">✦</span>
     </span>
-    <span v-else class="panel-nav-button__index">{{ indexLabel }}</span>
     <span class="panel-nav-button__divider" aria-hidden="true" />
     <span class="panel-nav-button__text">
       <span class="panel-nav-button__title">{{ title }}</span>
@@ -25,7 +25,6 @@ import { computed, toRefs } from 'vue';
 
 const props = withDefaults(
   defineProps<{
-    indexLabel: string;
     title: string;
     subtitle?: string;
     arrow?: string;
@@ -59,7 +58,7 @@ const type = computed(() => props.type);
 const isActive = computed(() => props.isActive ?? false);
 const ariaSelected = computed(() => props.ariaPressed ?? props.isActive ?? false);
 const variantClass = computed(() => `panel-nav-button--${variant.value}`);
-const { indexLabel, title, subtitle } = toRefs(props);
+const { title, subtitle } = toRefs(props);
 </script>
 
 <style scoped lang="scss">
@@ -115,18 +114,6 @@ const { indexLabel, title, subtitle } = toRefs(props);
   }
 }
 
-.panel-nav-button__index {
-  font-size: 1.4rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba($primary-color, 0.8);
-
-  .panel-nav-button--active & {
-    color: rgba(255, 255, 255, 0.9);
-  }
-}
-
 .panel-nav-button__icon {
   display: flex;
   align-items: center;
@@ -140,6 +127,29 @@ const { indexLabel, title, subtitle } = toRefs(props);
 
   .panel-nav-button--active & {
     color: rgba(255, 255, 255, 0.9);
+  }
+}
+
+.panel-nav-button__sparkle {
+  font-size: 1.6rem;
+  display: inline-block;
+  transition: all 0.3s ease;
+
+  .panel-nav-button:hover & {
+    transform: scale(1.2) rotate(15deg);
+  }
+
+  .panel-nav-button--active & {
+    animation: sparkle-rotate 2s linear infinite;
+  }
+}
+
+@keyframes sparkle-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 

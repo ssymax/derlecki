@@ -9,12 +9,11 @@
       <div class="list__grid">
         <MoleculesPanelNavButton
           v-for="(service, index) in services"
+          :id="getServiceTabId(service, index)"
           :key="service._uid"
-          :index-label="formatNavIndex(index)"
           :title="service.title"
           :icon="getServiceIcon(index)"
           :is-active="activeIndex === index"
-          :id="getServiceTabId(service, index)"
           :aria-controls="getServicePanelId(service, index)"
           @click="changeService(index)"
         />
@@ -22,9 +21,9 @@
     </div>
 
     <div
+      :id="getServicePanelId(currentService, activeIndex)"
       class="details"
       role="tabpanel"
-      :id="getServicePanelId(currentService, activeIndex)"
       :aria-labelledby="getServiceTabId(currentService, activeIndex)"
       tabindex="0"
     >
@@ -46,7 +45,10 @@
                   </p>
                 </template>
                 <template v-else>
-                  <p v-for="contentItem in currentService.content" :key="contentItem._uid">
+                  <p
+                    v-for="contentItem in currentService.content"
+                    :key="contentItem._uid"
+                  >
                     {{ contentItem.item }}
                   </p>
                 </template>
@@ -116,11 +118,9 @@ const afterListContent = ref<HTMLElement | null>(null);
 const listContent = ref<HTMLUListElement | null>(null);
 const imageWrapper = ref<HTMLElement | null>(null);
 const image = ref<{ $el: HTMLElement } | HTMLElement | null>(null);
-let splitInstance: SplitType | null = null;
-let afterListSplitInstance: SplitType | null = null;
+let splitInstances: SplitType[] = [];
 
 const currentService = computed(() => services.value[activeIndex.value] as ServiceItem);
-const formatNavIndex = (index: number) => `${String(index + 1).padStart(2, '0')}.`;
 const getImageEl = () =>
   (image.value && '$el' in image.value
     ? image.value.$el
@@ -157,14 +157,8 @@ const changeService = (index: number) => {
   const tl = $gsap.timeline({
     onComplete: () => {
       // Clean up split instances
-      if (splitInstance) {
-        splitInstance.revert();
-        splitInstance = null;
-      }
-      if (afterListSplitInstance) {
-        afterListSplitInstance.revert();
-        afterListSplitInstance = null;
-      }
+      splitInstances.forEach((instance) => instance.revert());
+      splitInstances = [];
 
       // Update active index
       activeIndex.value = index;
@@ -186,9 +180,19 @@ const changeService = (index: number) => {
           });
         }
 
-        // Split new content
+        // Split all text content
+        const allLines: HTMLElement[] = [];
+
         if (paragraphContent.value) {
-          splitInstance = new SplitType(paragraphContent.value, { types: 'lines' });
+          const split = new SplitType(paragraphContent.value, { types: 'lines' });
+          splitInstances.push(split);
+          if (split.lines) allLines.push(...(split.lines as HTMLElement[]));
+        }
+
+        if (afterListContent.value) {
+          const split = new SplitType(afterListContent.value, { types: 'lines' });
+          splitInstances.push(split);
+          if (split.lines) allLines.push(...(split.lines as HTMLElement[]));
         }
 
         // Animate in new content
@@ -215,9 +219,9 @@ const changeService = (index: number) => {
           );
         }
 
-        if (splitInstance?.lines) {
+        if (allLines.length) {
           tlIn.fromTo(
-            splitInstance.lines,
+            allLines,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 0.5, stagger: 0.05, ease: 'power2.out' },
             0.3,
@@ -239,21 +243,6 @@ const changeService = (index: number) => {
           );
         }
 
-        // Animate after-list content if exists
-        if (afterListContent.value && [0, 2, 3].includes(index)) {
-          afterListSplitInstance = new SplitType(afterListContent.value, {
-            types: 'lines',
-          });
-          if (afterListSplitInstance.lines) {
-            tlIn.fromTo(
-              afterListSplitInstance.lines,
-              { opacity: 0, y: 20 },
-              { opacity: 1, y: 0, duration: 0.5, stagger: 0.05, ease: 'power2.out' },
-              0.4,
-            );
-          }
-        }
-
         // Scroll to content on mobile
         scrollToContent();
       });
@@ -261,9 +250,14 @@ const changeService = (index: number) => {
   });
 
   // Animate out current content
-  if (splitInstance?.lines) {
+  const allCurrentLines: HTMLElement[] = [];
+  splitInstances.forEach((instance) => {
+    if (instance.lines) allCurrentLines.push(...(instance.lines as HTMLElement[]));
+  });
+
+  if (allCurrentLines.length) {
     tl.to(
-      splitInstance.lines,
+      allCurrentLines,
       {
         opacity: 0,
         y: -20,
@@ -322,20 +316,34 @@ const changeService = (index: number) => {
 const { state } = useAppStore();
 
 onMounted(() => {
-  // Set initial states
+  // Set initial states and split text
+  const allInitialLines: HTMLElement[] = [];
+
   if (paragraphContent.value) {
-    splitInstance = new SplitType(paragraphContent.value, { types: 'lines' });
-    if (splitInstance.lines) {
-      $gsap.set(splitInstance.lines, { opacity: 0, y: 20 });
-    }
+    const split = new SplitType(paragraphContent.value, { types: 'lines' });
+    splitInstances.push(split);
+    if (split.lines) allInitialLines.push(...(split.lines as HTMLElement[]));
   }
+
+  if (afterListContent.value) {
+    const split = new SplitType(afterListContent.value, { types: 'lines' });
+    splitInstances.push(split);
+    if (split.lines) allInitialLines.push(...(split.lines as HTMLElement[]));
+  }
+
+  if (allInitialLines.length) {
+    $gsap.set(allInitialLines, { opacity: 0, y: 20 });
+  }
+
   if (heading.value) {
     $gsap.set(heading.value, { opacity: 0, y: 20 });
   }
+
   const initialListItems = getListItems();
   if (initialListItems.length) {
     $gsap.set(initialListItems, { opacity: 0, y: 20 });
   }
+
   const initialImageEl = getImageEl();
   if (initialImageEl) {
     $gsap.set(initialImageEl, { opacity: 0, y: -30 });
@@ -347,35 +355,12 @@ onMounted(() => {
     (ready) => {
       if (!ready) return;
 
-      if (splitInstance?.lines) {
-        $gsap.to(splitInstance.lines, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.05,
-          ease: 'power2.out',
-          delay: 0.5,
-        });
-      }
-
       if (heading.value) {
         $gsap.to(heading.value, {
           opacity: 1,
           y: 0,
           duration: 0.6,
           ease: 'power2.out',
-        });
-      }
-
-      const initialListItems = getListItems();
-      if (initialListItems.length) {
-        $gsap.to(initialListItems, {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.05,
-          ease: 'power2.out',
-          delay: 0.6,
         });
       }
 
@@ -390,22 +375,27 @@ onMounted(() => {
         });
       }
 
-      // Animate after-list content if exists
-      if (afterListContent.value && [0, 2, 3].includes(activeIndex.value)) {
-        afterListSplitInstance = new SplitType(afterListContent.value, {
-          types: 'lines',
+      if (allInitialLines.length) {
+        $gsap.to(allInitialLines, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.05,
+          ease: 'power2.out',
+          delay: 0.5,
         });
-        if (afterListSplitInstance.lines) {
-          $gsap.set(afterListSplitInstance.lines, { opacity: 0, y: 20 });
-          $gsap.to(afterListSplitInstance.lines, {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            stagger: 0.05,
-            ease: 'power2.out',
-            delay: 0.7,
-          });
-        }
+      }
+
+      const initialListItems = getListItems();
+      if (initialListItems.length) {
+        $gsap.to(initialListItems, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          stagger: 0.05,
+          ease: 'power2.out',
+          delay: 0.6,
+        });
       }
     },
     { immediate: true },
@@ -413,12 +403,8 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  if (splitInstance) {
-    splitInstance.revert();
-  }
-  if (afterListSplitInstance) {
-    afterListSplitInstance.revert();
-  }
+  splitInstances.forEach((instance) => instance.revert());
+  splitInstances = [];
 });
 </script>
 

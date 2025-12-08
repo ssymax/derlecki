@@ -235,15 +235,15 @@ onBeforeUnmount(() => {
     }
 
     &:nth-child(2) {
-      top: 20%;
-      right: 5%;
+      top: 25%;
+      right: 0;
       rotate: 3deg;
       z-index: 3;
     }
 
     &:nth-child(3) {
-      bottom: 0;
-      left: 10%;
+      top: 65%;
+      left: 5%;
       rotate: -2deg;
       z-index: 2;
     }

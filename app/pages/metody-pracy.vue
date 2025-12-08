@@ -12,7 +12,6 @@
           :id="getMethodTabId(method._uid, index)"
           :key="method._uid"
           variant="methods"
-          :index-label="formatMethodIndex(index)"
           :title="method.name"
           :is-active="method._uid === activeMethodId"
           :aria-controls="getMethodPanelId(method._uid, index)"
@@ -122,22 +121,86 @@ const scrollToContent = () => {
 };
 
 const selectMethod = (methodId: string) => {
-  if (methodId === activeMethodId.value) return;
-  activeMethodId.value = methodId;
-  nextTick(() => {
-    scrollToContent();
-  });
-};
+  if (methodId === activeMethodId.value || isAnimating) return;
 
-const formatMethodIndex = (index: number) => `${String(index + 1).padStart(2, '0')}.`;
+  isAnimating = true;
+
+  // Animate out current content
+  const tl = $gsap.timeline({
+    onComplete: () => {
+      activeMethodId.value = methodId;
+      nextTick(() => {
+        scrollToContent();
+        isAnimating = false;
+      });
+    },
+  });
+
+  if (splitInstance?.lines) {
+    tl.to(
+      splitInstance.lines,
+      {
+        opacity: 0,
+        y: -20,
+        duration: 0.4,
+        stagger: 0.03,
+        ease: 'power2.in',
+      },
+      0,
+    );
+  }
+
+  if (detailsHeading.value) {
+    tl.to(
+      detailsHeading.value,
+      { opacity: 0, y: -20, duration: 0.3, ease: 'power2.in' },
+      0,
+    );
+  }
+
+  if (detailsLead.value) {
+    tl.to(detailsLead.value, { opacity: 0, y: -15, duration: 0.3, ease: 'power2.in' }, 0);
+  }
+
+  if (techniquesList.value) {
+    const items = Array.from(techniquesList.value.children) as HTMLElement[];
+    if (items.length) {
+      tl.to(
+        items,
+        {
+          opacity: 0,
+          y: -10,
+          duration: 0.3,
+          stagger: 0.04,
+          ease: 'power2.in',
+        },
+        0,
+      );
+    }
+  }
+
+  if (imageWrapper.value) {
+    tl.to(
+      imageWrapper.value,
+      {
+        opacity: 0,
+        y: 25,
+        scale: 0.97,
+        duration: 0.5,
+        ease: 'power2.inOut',
+      },
+      0,
+    );
+  }
+};
 
 const detailsHeading = ref<HTMLElement | null>(null);
 const detailsLead = ref<HTMLElement | null>(null);
 const detailsDescription = ref<HTMLElement | null>(null);
 const techniquesList = ref<HTMLUListElement | null>(null);
 const imageWrapper = ref<HTMLElement | null>(null);
-const methodsListRef = ref<HTMLElement | null>(null);
 let splitInstance: SplitType | null = null;
+let isAnimating = false;
 
 const animateDetails = () => {
   if (!$gsap) return;

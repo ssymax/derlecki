@@ -12,6 +12,7 @@
             :src="image.filename"
             :alt="image.alt"
             class="home__hero-image"
+            :class="{ 'home__hero-image--second': index === 1 }"
             format="webp"
             fetchpriority="high"
           />
@@ -146,6 +147,12 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+
+  @include max-width-md {
+    &--second {
+      object-position: 65% center;
+    }
+  }
 }
 
 .home__hero-overlay {
