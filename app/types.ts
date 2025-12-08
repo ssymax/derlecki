@@ -76,7 +76,6 @@ declare global {
     bio_image: StoryblokAsset;
     bio_items: ListItem[];
     edu_header: string;
-    edu_image: StoryblokAsset;
     edu_first_subheader: string;
     edu_first_items: ListItem[];
     edu_second_subheader: string;

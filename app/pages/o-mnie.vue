@@ -6,7 +6,7 @@
     />
     <section class="content">
       <div class="images">
-        <div ref="image1" class="img-wrap img-wrap--1">
+        <div ref="image1" class="img-wrap">
           <NuxtImg
             :src="aboutContent.bio_image.filename"
             :alt="aboutContent.bio_image.alt"
@@ -15,17 +15,6 @@
             height="1280"
             loading="eager"
             class="img"
-          />
-        </div>
-        <div ref="image2" class="img-wrap img-wrap--2">
-          <NuxtImg
-            :src="aboutContent.edu_image.filename"
-            :alt="aboutContent.edu_image.alt"
-            format="webp"
-            width="960"
-            height="1280"
-            loading="lazy"
-            class="img img--left"
           />
         </div>
       </div>
@@ -51,17 +40,6 @@
               {{ bioItem.item }}
             </li>
           </ul>
-        </div>
-        <div ref="image2Mobile" class="img-wrap-mobile">
-          <NuxtImg
-            :src="aboutContent.edu_image.filename"
-            :alt="aboutContent.edu_image.alt"
-            format="webp"
-            width="960"
-            height="1280"
-            loading="lazy"
-            class="img img--left"
-          />
         </div>
         <div ref="eduSection" class="section">
           <AtomsDecoratedHeading align="right">
@@ -99,19 +77,15 @@ const { $gsap, $ScrollTrigger } = useNuxtApp() as any;
 const { state } = useAppStore();
 
 const image1 = ref<HTMLElement | null>(null);
-const image2 = ref<HTMLElement | null>(null);
 const image1Mobile = ref<HTMLElement | null>(null);
-const image2Mobile = ref<HTMLElement | null>(null);
 const bioSection = ref<HTMLElement | null>(null);
-const eduSection = ref<HTMLElement | null>(null);
 
 onMounted(() => {
-  if (!image1.value || !image2.value || !bioSection.value || !eduSection.value) return;
+  if (!image1.value || !bioSection.value) return;
 
   const mm = $gsap.matchMedia();
 
-  // Initial state - show first image hidden, second image hidden
-  $gsap.set(image2.value, { opacity: 0, scale: 0.95 });
+  // Initial state
   $gsap.set(image1.value, { opacity: 0, scale: 0.9 });
 
   // Wait for loader to finish before starting animations
@@ -120,7 +94,7 @@ onMounted(() => {
     (ready) => {
       if (!ready || !image1.value) return;
 
-      // Animate first image on load
+      // Animate image on load
       $gsap.to(image1.value, {
         opacity: 1,
         scale: 1,
@@ -130,42 +104,7 @@ onMounted(() => {
 
       // Desktop animations
       mm.add('(min-width: 768px)', () => {
-        // Image transition based on scroll
-        $ScrollTrigger.create({
-          trigger: eduSection.value,
-          start: 'top center',
-          end: 'top top',
-          onEnter: () => {
-            $gsap.to(image1.value, {
-              opacity: 0,
-              scale: 1.05,
-              duration: 0.8,
-              ease: 'power2.inOut',
-            });
-            $gsap.to(image2.value, {
-              opacity: 1,
-              scale: 1,
-              duration: 0.8,
-              ease: 'power2.inOut',
-            });
-          },
-          onLeaveBack: () => {
-            $gsap.to(image1.value, {
-              opacity: 1,
-              scale: 1,
-              duration: 0.8,
-              ease: 'power2.inOut',
-            });
-            $gsap.to(image2.value, {
-              opacity: 0,
-              scale: 0.95,
-              duration: 0.8,
-              ease: 'power2.inOut',
-            });
-          },
-        });
-
-        // Parallax effect on images
+        // Parallax effect on image
         $gsap.to(image1.value, {
           y: 50,
           scrollTrigger: {
@@ -175,23 +114,13 @@ onMounted(() => {
             scrub: 1,
           },
         });
-
-        $gsap.to(image2.value, {
-          y: 50,
-          scrollTrigger: {
-            trigger: eduSection.value,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1,
-          },
-        });
       });
 
       // Mobile animations
       mm.add('(max-width: 767px)', () => {
-        if (!image1Mobile.value || !image2Mobile.value) return;
+        if (!image1Mobile.value) return;
 
-        // Scale down images on scroll
+        // Scale down image on scroll
         $gsap.fromTo(
           image1Mobile.value.querySelector('.img'),
           { scale: 1.1 },
@@ -199,20 +128,6 @@ onMounted(() => {
             scale: 1,
             scrollTrigger: {
               trigger: image1Mobile.value,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1.5,
-            },
-          },
-        );
-
-        $gsap.fromTo(
-          image2Mobile.value.querySelector('.img'),
-          { scale: 1.1 },
-          {
-            scale: 1,
-            scrollTrigger: {
-              trigger: image2Mobile.value,
               start: 'top bottom',
               end: 'bottom top',
               scrub: 1.5,

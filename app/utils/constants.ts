@@ -1,6 +1,6 @@
 export const serviceIcons: string[] = [
   'mdi:hospital-box', // 0: Terapia bólu
-  'mdi:human-cane', // 1: Fizjoterapia ortopedyczna
+  'mdi:bone', // 1: Fizjoterapia ortopedyczna
   'mdi:hand-back-right', // 2: Terapia manualna
   'mdi:run', // 3: Rehabilitacja sportowa
   'mdi:human-handsup', // 4: Rehabilitacja wad postawy

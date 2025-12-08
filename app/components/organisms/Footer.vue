@@ -16,9 +16,10 @@
 
     <div class="app-footer__columns">
       <div class="app-footer__brand">
+        <img :src="logoWhiteUrl" alt="Logo" class="app-footer__logo" />
         <p class="app-footer__brand-title">
-          {{ contactData?.owner_name }} <br />
-          {{ contactData?.owner_profession }}
+          {{ contactData?.owner_profession }} <br />
+          {{ contactData?.owner_name }}
         </p>
         <p>Kompleksowa fizjoterapia w Olsztynie</p>
       </div>
@@ -72,6 +73,8 @@
 </template>
 
 <script setup lang="ts">
+import logoWhiteUrl from '~/assets/logo-footer.svg';
+
 const route = useRoute();
 const currentYear = new Date().getFullYear();
 const isContactPage = computed(() => route.path === '/kontakt');
@@ -162,6 +165,16 @@ const address = computed(() => ({
     p {
       max-width: none;
     }
+  }
+}
+
+.app-footer__logo {
+  width: 15rem;
+  height: auto;
+  margin-bottom: 1rem;
+
+  @include max-width-lg() {
+    width: 14rem;
   }
 }
 
