@@ -124,6 +124,8 @@ onMounted(() => {
       // Make quote visible before splitting
       $gsap.set(quoteText.value, { opacity: 1 });
 
+      if (!quoteText.value) return;
+
       // Split quote text for reveal animation
       const quoteSplit = new SplitType(quoteText.value, {
         types: 'lines,words',

@@ -73,7 +73,7 @@ useSeoMeta({
 
 const { aboutContent } = useAboutInfo();
 
-const { $gsap, $ScrollTrigger } = useNuxtApp() as any;
+const { $gsap } = useNuxtApp() as any;
 const { state } = useAppStore();
 
 const image1 = ref<HTMLElement | null>(null);
