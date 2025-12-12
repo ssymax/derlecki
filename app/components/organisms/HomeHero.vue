@@ -12,7 +12,7 @@
             :src="image.filename"
             :alt="image.alt"
             class="home__hero-image"
-            :class="{ 'home__hero-image--second': index === 1 }"
+            :class="{ 'home__hero-image--second': index === 1 || index === 4 }"
             format="webp"
             fetchpriority="high"
           />
@@ -47,8 +47,10 @@ const { contactData } = useContactInfo();
 const { routes } = useNavigation();
 
 const heroRoutes = computed(() => {
-  return routes.value.filter((route) => route.path !== '/');
+  return routes.value.filter((route) => route.path !== '/' && route.path !== 'szkolenia');
 });
+
+console.log(heroRoutes.value);
 
 const heroContentRef = ref<HTMLElement | null>(null);
 const { $gsap } = useNuxtApp() as any;
