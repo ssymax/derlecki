@@ -16,6 +16,7 @@
           :is-active="method._uid === activeMethodId"
           :aria-controls="getMethodPanelId(method._uid, index)"
           @click="selectMethod(method._uid)"
+          @navigate="(dir) => handleNavigate(dir, index)"
         />
       </div>
 
@@ -27,7 +28,6 @@
           class="card"
           role="tabpanel"
           :aria-labelledby="getMethodTabId(activeMethod._uid)"
-          tabindex="0"
         >
           <header class="header">
             <div ref="detailsHeading" class="heading">
@@ -117,6 +117,30 @@ const scrollToContent = () => {
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
     }
+  }
+};
+
+const handleNavigate = (
+  direction: 'next' | 'prev' | 'first' | 'last',
+  currentIndex: number,
+) => {
+  let newIndex = currentIndex;
+
+  if (direction === 'next') {
+    newIndex = currentIndex + 1;
+    if (newIndex >= methodsList.value.length) newIndex = 0;
+  } else if (direction === 'prev') {
+    newIndex = currentIndex - 1;
+    if (newIndex < 0) newIndex = methodsList.value.length - 1;
+  } else if (direction === 'first') {
+    newIndex = 0;
+  } else if (direction === 'last') {
+    newIndex = methodsList.value.length - 1;
+  }
+
+  const newMethod = methodsList.value[newIndex];
+  if (newMethod) {
+    selectMethod(newMethod._uid);
   }
 };
 

@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 useSeoMeta({
-  title: 'Fizjoterapia Olsztyn - Profesjonalna Terapia Manualna',
+  title: 'Fizjoterapia Olsztyn - Kompleksowa Rehabilitacja',
   description:
     'Profesjonalna fizjoterapia w Olsztynie. Specjalizuję się w terapii manualnej, rehabilitacji ortopedycznej i sportowej. Indywidualne podejście do każdego pacjenta. Umów się na konsultację.',
   ogImage: '/img/og-image.jpg',

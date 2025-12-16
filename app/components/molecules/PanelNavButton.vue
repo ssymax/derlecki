@@ -4,7 +4,6 @@
     :type="type"
     :class="['panel-nav-button', variantClass, { 'panel-nav-button--active': isActive }]"
     :aria-selected="ariaSelected"
-    :tabindex="isActive ? 0 : -1"
     @click="$emit('click', $event)"
   >
     <span class="panel-nav-button__icon">
@@ -44,9 +43,32 @@ const props = withDefaults(
   },
 );
 
-defineEmits<{
+const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void;
+  (e: 'navigate', direction: 'next' | 'prev' | 'first' | 'last'): void;
 }>();
+
+const handleKeydown = (event: KeyboardEvent) => {
+  let direction: 'next' | 'prev' | 'first' | 'last' | null = null;
+
+  if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+    event.preventDefault();
+    direction = 'next';
+  } else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+    event.preventDefault();
+    direction = 'prev';
+  } else if (event.key === 'Home') {
+    event.preventDefault();
+    direction = 'first';
+  } else if (event.key === 'End') {
+    event.preventDefault();
+    direction = 'last';
+  }
+
+  if (direction) {
+    emit('navigate', direction);
+  }
+};
 
 const variant = computed(() => props.variant ?? 'services');
 const computedArrow = computed(() => {

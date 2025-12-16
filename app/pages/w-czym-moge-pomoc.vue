@@ -16,6 +16,7 @@
           :is-active="activeIndex === index"
           :aria-controls="getServicePanelId(service, index)"
           @click="changeService(index)"
+          @navigate="(dir) => handleNavigate(dir, index)"
         />
       </div>
     </div>
@@ -25,7 +26,6 @@
       class="details"
       role="tabpanel"
       :aria-labelledby="getServiceTabId(currentService, activeIndex)"
-      tabindex="0"
     >
       <div class="body">
         <div class="text">
@@ -138,6 +138,27 @@ const scrollToContent = () => {
       });
     }
   }
+};
+
+const handleNavigate = (
+  direction: 'next' | 'prev' | 'first' | 'last',
+  currentIndex: number,
+) => {
+  let newIndex = currentIndex;
+
+  if (direction === 'next') {
+    newIndex = currentIndex + 1;
+    if (newIndex >= services.value.length) newIndex = 0;
+  } else if (direction === 'prev') {
+    newIndex = currentIndex - 1;
+    if (newIndex < 0) newIndex = services.value.length - 1;
+  } else if (direction === 'first') {
+    newIndex = 0;
+  } else if (direction === 'last') {
+    newIndex = services.value.length - 1;
+  }
+
+  changeService(newIndex);
 };
 
 const changeService = (index: number) => {
