@@ -254,6 +254,7 @@ onBeforeUnmount(() => {
   position: relative;
   overflow: hidden;
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+  border-radius: 1.2rem;
   cursor: pointer;
   transition:
     transform 0.3s ease,

@@ -306,6 +306,7 @@ onMounted(() => {
   img {
     transform: scale(1.15);
     will-change: transform;
+    border-radius: 1rem;
   }
 }
 
@@ -314,7 +315,6 @@ onMounted(() => {
   height: 100%;
   object-fit: cover;
   display: block;
-  border-radius: 1rem;
 }
 
 .for-who {
