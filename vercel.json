@@ -1,0 +1,49 @@
+{
+  "redirects": [
+    {
+      "source": "/info/3/o-mnie.html",
+      "destination": "/o-mnie",
+      "permanent": true
+    },
+    {
+      "source": "/info/15/trening-funkcjonalny.html",
+      "destination": "/metody-pracy",
+      "permanent": true
+    },
+    {
+      "source": "/info/14/kinesiology-taping.html",
+      "destination": "/metody-pracy",
+      "permanent": true
+    },
+    {
+      "source": "/kontakt.html",
+      "destination": "/kontakt",
+      "permanent": true
+    },
+    {
+      "source": "/index.php",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/info/13/masaz-leczniczy.html",
+      "destination": "/w-czym-moge-pomoc",
+      "permanent": true
+    },
+    {
+      "source": "/info/5/oferta.html",
+      "destination": "/cennik",
+      "permanent": true
+    },
+    {
+      "source": "/info/7/trening-personalny.html",
+      "destination": "/w-czym-moge-pomoc",
+      "permanent": true
+    }
+  ]
+}
