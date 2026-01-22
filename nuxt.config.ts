@@ -36,6 +36,11 @@ export default defineNuxtConfig({
       baseURL: 'https://a.storyblok.com',
     },
   },
+  icon: {
+    clientBundle: {
+      scan: true,
+    },
+  },
   fonts: {
     families: [
       {
