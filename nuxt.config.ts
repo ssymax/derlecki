@@ -39,6 +39,7 @@ export default defineNuxtConfig({
   icon: {
     clientBundle: {
       scan: true,
+      icons: ['mdi:close', 'mdi:plus'],
     },
   },
   fonts: {
