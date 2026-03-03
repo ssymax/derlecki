@@ -123,6 +123,18 @@ pnpm preview
 
 ---
 
+## Testing
+
+Unit and component tests are written with [Vitest](https://vitest.dev) and [Vue Test Utils](https://test-utils.vuejs.org).
+
+```bash
+pnpm test
+```
+
+Test files are co-located with source files using the `.test.ts` naming convention.
+
+---
+
 ## Deployment
 
 The site is deployed to **Vercel** using the `vercel-static` preset (static site generation). Push to `main` triggers an automatic build.
